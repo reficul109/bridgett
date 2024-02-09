@@ -69,13 +69,11 @@ client.on('userUpdate', async (oldUser, newUser) => {
   var cq80 = false, mutacolor = false;
   var reefs = await client.guilds.cache.get(avyGuilds[0]);
   var reefsMember = await reefs.members.cache.get(newUser.id);
-  if (reefsMember) {
-    if (reefsMember.roles.cache.get(avyRoles[0])) {cq80 = true;}}
+  if (reefsMember && reefsMember.roles.cache.get(avyRoles[0])) {cq80 = true;}
 
   var SDJ = await client.guilds.cache.get(avyGuilds[1]);
   var SDJMember = await SDJ.members.cache.get(newUser.id);
-  if (SDJMember) {
-    if (SDJMember.roles.cache.get(avyRoles[1])) {mutacolor = true;}}
+  if (SDJMember && SDJMember.roles.cache.get(avyRoles[1])) {mutacolor = true;}
   
   if (!(cq80 || mutacolor)) {return;}
 

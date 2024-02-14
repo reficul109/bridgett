@@ -66,7 +66,7 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
   
-  var cq80 = false, mutacolor = false, gateway = false;
+  var cq80 = false, mutacolor = false, gateway = false, testVar = false;
   var reefs = await client.guilds.cache.get(avyGuilds[0]);
   var reefsMember = await reefs.members.cache.get(newUser.id);
   if (reefsMember && reefsMember.roles.cache.get(avyRoles[0])) {cq80 = true;}

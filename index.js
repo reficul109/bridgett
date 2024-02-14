@@ -3,7 +3,8 @@ const prefix = 'br!';
 const bID = "530502122190405652", rID = "320398018060746752";
 const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'cartitas pedorras', 'zzz'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
-const avyGuilds = ["412116759668064256", "707295290461257760", "407294095782969345", "540691228057010193"], avyRoles = ["584594259550797824", "737786182116573185", "1205599814214221834", "1207122045889024042"];
+const avyGuilds = ["412116759668064256", "707295290461257760", "407294095782969345"], avyRoles = ["584594259550797824", "737786182116573185", "1205599814214221834"];
+const {token} = require('./token.json')
 
 //Packages
 const fs = require('node:fs');
@@ -30,12 +31,12 @@ client.commands = new Collection();
 		  } else {
 		  	console.log('Error en ' + filePath + '...')}}}
 
-const rest = new REST().setToken(process.env.TOKEN);
+const rest = new REST().setToken(token);
 
 //Slash Command Loader
 (async () => {
 	try {
-		console.log('Cargando ' + (globalCommands.length) + ' Comandos.');
+		console.log('Cargando ' + globalCommands.length + ' Comandos.');
 		const data = await rest.put(Routes.applicationCommands(bID), {body: globalCommands});
 		await console.log('Comandos Cargados con Exito!');
 	} catch (error) {
@@ -78,11 +79,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
   var GTW = await client.guilds.cache.get(avyGuilds[2]);
   var GTWMember = await GTW.members.cache.get(newUser.id);
   if (GTWMember && GTWMember.roles.cache.get(avyRoles[2])) {gateway = true;}
-
-  var testServ = await client.guilds.cache.get(avyGuilds[3]);
-  var testServMember = await testServ.members.cache.get(newUser.id);
-  if (testServMember && testServMember.roles.cache.get(avyRoles[3])) {testVar = true;}
-	
+ 
   if (!(cq80 || mutacolor)) {return;}
 
   var pagina = 0;
@@ -132,8 +129,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
           default:
             if (cq80) {reefsMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
             if (mutacolor) {SDJMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
-	    if (gateway) {GTWMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
-            if (testVar) {testServMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
+	        if (gateway) {GTWMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
             collector.stop();
             nInteraction.edit({content: (colors[(btn + (pagina * 5) - 1)] + ' Selected!'), components: []});
           break;}
@@ -144,7 +140,6 @@ client.on('userUpdate', async (oldUser, newUser) => {
 //Britt Stuff
 client.on(Events.MessageCreate, message => {
   if (message.author.bot || message.system) return;
-  if (message.guild.id === "407294095782969345") return;
   var msgCon = message.content.toLowerCase();
   
   //Boxie
@@ -179,9 +174,8 @@ client.on(Events.MessageCreate, message => {
   //Eval
   if (msgCon.startsWith(prefix + 'eval ') && message.author.id === rID) {
     eval(argresult)
-    message.reply('Done!')}
-  
+    message.reply('Done!')}  
 })
 
 //Token
-client.login(process.env.TOKEN);
+client.login(token);

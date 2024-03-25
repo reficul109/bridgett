@@ -3,14 +3,14 @@ const prefix = 'br!';
 const bID = "530502122190405652", rID = "320398018060746752";
 const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'cartitas pedorras', 'zzz'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
-const avyGuilds = ["412116759668064256", "707295290461257760", "407294095782969345"], avyRoles = ["584594259550797824", "737786182116573185", "1205599814214221834"];
-const {token} = require('./token.json')
+const {token} = require('./token.json');
+const colorOptions = {count: 30}
 
 //Packages
 const fs = require('node:fs');
 const path = require('node:path');
 const {Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, REST, Routes, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
-const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
+const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: [intents], allowedMentions: {parse: ['users', 'roles']}});
 const getColors = require('get-image-colors');
 
@@ -20,27 +20,27 @@ client.commands = new Collection();
   const foldersPath = path.join(__dirname, 'commands');
   const commandFolders = fs.readdirSync(foldersPath);
   for (const folder of commandFolders) {
-	  const commandsPath = path.join(foldersPath, folder);
-	  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	  for (const file of commandFiles) {
-		  const filePath = path.join(commandsPath, file);
-		  const command = require(filePath);
-		  if ('data' in command && 'execute' in command) {
-        client.commands.set(command.data.name, command);
-		  	globalCommands.push(command.data.toJSON())
-		  } else {
-		  	console.log('Error en ' + filePath + '...')}}}
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+	  const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		if ('data' in command && 'execute' in command) {
+          client.commands.set(command.data.name, command);
+		  globalCommands.push(command.data.toJSON());
+	    } else {
+		  console.log('Error en ' + filePath + '...')}}}
 
 const rest = new REST().setToken(token);
 
 //Slash Command Loader
 (async () => {
-	try {
-		console.log('Cargando ' + globalCommands.length + ' Comandos.');
-		const data = await rest.put(Routes.applicationCommands(bID), {body: globalCommands});
-		await console.log('Comandos Cargados con Exito!');
-	} catch (error) {
-		console.error(error);}})();
+  try {
+	console.log('Cargando ' + globalCommands.length + ' Comandos...');
+	const data = await rest.put(Routes.applicationCommands(bID), {body: globalCommands});
+	await console.log('Comandos Cargados con Exito!');
+  } catch (error) {
+	console.error(error)}})();
 
 //Ready
 client.once(Events.ClientReady, readyClient => {
@@ -49,92 +49,73 @@ client.once(Events.ClientReady, readyClient => {
 
 //Slash Command Receiver
 client.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isChatInputCommand()) return;
-	const command = interaction.client.commands.get(interaction.commandName);
-	if (!command) {return;}
+  if (!interaction.isChatInputCommand()) return;
+  const command = interaction.client.commands.get(interaction.commandName);
+  if (!command) {return;}
 
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-		console.error(error);
-		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({content: 'Error...', ephemeral: true});
-		} else {
-			await interaction.reply({content: 'Error...', ephemeral: true})}}
-  });
+  try {await command.execute(interaction)} 
+  catch (error) {
+    console.error(error);
+  if (interaction.replied || interaction.deferred) {
+    interaction.followUp({content: 'Error...', ephemeral: true})
+  } else {interaction.reply({content: 'Error...', ephemeral: true})}}});
 
 //Auto-Palette
+const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);
+const less = new ButtonBuilder().setCustomId('-').setEmoji('➖').setStyle(ButtonStyle.Success);
+const none = new ButtonBuilder().setCustomId('x').setEmoji('✖️').setStyle(ButtonStyle.Danger);
+
+const color1 = new ButtonBuilder().setCustomId('1').setEmoji('1️⃣').setStyle(ButtonStyle.Primary);
+const color2 = new ButtonBuilder().setCustomId('2').setEmoji('2️⃣').setStyle(ButtonStyle.Primary);
+const color3 = new ButtonBuilder().setCustomId('3').setEmoji('3️⃣').setStyle(ButtonStyle.Primary);
+const color4 = new ButtonBuilder().setCustomId('4').setEmoji('4️⃣').setStyle(ButtonStyle.Primary);
+const color5 = new ButtonBuilder().setCustomId('5').setEmoji('5️⃣').setStyle(ButtonStyle.Primary);
+  
+const colorRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
+const optionRow = new ActionRowBuilder().addComponents(more, less, none);
+
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
   
-  var cq80 = false, mutacolor = false, gateway = false, testVar = false;
-  var reefs = await client.guilds.cache.get(avyGuilds[0]);
-  var reefsMember = await reefs.members.cache.get(newUser.id);
-  if (reefsMember && reefsMember.roles.cache.get(avyRoles[0])) {cq80 = true;}
-
-  var SDJ = await client.guilds.cache.get(avyGuilds[1]);
-  var SDJMember = await SDJ.members.cache.get(newUser.id);
-  if (SDJMember && SDJMember.roles.cache.get(avyRoles[1])) {mutacolor = true;}
-
-  var GTW = await client.guilds.cache.get(avyGuilds[2]);
-  var GTWMember = await GTW.members.cache.get(newUser.id);
-  if (GTWMember && GTWMember.roles.cache.get(avyRoles[2])) {gateway = true;}
- 
-  if (!(cq80 || mutacolor)) {return;}
-
-  var pagina = 0;
-  const colorOptions = {count: 30}
-  function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (pagina * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (pagina * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (pagina * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (pagina * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (pagina * 5)].toString().substring(1));}
-
-  const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);
-  const less = new ButtonBuilder().setCustomId('-').setEmoji('➖').setStyle(ButtonStyle.Success);
-  const none = new ButtonBuilder().setCustomId('x').setEmoji('✖️').setStyle(ButtonStyle.Danger);
-
-  const color1 = new ButtonBuilder().setCustomId('1').setEmoji('1️⃣').setStyle(ButtonStyle.Primary);
-  const color2 = new ButtonBuilder().setCustomId('2').setEmoji('2️⃣').setStyle(ButtonStyle.Primary);
-  const color3 = new ButtonBuilder().setCustomId('3').setEmoji('3️⃣').setStyle(ButtonStyle.Primary);
-  const color4 = new ButtonBuilder().setCustomId('4').setEmoji('4️⃣').setStyle(ButtonStyle.Primary);
-  const color5 = new ButtonBuilder().setCustomId('5').setEmoji('5️⃣').setStyle(ButtonStyle.Primary);
-  
-  const colorRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
-  const optionRow = new ActionRowBuilder().addComponents(more, less, none);
+  var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
+  if (!memberPaletteGuilds.size) {return;}
+    
+  var page = 0;
+  function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
   
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), colorOptions).then(colors => {
   newUser.send({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
 
-      const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
-      collector.on('collect', async cInteraction => {
-        await cInteraction.deferUpdate();
+    const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
+    collector.on('collect', async cInteraction => {
+      await cInteraction.deferUpdate();
 
-        var btn = (parseInt(cInteraction.customId) || cInteraction.customId);
-        switch (btn) {
+      var btn = (parseInt(cInteraction.customId) || cInteraction.customId);
+      switch (btn) {
+        case '+':
+          if (page < 4) {
+            page++;
+            nInteraction.edit(colorPalette(colors))}
+        break;
 
-          case '+':
-            if (pagina < 4) {
-              pagina++;
-              nInteraction.edit(colorPalette(colors))}
-          break;
+        case '-':
+          if (page > 0) {
+            page--;
+            nInteraction.edit(colorPalette(colors))}
+        break;
 
-          case '-':
-            if (pagina > 0) {
-              pagina--;
-              nInteraction.edit(colorPalette(colors))}
-          break;
+        case 'x':
+          collector.stop();
+          nInteraction.edit({content: ('Cancelled!'), components: []});
+        break;
 
-          case 'x':
-            collector.stop();
-            nInteraction.edit({content: ('Cancelled!'), components: []});
-          break;
-
-          default:
-            if (cq80) {reefsMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
-            if (mutacolor) {SDJMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
-	        if (gateway) {GTWMember.roles.color.setColor(colors[(btn + (pagina * 5) - 1)].toString());}
-            collector.stop();
-            nInteraction.edit({content: (colors[(btn + (pagina * 5) - 1)] + ' Selected!'), components: []});
-          break;}
-        })
-    })})
+        default:
+          collector.stop();
+          memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
+          nInteraction.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), components: []});
+        break;}
+      })
+  })})
 })
 
 //Britt Stuff
@@ -144,7 +125,7 @@ client.on(Events.MessageCreate, message => {
   
   //Boxie
   if (wBox.some(word => msgCon.includes(word))) {
-    message.react('📦')
+    message.react('📦');
     message.channel.send('Boxie!')}
   
   //Britt
@@ -153,27 +134,27 @@ client.on(Events.MessageCreate, message => {
   
   //Non-Prefix
   if (!msgCon.startsWith(prefix)) return;
-  var args = message.content.split(' ')
-  var argresult = args.slice(1).join(' ')
+  var args = message.content.split(' ');
+  var argresult = args.slice(1).join(' ');
   if (message.attachments.size) {var msgAtt = Array.from(message.attachments.values(), x => x.url)}
   
   //Say
   if (msgCon.startsWith(prefix + 'say') && (argresult || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
-      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), attachments: msgAtt});
-      message.reply('Done!')}
+      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
+      message.reply('Done!');
     
-    else if (client.users.cache.get(args[1])) {
+    } else if (client.users.cache.get(args[1])) {
       client.users.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
-      message.reply('Done!')}
+      message.reply('Done!');
     
-    else {
-      message.channel.send({content: argresult, files: msgAtt})
+    } else {
+      message.channel.send({content: argresult, files: msgAtt});
       if (message.guild) {message.delete()}}}
   
   //Eval
   if (msgCon.startsWith(prefix + 'eval ') && message.author.id === rID) {
-    eval(argresult)
+    try {eval(argresult)} catch (error) {message.reply("Error...")}
     message.reply('Done!')}  
 })
 

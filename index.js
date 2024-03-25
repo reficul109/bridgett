@@ -120,7 +120,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 
 //Britt Stuff
 client.on(Events.MessageCreate, message => {
-  if (message.author.bot || message.system) return;
+  if (message.author.bot || message.system) {return;}
   var msgCon = message.content.toLowerCase();
 
   //Boxie
@@ -130,10 +130,10 @@ client.on(Events.MessageCreate, message => {
 
   //Britt
   else if (wBritt.some(word => msgCon.includes(word))) {
-    message.channel.send('Me!')}
+    message.channel.send('We are so back')}
 
   //Non-Prefix
-  if (!msgCon.startsWith(prefix)) return;
+  if (!msgCon.startsWith(prefix)) {return;}
   var args = message.content.split(' ');
   var argresult = args.slice(1).join(' ');
   if (message.attachments.size) {var msgAtt = Array.from(message.attachments.values(), x => x.url)}

@@ -44,7 +44,7 @@ const rest = new REST().setToken(token);
 
 //Ready
 client.once(Events.ClientReady, readyClient => {
-  client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'});            
+  client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'});
   console.log('🐙')});
 
 //Slash Command Receiver
@@ -70,16 +70,16 @@ const color2 = new ButtonBuilder().setCustomId('2').setEmoji('2️⃣').setStyle
 const color3 = new ButtonBuilder().setCustomId('3').setEmoji('3️⃣').setStyle(ButtonStyle.Primary);
 const color4 = new ButtonBuilder().setCustomId('4').setEmoji('4️⃣').setStyle(ButtonStyle.Primary);
 const color5 = new ButtonBuilder().setCustomId('5').setEmoji('5️⃣').setStyle(ButtonStyle.Primary);
-  
+
 const colorRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
 const optionRow = new ActionRowBuilder().addComponents(more, less, none);
 
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
-  
+
   var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
   if (!memberPaletteGuilds.size) {return;}
-    
+
   var page = 0;
   function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
   
@@ -122,40 +122,40 @@ client.on('userUpdate', async (oldUser, newUser) => {
 client.on(Events.MessageCreate, message => {
   if (message.author.bot || message.system) return;
   var msgCon = message.content.toLowerCase();
-  
+
   //Boxie
   if (wBox.some(word => msgCon.includes(word))) {
     message.react('📦');
     message.channel.send('Boxie!')}
-  
+
   //Britt
   else if (wBritt.some(word => msgCon.includes(word))) {
     message.channel.send('Me!')}
-  
+
   //Non-Prefix
   if (!msgCon.startsWith(prefix)) return;
   var args = message.content.split(' ');
   var argresult = args.slice(1).join(' ');
   if (message.attachments.size) {var msgAtt = Array.from(message.attachments.values(), x => x.url)}
-  
+
   //Say
   if (msgCon.startsWith(prefix + 'say') && (argresult || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
       client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
       message.reply('Done!');
-    
+
     } else if (client.users.cache.get(args[1])) {
       client.users.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
       message.reply('Done!');
-    
+
     } else {
       message.channel.send({content: argresult, files: msgAtt});
       if (message.guild) {message.delete()}}}
-  
+
   //Eval
   if (msgCon.startsWith(prefix + 'eval ') && message.author.id === rID) {
     try {eval(argresult)} catch (error) {message.reply("Error...")}
-    message.reply('Done!')}  
+    message.reply('Done!')}
 })
 
 //Token

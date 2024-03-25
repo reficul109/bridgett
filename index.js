@@ -20,27 +20,27 @@ client.commands = new Collection();
   const foldersPath = path.join(__dirname, 'commands');
   const commandFolders = fs.readdirSync(foldersPath);
   for (const folder of commandFolders) {
-	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-	  const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
-		if ('data' in command && 'execute' in command) {
+    const commandsPath = path.join(foldersPath, folder);
+    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+      for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	if ('data' in command && 'execute' in command) {
           client.commands.set(command.data.name, command);
-		  globalCommands.push(command.data.toJSON());
-	    } else {
-		  console.log('Error en ' + filePath + '...')}}}
+	  globalCommands.push(command.data.toJSON());
+	} else {
+	  console.log('Error en ' + filePath + '...')}}}
 
 const rest = new REST().setToken(token);
 
 //Slash Command Loader
 (async () => {
   try {
-	console.log('Cargando ' + globalCommands.length + ' Comandos...');
-	const data = await rest.put(Routes.applicationCommands(bID), {body: globalCommands});
-	await console.log('Comandos Cargados con Exito!');
+    console.log('Cargando ' + globalCommands.length + ' Comandos...');
+    const data = await rest.put(Routes.applicationCommands(bID), {body: globalCommands});
+    await console.log('Comandos Cargados con Exito!');
   } catch (error) {
-	console.error(error)}})();
+    console.error(error)}})();
 
 //Ready
 client.once(Events.ClientReady, readyClient => {
@@ -49,7 +49,7 @@ client.once(Events.ClientReady, readyClient => {
 
 //Slash Command Receiver
 client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isChatInputCommand()) return;
+  if (!interaction.isChatInputCommand()) {return;}
   const command = interaction.client.commands.get(interaction.commandName);
   if (!command) {return;}
 
@@ -57,7 +57,7 @@ client.on(Events.InteractionCreate, async interaction => {
   catch (error) {
     console.error(error);
   if (interaction.replied || interaction.deferred) {
-    interaction.followUp({content: 'Error...', ephemeral: true})
+    interaction.followUp({content: 'Error...', ephemeral: true});
   } else {interaction.reply({content: 'Error...', ephemeral: true})}}});
 
 //Auto-Palette

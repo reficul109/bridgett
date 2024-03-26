@@ -130,7 +130,7 @@ client.on(Events.MessageCreate, message => {
 
   //Britt
   else if (wBritt.some(word => msgCon.includes(word))) {
-    message.channel.send('We are so back!!')}
+    message.channel.send('Me!')}
 
   //Non-Prefix
   if (!msgCon.startsWith(prefix)) {return;}

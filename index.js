@@ -154,8 +154,12 @@ client.on(Events.MessageCreate, message => {
 
   //Eval
   if (msgCon.startsWith(prefix + 'eval ') && message.author.id === rID) {
-    try {eval(argresult)} catch (error) {message.reply("Error...")}
-    message.reply('Done!')}
+    try {
+      eval(argresult)
+      message.reply('Done!')} 
+    catch (error) {
+      console.log(error);
+      message.reply("Error...")}}
 })
 
 //Token

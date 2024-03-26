@@ -3,11 +3,11 @@ const {SlashCommandBuilder} = require('discord.js');
 module.exports = {
 
   data: new SlashCommandBuilder()
-	  .setName('customrole')
-	  .setDescription('Customize your Custom Role!')
-      .addStringOption(option => option.setName('name').setDescription('Name to Display in the Role'))
-      .addStringOption(option => option.setName('color').setDescription('Color to Assign to the Role').setMinLength(6).setMaxLength(8))
-      .setDMPermission(false),
+	.setName('customrole')
+	.setDescription('Customize your Custom Role!')
+  .addStringOption(option => option.setName('name').setDescription('Name to Display in the Role'))
+  .addStringOption(option => option.setName('color').setDescription('Color to Assign to the Role').setMinLength(6).setMaxLength(8))
+  .setDMPermission(false),
 
   async execute(interaction) {
     var roles = interaction.member.roles;

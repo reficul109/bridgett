@@ -2,10 +2,14 @@ const {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandB
 
 module.exports = {
 
+  colorRequired: true,
+  protectColor: true,
+  colorPermission: true,
+  
   data: new SlashCommandBuilder()
-	  .setName('autopalette')
-	  .setDescription('Enable Automatic Color Recomendations!')
-      .setDMPermission(false),
+	.setName('autopalette')
+	.setDescription('Enable Automatic Color Recomendations!')
+  .setDMPermission(false),
 
   async execute(interaction) {
     var roles = interaction.member.roles;

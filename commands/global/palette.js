@@ -3,11 +3,15 @@ const getColors = require('get-image-colors');
 
 module.exports = {
 
+  colorRequired: true,
+  protectColor: true,
+  colorPermission: true,
+  
   data: new SlashCommandBuilder()
-	  .setName('palette')
-	  .setDescription('Match your Color and Profile Picture!')
-      .addStringOption(option => option.setName('scope').setDescription('Amount of Server Roles to Update').addChoices({name: 'For all Servers', value: 'ForAll'}, {name: 'For this Server', value: 'ForOne'}))
-      .setDMPermission(false),
+	.setName('palette')
+	.setDescription('Match your Color and Profile Picture!')
+  .addStringOption(option => option.setName('scope').setDescription('Amount of Server Roles to Update').addChoices({name: 'For all Servers', value: 'ForAll'}, {name: 'For this Server', value: 'ForOne'}))
+  .setDMPermission(false),
 
   async execute(interaction) {
     var roles = interaction.member.roles;

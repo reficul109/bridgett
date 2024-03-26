@@ -1,11 +1,11 @@
 const {EmbedBuilder, SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
-    
+  
   data: new SlashCommandBuilder()
-	  .setName('help')
-	  .setDescription('Discover where to Start!')
-      .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices({name: 'For Users', value: 'Users'}, {name: 'For Admins', value: 'Admin'})),
+	.setName('help')
+	.setDescription('Discover where to Start!')
+  .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices({name: 'For Users', value: 'Users'}, {name: 'For Admins', value: 'Admin'})),
 
   async execute(interaction) {
     var section = (interaction.options.getString('section') ?? 'Users');

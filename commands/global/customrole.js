@@ -26,7 +26,7 @@ module.exports = {
       var name = (interaction.options.getString('name') ?? roles.color.name);
       var color = (interaction.options.getString('color') ?? roles.color.color);
 
-      roles.color.setName(name);
+      roles.color.setName(name).catch(() => {return interaction.reply('Not Enough Permissions...')});
       if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.reply("Discord Doesn't Like This Color...")}
       roles.color.setColor(color).catch(() => {return interaction.reply('Invalid Color (Must be Hexadecimal or Decimal...)')})
 

@@ -11,7 +11,7 @@ module.exports = {
     var roles = interaction.member.roles;
     if (!roles.color) {return interaction.reply('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');}
     if (interaction.guild.members.me.roles.cache.get(roles.color.id)) {return interaction.reply('I Have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');}
-    
+
     var paletteRole = await interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
     if (paletteRole) {
       if (!roles.cache.find(role => role.id === paletteRole.id)) {
@@ -32,16 +32,16 @@ module.exports = {
               if (cInteraction.member.id != interaction.user.id) {return;}
               await cInteraction.deferUpdate();
               collector.stop();
-                
+
               if (cInteraction.customId === 'y') {
                 roles.add(paletteRole.id);
                 nInteraction.edit({content: ('Set!'), embeds: [], components: []})} 
               else {nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []})}})})
-            
+
         } else {
           roles.add(paletteRole.id);
           interaction.reply('Set!')}
-          
+
       } else {
         roles.remove(paletteRole.id);
         interaction.reply('Removed!')}}

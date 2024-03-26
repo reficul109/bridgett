@@ -53,7 +53,21 @@ client.on(Events.InteractionCreate, async interaction => {
   const command = interaction.client.commands.get(interaction.commandName);
   if (!command) {return;}
 
-  try {await command.execute(interaction)} 
+  var roles = interaction.member.roles;
+  
+  if (command.colorRequired && !roles.color) {
+    return interaction.reply('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');
+  }
+
+  if (command.checkColorPerms && roles.color) {
+    roles.color.setName(roles.color.name).catch(() => {return interaction.reply('Not Enough Permissions...')});
+  }
+
+  if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
+    return interaction.reply('I Have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
+  }
+
+  try {await command.execute(interaction, roles)}
   catch (error) {
     console.error(error);
   if (interaction.replied || interaction.deferred) {

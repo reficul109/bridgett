@@ -4,20 +4,17 @@ const getColors = require('get-image-colors');
 module.exports = {
 
   colorRequired: true,
-  protectColor: true,
-  colorPermission: true,
-  
+  checkColorPerms: true,
+  protectColorRole: true,
+  warnMultipleEffect: true,
+
   data: new SlashCommandBuilder()
 	.setName('palette')
 	.setDescription('Match your Color and Profile Picture!')
   .addStringOption(option => option.setName('scope').setDescription('Amount of Server Roles to Update').addChoices({name: 'For all Servers', value: 'ForAll'}, {name: 'For this Server', value: 'ForOne'}))
   .setDMPermission(false),
 
-  async execute(interaction) {
-    var roles = interaction.member.roles;
-    if (!roles.color) {return interaction.reply('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');}
-    if (interaction.guild.members.me.roles.cache.get(roles.color.id)) {return interaction.reply('I Have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');}
-
+  async execute(interaction, roles) {
     var scope = (interaction.options.getString('scope') ?? 'ForAll');
     if (scope === 'ForOne') {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => interaction.guild)}
     else {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => guild.members.cache.get(interaction.user.id) && guild.members.cache.get(interaction.user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}

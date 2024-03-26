@@ -5,9 +5,10 @@ module.exports = {
   data: new SlashCommandBuilder()
 	.setName('help')
 	.setDescription('Discover where to Start!')
-  .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices({name: 'For Users', value: 'Users'}, {name: 'For Admins', value: 'Admin'})),
+  .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices({name: 'For Users', value: 'Users'}, {name: 'For Admins', value: 'Admin'}))
+  .setDMPermission(false),
 
-  async execute(interaction) {
+  async execute(interaction, roles) {
     var section = (interaction.options.getString('section') ?? 'Users');
 
     const helpEmbed = new EmbedBuilder()

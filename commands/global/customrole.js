@@ -2,6 +2,9 @@ const {SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
 
+  checkColorPerms: true,
+  warnMultipleEffect: true,
+
   data: new SlashCommandBuilder()
 	.setName('customrole')
 	.setDescription('Customize your Custom Role!')
@@ -9,8 +12,7 @@ module.exports = {
   .addStringOption(option => option.setName('color').setDescription('Color to Assign to the Role').setMinLength(6).setMaxLength(8))
   .setDMPermission(false),
 
-  async execute(interaction) {
-    var roles = interaction.member.roles;
+  async execute(interaction, roles) {
     if (!roles.color || interaction.guild.members.me.roles.cache.get(roles.color.id)) {
       var name = (interaction.options.getString('name') ?? 'My Role');
       var color = (interaction.options.getString('color') ?? '#ffffff');
@@ -26,7 +28,7 @@ module.exports = {
       var name = (interaction.options.getString('name') ?? roles.color.name);
       var color = (interaction.options.getString('color') ?? roles.color.color);
 
-      roles.color.setName(name).catch(() => {return interaction.reply('Not Enough Permissions...')});
+      roles.color.setName(name);
       if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.reply("Discord Doesn't Like This Color...")}
       roles.color.setColor(color).catch(() => {return interaction.reply('Invalid Color (Must be Hexadecimal or Decimal...)')})
 

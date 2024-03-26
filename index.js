@@ -4,7 +4,6 @@ const bID = "530502122190405652", rID = "320398018060746752";
 const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'cartitas pedorras', 'zzz'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
 const {token} = require('./token.json');
-const colorOptions = {count: 30}
 
 //Packages
 const fs = require('node:fs');
@@ -13,6 +12,7 @@ const {Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, REST,
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: [intents], allowedMentions: {parse: ['users', 'roles']}});
 const getColors = require('get-image-colors');
+const colorOptions = {count: 30}
 
 //Slash Command Gather
 const globalCommands = [];

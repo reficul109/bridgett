@@ -8,7 +8,7 @@ const {token} = require('./token.json');
 //Packages
 const fs = require('node:fs');
 const path = require('node:path');
-const {Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, REST, Routes, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
+const {Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, REST, Routes, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} = require('discord.js');
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: [intents], allowedMentions: {parse: ['users', 'roles']}});
 const getColors = require('get-image-colors');
@@ -67,7 +67,7 @@ client.on(Events.InteractionCreate, async interaction => {
   } else {
 
     if (command.checkColorEditable && !roles.color.editable) {
-      return interaction.reply('Not Enough Permissions...');
+      return interaction.reply('Not Enough Permissions to Update your Color Role...');
     }
 
     if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {

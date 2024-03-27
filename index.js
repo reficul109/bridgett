@@ -12,10 +12,7 @@ const path = require('node:path');
 const {Client, Events, GatewayIntentBits, Collection, REST, Routes, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} = require('discord.js');
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: [intents], allowedMentions: {parse: ['users', 'roles']}});
-
 const getColors = require('get-image-colors');
-getColors.paletteCount = {count: 30}
-getColors.paletteMessage = function(colors, page, usID) {return ('<@' + usID + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1));}
 
 //Slash Command Gather
 const globalCommands = [];
@@ -48,7 +45,6 @@ const rest = new REST().setToken(token);
 client.once(Events.ClientReady, readyClient => {
   client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'});
   console.log('🐙');
-  console.log(getColors.superSecretFunny)
 });
 
 //Slash Command Answer
@@ -81,18 +77,11 @@ client.on(Events.InteractionCreate, async interaction => {
 
     if (command.warnMultipleEffect) {
       if (roles.color.members.size > 1) {
-        const warningEmbed = new EmbedBuilder()
-        .setColor("#f2003c")
-        .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for all of them, Proceed?'})
-
-        const yeah = new ButtonBuilder().setCustomId('y').setEmoji('✔️').setStyle(ButtonStyle.Success);
-        const nope = new ButtonBuilder().setCustomId('n').setEmoji('✖️').setStyle(ButtonStyle.Danger);
-        const optionRow = new ActionRowBuilder().addComponents(yeah, nope);
-
-        await interaction.reply({embeds: [warningEmbed], components: [optionRow]}).then(function (nInteraction) {
+        await interaction.reply({embeds: [EmbedBuilder.warningEmbed], components: [ActionRowBuilder.proceedUi]}).then(function (nInteraction) {
 
           const collector = interaction.channel.createMessageComponentCollector({time: 600000});
           collector.on('collect', async cInteraction => {
+
             if (cInteraction.member.id != interaction.user.id) {return;}
             await cInteraction.deferUpdate();
             collector.stop();
@@ -120,28 +109,14 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 //Auto-Palette
-const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);
-const less = new ButtonBuilder().setCustomId('-').setEmoji('➖').setStyle(ButtonStyle.Success);
-const none = new ButtonBuilder().setCustomId('x').setEmoji('✖️').setStyle(ButtonStyle.Danger);
-
-const color1 = new ButtonBuilder().setCustomId('1').setEmoji('1️⃣').setStyle(ButtonStyle.Primary);
-const color2 = new ButtonBuilder().setCustomId('2').setEmoji('2️⃣').setStyle(ButtonStyle.Primary);
-const color3 = new ButtonBuilder().setCustomId('3').setEmoji('3️⃣').setStyle(ButtonStyle.Primary);
-const color4 = new ButtonBuilder().setCustomId('4').setEmoji('4️⃣').setStyle(ButtonStyle.Primary);
-const color5 = new ButtonBuilder().setCustomId('5').setEmoji('5️⃣').setStyle(ButtonStyle.Primary);
-
-const colorRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
-const optionRow = new ActionRowBuilder().addComponents(more, less, none);
-
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
-
   var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
   if (!memberPaletteGuilds.size) {return;}
   
   var page = 0;
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  newUser.send({content: getColors.paletteMessage(colors, page, newUser.id), components: [colorRow, optionRow]}).then(function (nInteraction) {
+  newUser.send({content: getColors.paletteMessage(colors, page, newUser.id), components: [ActionRowBuilder.paletteUI]}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {

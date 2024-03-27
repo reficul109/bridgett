@@ -59,9 +59,9 @@ client.on(Events.InteractionCreate, async interaction => {
     return interaction.reply('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');
   }
 
-  //if (command.checkColorPerms && roles.color.editable) {
-  //  return interaction.reply('Not Enough Permissions...');
-  //}
+  if (command.checkColorPerms && !roles.color.editable) {
+    return interaction.reply('Not Enough Permissions...');
+  }
 
   if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
     return interaction.reply('I Have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');

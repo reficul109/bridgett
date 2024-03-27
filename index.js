@@ -3,16 +3,19 @@ const prefix = 'br!';
 const bID = "530502122190405652", rID = "320398018060746752";
 const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
+const utils = require('./utils.js');
 const {token} = require('./token.json');
 
 //Packages
 const fs = require('node:fs');
 const path = require('node:path');
-const {Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, REST, Routes, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} = require('discord.js');
+const {Client, Events, GatewayIntentBits, Collection, REST, Routes, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} = require('discord.js');
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: [intents], allowedMentions: {parse: ['users', 'roles']}});
+
 const getColors = require('get-image-colors');
-getColors.paletteColorOptions = {count: 30}
+getColors.paletteCount = {count: 30}
+getColors.paletteMessage = function(colors, page, usID) {return ('<@' + usID + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1));}
 
 //Slash Command Gather
 const globalCommands = [];
@@ -44,9 +47,11 @@ const rest = new REST().setToken(token);
 //Ready
 client.once(Events.ClientReady, readyClient => {
   client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'});
-  console.log('🐙')
+  console.log('🐙');
+  console.log(getColors.superSecretFunny)
 });
 
+//Slash Command Answer
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) {return;}
   const command = interaction.client.commands.get(interaction.commandName);
@@ -133,12 +138,10 @@ client.on('userUpdate', async (oldUser, newUser) => {
 
   var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
   if (!memberPaletteGuilds.size) {return;}
-
-  var page = 0;
-  function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
   
-  await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(colors => {
-  newUser.send({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
+  var page = 0;
+  await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
+  newUser.send({content: getColors.paletteMessage(colors, page, newUser.id), components: [colorRow, optionRow]}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {
@@ -149,13 +152,13 @@ client.on('userUpdate', async (oldUser, newUser) => {
         case '+':
           if (page < 4) {
             page++;
-            nInteraction.edit(colorPalette(colors))}
+            nInteraction.edit(getColors.paletteMessage(colors, page, newUser.id))}
         break;
 
         case '-':
           if (page > 0) {
             page--;
-            nInteraction.edit(colorPalette(colors))}
+            nInteraction.edit(getColors.paletteMessage(colors, page, newUser.id))}
         break;
 
         case 'x':

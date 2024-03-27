@@ -19,9 +19,6 @@ module.exports = {
     if (scope === 'ForOne') {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => guild === interaction.guild)}
     else {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => guild.members.cache.get(interaction.user.id) && guild.members.cache.get(interaction.user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}
 
-    var page = 0;
-    function colorPalette(colors) {return ('<@' + interaction.user.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
-
     const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);
     const less = new ButtonBuilder().setCustomId('-').setEmoji('➖').setStyle(ButtonStyle.Success);
     const none = new ButtonBuilder().setCustomId('x').setEmoji('✖️').setStyle(ButtonStyle.Danger);
@@ -34,9 +31,10 @@ module.exports = {
 
     const colorRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
     const optionRow = new ActionRowBuilder().addComponents(more, less, none);
-
-    await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(colors => {
-    interaction.replyOrFollow({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
+   
+    var page = 0;
+    await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
+    interaction.replyOrFollow({content: getColors.paletteMessage(colors, page, interaction.user.id), components: [colorRow, optionRow]}).then(function (nInteraction) {
 
       const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {
@@ -48,13 +46,13 @@ module.exports = {
           case '+':
             if (page < 4) {
               page++;
-              nInteraction.edit(colorPalette(colors))}
+              nInteraction.edit(getColors.paletteMessage(colors, page, interaction.user.id))}
           break;
 
           case '-':
             if (page > 0) {
               page--;
-              nInteraction.edit(colorPalette(colors))}
+              nInteraction.edit(getColors.paletteMessage(colors, page, interaction.user.id))}
           break;
 
           case 'x':

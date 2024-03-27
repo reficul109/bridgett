@@ -38,7 +38,7 @@ module.exports = {
     await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(async colors => {
     await interaction.replyOrFollow({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
 
-      const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
+      const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {
         if (cInteraction.member.id != interaction.user.id) {return;}
         await cInteraction.deferUpdate();

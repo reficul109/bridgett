@@ -137,7 +137,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
   var page = 0;
   function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
   
-  await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), colorOptions).then(colors => {
+  await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(colors => {
   newUser.send({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});

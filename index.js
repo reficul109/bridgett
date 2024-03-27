@@ -77,7 +77,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
     if (command.warnMultipleEffect) {
       if (roles.color.members.size > 1) {
-        await interaction.reply({embeds: [EmbedBuilder.warningEmbed], components: [ActionRowBuilder.proceedUi]}).then(function (nInteraction) {
+        await interaction.reply({embeds: [EmbedBuilder.warningEmbed(roles)], components: [ActionRowBuilder.proceedUi]}).then(function (nInteraction) {
 
           const collector = interaction.channel.createMessageComponentCollector({time: 600000});
           collector.on('collect', async cInteraction => {

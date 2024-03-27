@@ -21,13 +21,15 @@ const selectRow = new ActionRowBuilder().addComponents(more, less, none);
 ActionRowBuilder.paletteUI = [colorsRow, selectRow];
 
 //Warning Embed
-const warningEmbed = new EmbedBuilder()
-.setColor("#f2003c")
-.addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for all of them, Proceed?'})
-EmbedBuilder.warningEmbed = [warningEmbed];
+EmbedBuilder.warningEmbed = function(roles) {
+  const warningEmbed = new EmbedBuilder()
+  .setColor("#f2003c")
+  .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for all of them, Proceed?'})
+return [warningEmbed];}
 
 //Warning UI
 const yeah = new ButtonBuilder().setCustomId('y').setEmoji('✔️').setStyle(ButtonStyle.Success);
 const nope = new ButtonBuilder().setCustomId('n').setEmoji('✖️').setStyle(ButtonStyle.Danger);
+
 const proceedRow = new ActionRowBuilder().addComponents(yeah, nope);
 ActionRowBuilder.proceedUi = [proceedRow];

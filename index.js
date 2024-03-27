@@ -116,7 +116,6 @@ client.on('userUpdate', async (oldUser, newUser) => {
   if (!memberPaletteGuilds.size) {return;}
   
   var page = 0;
-
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
   function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
   newUser.send({content: colorPalette(colors), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {

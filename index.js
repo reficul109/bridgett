@@ -77,7 +77,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
     if (command.warnMultipleEffect) {
       if (roles.color.members.size > 1) {
-        await interaction.reply({embeds: [EmbedBuilder.warningEmbed(roles)], components: [ActionRowBuilder.proceedUi]}).then(function (nInteraction) {
+        await interaction.reply({embeds: EmbedBuilder.warningEmbed(roles), components: ActionRowBuilder.proceedUi}).then(function (nInteraction) {
 
           const collector = interaction.channel.createMessageComponentCollector({time: 600000});
           collector.on('collect', async cInteraction => {
@@ -116,7 +116,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
   
   var page = 0;
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  newUser.send({content: getColors.paletteMessage(colors, page, newUser.id), components: [ActionRowBuilder.paletteUI]}).then(function (nInteraction) {
+  newUser.send({content: getColors.paletteMessage(colors, page, newUser.id), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {

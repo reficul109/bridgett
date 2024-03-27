@@ -35,8 +35,8 @@ module.exports = {
     const colorRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
     const optionRow = new ActionRowBuilder().addComponents(more, less, none);
 
-    await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(async colors => {
-    await interaction.replyOrFollow({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
+    await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(colors => {
+    interaction.replyOrFollow({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
 
       const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {

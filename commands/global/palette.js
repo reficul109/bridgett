@@ -16,7 +16,7 @@ module.exports = {
 
   async execute(interaction, roles) {
     var scope = (interaction.options.getString('scope') ?? 'ForAll');
-    if (scope === 'ForOne') {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => interaction.guild)}
+    if (scope === 'ForOne') {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => guild === interaction.guild)}
     else {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => guild.members.cache.get(interaction.user.id) && guild.members.cache.get(interaction.user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}
 
     var page = 0;

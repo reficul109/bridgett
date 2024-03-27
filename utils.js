@@ -1,9 +1,5 @@
 const {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder} = require('discord.js');
 
-//Palette Utils
-const getColors = require('get-image-colors');
-getColors.paletteCount = {count: 30}
-
 //Palette UI
 const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);
 const less = new ButtonBuilder().setCustomId('-').setEmoji('➖').setStyle(ButtonStyle.Success);

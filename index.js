@@ -13,6 +13,7 @@ const {Client, Events, GatewayIntentBits, Collection, REST, Routes, ActionRowBui
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
 const getColors = require('get-image-colors');
+getColors.paletteCount = {count: 30}
 
 //Slash Command Gather
 const globalCommands = [];
@@ -109,16 +110,16 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 //Auto-Palette
-getColors.paletteMessage = function(colors, page, usID) {return ('<@' + usID + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1));}
-
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
   var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
   if (!memberPaletteGuilds.size) {return;}
   
   var page = 0;
+
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  newUser.send({content: getColors.paletteMessage(colors, page, newUser.id).toString(), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
+  function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
+  newUser.send({content: colorPalette(colors), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {
@@ -129,13 +130,13 @@ client.on('userUpdate', async (oldUser, newUser) => {
         case '+':
           if (page < 4) {
             page++;
-            nInteraction.edit(getColors.paletteMessage(colors, page, newUser.id))}
+            nInteraction.edit(colorPalette(colors))}
         break;
 
         case '-':
           if (page > 0) {
             page--;
-            nInteraction.edit(getColors.paletteMessage(colors, page, newUser.id))}
+            nInteraction.edit(colorPalette(colors))}
         break;
 
         case 'x':

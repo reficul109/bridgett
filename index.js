@@ -12,7 +12,7 @@ const {Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, REST,
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: [intents], allowedMentions: {parse: ['users', 'roles']}});
 const getColors = require('get-image-colors');
-const colorOptions = {count: 30}
+getColors.paletteColorOptions = {count: 30}
 
 //Slash Command Gather
 const globalCommands = [];
@@ -23,13 +23,12 @@ client.commands = new Collection();
     const commandsPath = path.join(foldersPath, folder);
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
       for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	if ('data' in command && 'execute' in command) {
+	      const filePath = path.join(commandsPath, file);
+	      const command = require(filePath);
+	      if ('data' in command && 'execute' in command) {
           client.commands.set(command.data.name, command);
-	  globalCommands.push(command.data.toJSON());
-	} else {
-	  console.log('Error en ' + filePath + '...')}}}
+	        globalCommands.push(command.data.toJSON())}
+        else {console.log('Error en ' + filePath + '...')}}}
 
 const rest = new REST().setToken(token);
 
@@ -38,41 +37,85 @@ const rest = new REST().setToken(token);
   try {
     console.log('Cargando ' + globalCommands.length + ' Comandos...');
     const data = await rest.put(Routes.applicationCommands(bID), {body: globalCommands});
-    await console.log('Comandos Cargados con Exito!');
-  } catch (error) {
-    console.error(error)}})();
+    await console.log('Comandos Cargados con Exito!')
+  } catch (error) {console.error(error)}
+})();
 
 //Ready
 client.once(Events.ClientReady, readyClient => {
   client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'});
-  console.log('🐙')});
+  console.log('🐙')
+});
 
-//Slash Command Receiver
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) {return;}
   const command = interaction.client.commands.get(interaction.commandName);
   if (!command) {return;}
 
+  interaction.replyOrFollow = function(...args) {
+    if (interaction.replied) {return interaction.followUp(...args);}
+    else {return interaction.reply(...args);}}
+
   var roles = interaction.member.roles;
   
-  if (command.colorRequired && !roles.color) {
-    return interaction.reply('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');
-  }
+  if (!roles.color) {
 
-  if (command.checkColorPerms && !roles.color.editable) {
-    return interaction.reply('Not Enough Permissions...');
-  }
+    if (command.colorRoleRequired) {
+      return interaction.reply('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');
+    }
 
-  if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
-    return interaction.reply('I Have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
+  } else {
+
+    if (command.checkColorEditable && !roles.color.editable) {
+      return interaction.reply('Not Enough Permissions...');
+    }
+
+    if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
+      return interaction.reply('I Have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
+    }
+
+    if (command.warnMultipleEffect) {
+      if (roles.color.members.size > 1) {
+        const warningEmbed = new EmbedBuilder()
+        .setColor("#f2003c")
+        .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nThis Will Update the Display Color for all of them, Proceed?'})
+
+        const yeah = new ButtonBuilder().setCustomId('y').setEmoji('✔️').setStyle(ButtonStyle.Success);
+        const nope = new ButtonBuilder().setCustomId('n').setEmoji('✖️').setStyle(ButtonStyle.Danger);
+        const optionRow = new ActionRowBuilder().addComponents(yeah, nope);
+
+        await interaction.reply({embeds: [warningEmbed], components: [optionRow]});
+        interaction.fetchReply().then(function (nInteraction) {
+
+          const collector = nInteraction.channel.createMessageComponentCollector({time: 300000});
+          collector.on('collect', async cInteraction => {
+            if (cInteraction.member.id != interaction.user.id) {return;}
+            await cInteraction.deferUpdate();
+            collector.stop();
+
+            if (cInteraction.customId === 'y') {
+              nInteraction.edit({content: ('Continuing...'), embeds: [], components: []})
+              try {await command.execute(interaction, roles)}
+
+              catch (error) {
+                console.error(error);
+                interaction.followUp({content: 'Error...', ephemeral: true})}} 
+            
+            else {return nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []});}})});
+
+        return;
+
+    }}
   }
 
   try {await command.execute(interaction, roles)}
+
   catch (error) {
     console.error(error);
-  if (interaction.replied || interaction.deferred) {
-    interaction.followUp({content: 'Error...', ephemeral: true});
-  } else {interaction.reply({content: 'Error...', ephemeral: true})}}});
+    if (interaction.replied || interaction.deferred) {interaction.followUp({content: 'Error...', ephemeral: true})}
+    else {interaction.reply({content: 'Error...', ephemeral: true})}
+  }
+});
 
 //Auto-Palette
 const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);

@@ -3,8 +3,8 @@ const getColors = require('get-image-colors');
 
 module.exports = {
 
-  colorRequired: true,
-  checkColorPerms: true,
+  colorRoleRequired: true,
+  checkColorEditable: true,
   protectColorRole: true,
   warnMultipleEffect: true,
 
@@ -20,7 +20,6 @@ module.exports = {
     else {var memberPaletteGuilds = interaction.client.guilds.cache.filter(guild => guild.members.cache.get(interaction.user.id) && guild.members.cache.get(interaction.user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}
 
     var page = 0;
-    const colorOptions = {count: 30}
     function colorPalette(colors) {return ('<@' + interaction.user.id + '>, Pick a New Color!\nhttps://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\nhttps://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
 
     const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);
@@ -36,8 +35,8 @@ module.exports = {
     const colorRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
     const optionRow = new ActionRowBuilder().addComponents(more, less, none);
 
-    await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), colorOptions).then(colors => {
-    interaction.reply({content: colorPalette(colors), components: [colorRow, optionRow]});
+    await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(colors => {
+    interaction.replyOrFollow({content: colorPalette(colors), components: [colorRow, optionRow]})
     interaction.fetchReply().then(function (nInteraction) {
 
       const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});

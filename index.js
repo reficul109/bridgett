@@ -71,14 +71,14 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 
     if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
-      return interaction.reply('I Have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
+      return interaction.reply('I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
     }
 
     if (command.warnMultipleEffect) {
       if (roles.color.members.size > 1) {
         const warningEmbed = new EmbedBuilder()
         .setColor("#f2003c")
-        .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nThis Will Update the Display Color for all of them, Proceed?'})
+        .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for all of them, Proceed?'})
 
         const yeah = new ButtonBuilder().setCustomId('y').setEmoji('✔️').setStyle(ButtonStyle.Success);
         const nope = new ButtonBuilder().setCustomId('n').setEmoji('✖️').setStyle(ButtonStyle.Danger);
@@ -87,14 +87,14 @@ client.on(Events.InteractionCreate, async interaction => {
         await interaction.reply({embeds: [warningEmbed], components: [optionRow]});
         interaction.fetchReply().then(function (nInteraction) {
 
-          const collector = nInteraction.channel.createMessageComponentCollector({time: 300000});
+          const collector = nInteraction.channel.createMessageComponentCollector({time: 600000});
           collector.on('collect', async cInteraction => {
             if (cInteraction.member.id != interaction.user.id) {return;}
             await cInteraction.deferUpdate();
             collector.stop();
 
             if (cInteraction.customId === 'y') {
-              nInteraction.edit({content: ('Continuing...'), embeds: [], components: []})
+              nInteraction.edit({content: ('Proceeding...'), embeds: [], components: []})
               try {await command.execute(interaction, roles)}
 
               catch (error) {
@@ -112,9 +112,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
   catch (error) {
     console.error(error);
-    if (interaction.replied || interaction.deferred) {interaction.followUp({content: 'Error...', ephemeral: true})}
-    else {interaction.reply({content: 'Error...', ephemeral: true})}
-  }
+    interaction.replyOrFollow({content: 'Error...', ephemeral: true})}
 });
 
 //Auto-Palette

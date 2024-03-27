@@ -17,10 +17,10 @@ module.exports = {
     if (paletteRole) {
       if (!roles.cache.find(role => role.id === paletteRole.id)) {
         roles.add(paletteRole.id);
-        interaction.replyOrFollow('Set!')
+        interaction.replyOrFollow('Role Set!')
 
       } else {
         roles.remove(paletteRole.id);
-        interaction.replyOrFollow('Removed!')}}
+        interaction.replyOrFollow('Role Removed!')}}
 
     else {interaction.replyOrFollow('There is no Auto-Palette Role in this Server... (/help)')}}}

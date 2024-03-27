@@ -21,7 +21,7 @@ module.exports = {
    
     var page = 0;
     await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-    interaction.replyOrFollow({content: getColors.paletteMessage(colors, page, interaction.user.id), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
+    interaction.replyOrFollow({content: getColors.paletteMessage(colors, page, interaction.user.id).toString(), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
 
       const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {

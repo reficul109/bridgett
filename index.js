@@ -84,10 +84,9 @@ client.on(Events.InteractionCreate, async interaction => {
         const nope = new ButtonBuilder().setCustomId('n').setEmoji('✖️').setStyle(ButtonStyle.Danger);
         const optionRow = new ActionRowBuilder().addComponents(yeah, nope);
 
-        await interaction.reply({embeds: [warningEmbed], components: [optionRow]});
-        interaction.fetchReply().then(function (nInteraction) {
+        await interaction.reply({embeds: [warningEmbed], components: [optionRow]}).then(function (nInteraction) {
 
-          const collector = nInteraction.channel.createMessageComponentCollector({time: 600000});
+          const collector = interaction.channel.createMessageComponentCollector({time: 600000});
           collector.on('collect', async cInteraction => {
             if (cInteraction.member.id != interaction.user.id) {return;}
             await cInteraction.deferUpdate();
@@ -210,7 +209,7 @@ client.on(Events.MessageCreate, message => {
   //Eval
   if (msgCon.startsWith(prefix + 'eval ') && message.author.id === rID) {
     try {
-      eval(argresult)
+      eval(argresult);
       message.reply('Done!')} 
     catch (error) {
       console.log(error);

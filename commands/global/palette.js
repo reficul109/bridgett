@@ -36,7 +36,7 @@ module.exports = {
     const optionRow = new ActionRowBuilder().addComponents(more, less, none);
 
     await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteColorOptions).then(colors => {
-    interaction.replyOrFollow({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
+    await interaction.replyOrFollow({content: colorPalette(colors), components: [colorRow, optionRow]}).then(function (nInteraction) {
 
       const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {

@@ -59,7 +59,6 @@ client.on(Events.InteractionCreate, async interaction => {
     else {return interaction.reply(...args);}}
 
   var roles = interaction.member.roles;
-  
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
@@ -95,11 +94,13 @@ client.on(Events.InteractionCreate, async interaction => {
                 console.error(error);
                 interaction.followUp({content: 'Error...', ephemeral: true})}} 
             
-            else {return nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []});}})});
-
+            else {return nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []});}
+          })
+        });
+        
         return;
-
-    }}
+      }
+    }
   }
 
   try {await command.execute(interaction, roles)}

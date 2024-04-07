@@ -17,9 +17,9 @@ module.exports = {
 
     switch (section) {
       case 'Admin':
-        helpEmbed.addFields({name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, it will Create a New Role Above the 🎨 Auto-Palette 🎨 Role, if such Role Exists"},
+        helpEmbed.addFields({name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, it will Create a New Role Above the 🎨 Auto-Palette 🎨 Role (if such Role Exists)"},
                             {name: "/palette", value: "Updates the **Color Role** of the User, Unless said Role is Protected"},
-                            {name: "/autopalette", value: "Grants the User the 🎨 Auto-Palette 🎨 Role, If such Role Exists and the **Color Role** of the User is not Protected"});
+                            {name: "/autopalette", value: "Grants the User the 🎨 Auto-Palette 🎨 Role (if such Role Exists and the **Color Role** of the User is Not Protected)"});
       break;
 
       default:

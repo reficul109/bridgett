@@ -5,7 +5,10 @@ module.exports = {
   data: new SlashCommandBuilder()
 	.setName('help')
 	.setDescription('Discover where to Start!')
-  .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices({name: 'For Users', value: 'Users'}, {name: 'For Admins', value: 'Admin'}))
+  .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices(
+    {name: 'For Users', value: 'Users'},
+    {name: 'For Admins', value: 'Admin'},
+    {name: 'Role Protection', value: 'Protection'}))
   .setDMPermission(false),
 
   async execute(interaction, roles) {
@@ -17,15 +20,24 @@ module.exports = {
 
     switch (section) {
       case 'Admin':
-        helpEmbed.addFields({name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, it will Create a New Role Above the 🎨 Auto-Palette 🎨 Role (if such Role Exists)"},
-                            {name: "/palette", value: "Updates the **Color Role** of the User, Unless said Role is Protected"},
-                            {name: "/autopalette", value: "Grants the User the 🎨 Auto-Palette 🎨 Role (if such Role Exists and the **Color Role** of the User is Not Protected)"});
+        helpEmbed.addFields(
+          {name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, it will Create a New Role Above the 🎨 Auto-Palette 🎨 Role (if such Role Exists)"},
+          {name: "/palette", value: "Updates the **Color Role** of the User, Unless said Role is Protected"},
+          {name: "/autopalette", value: "Grants the User the 🎨 Auto-Palette 🎨 Role (if such Role Exists and the **Color Role** of the User is Not Protected)"});
+      break;
+
+      case 'Protection':
+        helpEmbed.addFields(
+          {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins decide i should not Edit"},
+          {name: "¿What Commands does this affect?", value: "/autopalette and /palette will __not__ work if your Color Role is Protected"},
+          {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am given in a Server by an Admin is Protected"});
       break;
 
       default:
-        helpEmbed.addFields({name: "/customrole", value: "Update your Color Role!\nOptions:\n- Name\n- Color (Hex / Decimal)"},
-                            {name: "/palette", value: "Find Pretty Colors for your Color Role\nOptions:\nScope (In Case of Sharing Multiple Servers)"},
-                            {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture"});
+        helpEmbed.addFields(
+          {name: "/customrole", value: "Update your Color Role!\nOptions:\n- Name\n- Color (Hex / Decimal)"},
+          {name: "/palette", value: "Find Pretty Colors for your Color Role\nOptions:\nScope (In Case of Sharing Multiple Servers)"},
+          {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture"});
       break;}
 
     interaction.reply({embeds: [helpEmbed]});

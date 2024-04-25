@@ -36,7 +36,7 @@ module.exports = {
       default:
         helpEmbed.addFields(
           {name: "/customrole", value: "Update your Color Role!\nOptions:\n- Name\n- Color (Hex / Decimal)"},
-          {name: "/palette", value: "Find Pretty Colors for your Color Role\nOptions:\nScope (In Case of Sharing Multiple Servers)"},
+          {name: "/palette", value: "Find Pretty Colors for your Color Role\nOptions:\n- Scope (In Case of Sharing Multiple Servers)"},
           {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture"});
       break;}
 

@@ -28,9 +28,17 @@ module.exports = {
 
       case 'Protection':
         helpEmbed.addFields(
-          {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins decide i should not Edit"},
-          {name: "¿What Commands does this affect?", value: "/autopalette and /palette will __not__ work if your Color Role is Protected"},
-          {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am given in a Server by an Admin is Protected"});
+          {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins Decide i Should not Edit."},
+          {name: "¿What Commands does this Affect?", value: "/autopalette and /palette will __not__ Work if your Color Role is Protected..."},
+          {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
+          {name: "¿So i Just Cannot use Commands?", value: "You Can Get a Role With /customrole if the Server was Setup!"});
+      break;
+
+      case 'Setup':
+        helpEmbed.addFields(
+          {name: "", value: ""},
+          {name: "", value: ""},
+          {name: "", value: ""});
       break;
 
       default:

@@ -2,6 +2,7 @@ const {SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
 
+  checkPaletteRole: true,
   checkColorEditable: true,
   warnMultipleEffect: true,
 
@@ -16,11 +17,13 @@ module.exports = {
     if (!roles.color || interaction.guild.members.me.roles.cache.get(roles.color.id)) {
       var name = (interaction.options.getString('name') ?? 'My Role');
       var color = (interaction.options.getString('color') ?? '#ffffff');
+      var position = (interaction.paletteRole.position + 1);
 
       if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord Doesn't Like This Color...")}
-      await interaction.guild.roles.create({name: name, color: color, position: 17, permissions: []}).catch(() => {return interaction.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')});
+      var newRole = {name: name, color: color, position: position, permissions: []}
+      await interaction.guild.roles.create(newRole).catch(() => {return interaction.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')});
 
-      roles.add(interaction.guild.roles.cache.find(role => role.position === 17));
+      roles.add(interaction.guild.roles.cache.find(role => role.position === position));
       interaction.replyOrFollow('Role Created!');
 
     } else {

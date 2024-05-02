@@ -2,6 +2,7 @@ const {SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
 
+  checkPaletteRole: true,
   colorRoleRequired: true,
   checkColorEditable: true,
   protectColorRole: true,
@@ -13,14 +14,11 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(interaction, roles) {
-    var paletteRole = await interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
-    if (paletteRole) {
-      if (!roles.cache.find(role => role.id === paletteRole.id)) {
-        roles.add(paletteRole.id);
+      if (!roles.cache.find(role => role.id === interaction.paletteRole.id)) {
+        roles.add(interaction.paletteRole.id);
         interaction.replyOrFollow('Role Set!')
 
       } else {
-        roles.remove(paletteRole.id);
-        interaction.replyOrFollow('Role Removed!')}}
-
-    else {interaction.replyOrFollow('There is no Auto-Palette Role in this Server... (/help)')}}}
+        roles.remove(interaction.paletteRole.id);
+        interaction.replyOrFollow('Role Removed!')}     
+}}

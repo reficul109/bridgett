@@ -4,7 +4,7 @@ const bID = "530502122190405652", rID = "320398018060746752";
 const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
 const utils = require('./utils.js');
-const {token} = require('./token.json');
+const token = require('./token.json');
 
 //Packages
 const fs = require('node:fs');
@@ -54,11 +54,18 @@ client.on(Events.InteractionCreate, async interaction => {
   const command = interaction.client.commands.get(interaction.commandName);
   if (!command) {return;}
 
+  //Flexible Response
   interaction.replyOrFollow = function(...args) {
     if (interaction.replied) {return interaction.followUp(...args);}
     else {return interaction.reply(...args);}}
 
-  var roles = interaction.member.roles;
+  //Check if Server is Set-Up Correctly
+  interaction.paletteRole = interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
+  if (command.checkPaletteRole && !interaction.paletteRole) {
+    return interaction.reply('You have not Setup your Server Yet! (/setup)');
+  }
+
+  var roles = interaction.member.roles;  
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
@@ -66,7 +73,7 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 
   } else {
-
+    
     if (command.checkColorEditable && !roles.color.editable) {
       return interaction.reply('Not Enough Permissions to Update your Color Role...');
     }
@@ -75,31 +82,27 @@ client.on(Events.InteractionCreate, async interaction => {
       return interaction.reply('I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
     }
 
-    if (command.warnMultipleEffect) {
-      if (roles.color.members.size > 1) {
-        await interaction.reply({embeds: EmbedBuilder.warningEmbed(roles), components: ActionRowBuilder.proceedUi}).then(function (nInteraction) {
+    if (command.warnMultipleEffect && roles.color.members.size > 1) {
+      await interaction.reply({embeds: EmbedBuilder.warningEmbed(roles), components: ActionRowBuilder.proceedUi}).then(function (nInteraction) {
+        const collector = interaction.channel.createMessageComponentCollector({time: 600000});
+        collector.on('collect', async cInteraction => {
 
-          const collector = interaction.channel.createMessageComponentCollector({time: 600000});
-          collector.on('collect', async cInteraction => {
-
-            if (cInteraction.member.id != interaction.user.id) {return;}
+          if (cInteraction.member.id != interaction.user.id) {return;}
             await cInteraction.deferUpdate();
             collector.stop();
 
-            if (cInteraction.customId === 'y') {
-              nInteraction.edit({content: ('Proceeding...'), embeds: [], components: []})
-              try {await command.execute(interaction, roles)}
+          if (cInteraction.customId === 'y') {
+            nInteraction.edit({content: ('Proceeding...'), embeds: [], components: []})
+            try {await command.execute(interaction, roles)}
 
-              catch (error) {
+            catch (error) {
                 console.error(error);
-                interaction.followUp({content: 'Error...', ephemeral: true})}} 
+              interaction.followUp({content: 'Error...', ephemeral: true})}} 
             
-            else {return nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []});}
-          })
-        });
-        
-        return;
-      }
+          else {nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []})}
+        })
+      });
+    return;
     }
   }
 

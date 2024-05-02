@@ -3,6 +3,7 @@ const getColors = require('get-image-colors');
 
 module.exports = {
 
+  checkPaletteRole: true,
   colorRoleRequired: true,
   checkColorEditable: true,
   protectColorRole: true,

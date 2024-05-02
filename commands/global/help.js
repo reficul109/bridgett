@@ -4,7 +4,7 @@ module.exports = {
   
   data: new SlashCommandBuilder()
 	.setName('help')
-	.setDescription('Discover where to Start!')
+	.setDescription('Discover how to Start!')
   .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices(
     {name: 'For Users', value: 'Users'},
     {name: 'For Admins', value: 'Admin'},
@@ -48,5 +48,5 @@ module.exports = {
           {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture"});
       break;}
 
-    interaction.reply({embeds: [helpEmbed]});
+    interaction.replyOrFollow({embeds: [helpEmbed]});
 }}

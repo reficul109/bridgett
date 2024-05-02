@@ -28,10 +28,10 @@ module.exports = {
 
       case 'Protection':
         helpEmbed.addFields(
-          {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins Decide i Should not Edit."},
-          {name: "¿What Commands does this Affect?", value: "/autopalette and /palette will __not__ Work if your Color Role is Protected..."},
+          {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins Decide i should not Edit."},
+          {name: "¿What Commands does this Affect?", value: "/autopalette and /palette will __not__ Work if your **Color Role** is Protected..."},
           {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
-          {name: "¿So i Just Cannot use Commands?", value: "You Can Get a Role With /customrole if the Server was Setup!"});
+          {name: "¿So i Just Cannot use Commands?", value: "You can Get a New Role with /customrole if the Server was Setup!"});
       break;
 
       case 'Setup':
@@ -43,8 +43,8 @@ module.exports = {
 
       default:
         helpEmbed.addFields(
-          {name: "/customrole", value: "Update your Color Role!\nOptions:\n- Name\n- Color (Hex / Decimal)"},
-          {name: "/palette", value: "Find Pretty Colors for your Color Role\nOptions:\n- Scope (In Case of Sharing Multiple Servers)"},
+          {name: "/customrole", value: "Update your **Color Role!**\nOptions:\n- Name\n- Color (Hex / Decimal)"},
+          {name: "/palette", value: "Find Pretty Colors for your **Color Role**\nOptions:\n- Scope (In Case of Sharing Multiple Servers)"},
           {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture"});
       break;}
 

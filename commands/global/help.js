@@ -21,7 +21,7 @@ module.exports = {
     switch (section) {
       case 'Admin':
         helpEmbed.addFields(
-          {name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, it will Create a New Role Above the 🎨 Auto-Palette 🎨 Role (if such Role Exists)"},
+          {name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, it will Create a **New Role** Above the 🎨 Auto-Palette 🎨 Role (if such Role Exists)"},
           {name: "/palette", value: "Updates the **Color Role** of the User, Unless said Role is Protected"},
           {name: "/autopalette", value: "Grants the User the 🎨 Auto-Palette 🎨 Role (if such Role Exists and the **Color Role** of the User is Not Protected)"});
       break;
@@ -31,7 +31,7 @@ module.exports = {
           {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins Decide i should not Edit."},
           {name: "¿What Commands does this Affect?", value: "/autopalette and /palette will __not__ Work if your **Color Role** is Protected..."},
           {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
-          {name: "¿So i Just Cannot use Commands?", value: "You can Get a New Role with /customrole if the Server was Setup!"});
+          {name: "¿So I Just cannot use Commands?", value: "You can Get a **New Role** with /customrole if the Server was Setup!"});
       break;
 
       case 'Setup':
@@ -48,5 +48,5 @@ module.exports = {
           {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture"});
       break;}
 
-    interaction.reply({embeds: [helpEmbed]});
+    interaction.replyOrFollow({embeds: [helpEmbed]});
 }}

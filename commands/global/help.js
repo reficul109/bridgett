@@ -48,5 +48,5 @@ module.exports = {
           {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture"});
       break;}
 
-    interaction.replyOrFollow({embeds: [helpEmbed]});
+    interaction.reply({embeds: [helpEmbed]});
 }}

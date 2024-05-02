@@ -62,28 +62,28 @@ client.on(Events.InteractionCreate, async interaction => {
   //Check if Server is Set-Up Correctly
   interaction.paletteRole = interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
   if (command.checkPaletteRole && !interaction.paletteRole) {
-    return interaction.reply('You have not Setup your Server Yet! (/setup)');
+    return interaction.replyOrFollow('Your Server is not Setup! (/setup)');
   }
 
   var roles = interaction.member.roles;  
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
-      return interaction.reply('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');
+      return interaction.replyOrFollow('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');
     }
 
   } else {
     
     if (command.checkColorEditable && !roles.color.editable) {
-      return interaction.reply('Not Enough Permissions to Update your Color Role...');
+      return interaction.replyOrFollow('Not Enough Permissions to Update your Color Role...');
     }
 
     if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
-      return interaction.reply('I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
+      return interaction.replyOrFollow('I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
     }
 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
-      await interaction.reply({embeds: EmbedBuilder.warningEmbed(roles), components: ActionRowBuilder.proceedUi}).then(function (nInteraction) {
+      await interaction.replyOrFollow({embeds: EmbedBuilder.warningEmbed(roles), components: ActionRowBuilder.proceedUi}).then(function (nInteraction) {
         const collector = interaction.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async cInteraction => {
 

@@ -15,7 +15,7 @@ module.exports = {
     
     } else {
       var newRole = {name: "🎨 Auto-Palette 🎨", permissions: []}
-      interaction.guild.roles.create(newRole).catch(() => {return message.reply('I Need Permission to Create New Roles...');})
+      await interaction.guild.roles.create(newRole).catch(() => {return message.reply('I Need Permission to Create New Roles...');})
       var paletteRole = interaction.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨")
       roles.add(paletteRole.id);
       interaction.guild.members.me.roles.add(paletteRole.id);

@@ -8,7 +8,7 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(interaction, roles) {
-    if (!interaction.member.permission.has(PermissionsBitField.Flags.ManageRoles)) {return message.reply('**You** do not have Permission to Create New Roles...');}
+    if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) {return message.reply('**You** do not have Permission to Create New Roles...');}
 
     if (interaction.paletteRole) {
       return interaction.replyOrFollow("Your Server Seems to be Set-Up!")

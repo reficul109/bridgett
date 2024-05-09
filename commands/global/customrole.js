@@ -19,7 +19,7 @@ module.exports = {
       var color = (interaction.options.getString('color') ?? '#ffffff');
       var position = (interaction.paletteRole.position + 1);
 
-      if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord Doesn't Like This Color...")}
+      if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord does not like this Color...")}
       var newRole = {name: name, color: color, position: position, permissions: []}
       await interaction.guild.roles.create(newRole).catch(() => {return interaction.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')});
 
@@ -31,7 +31,7 @@ module.exports = {
       var color = (interaction.options.getString('color') ?? roles.color.color);
 
       roles.color.setName(name);
-      if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord Doesn't Like This Color...")}
+      if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord does not like this Color...")}
       roles.color.setColor(color).catch(() => {return interaction.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')})
       interaction.replyOrFollow('Role Updated!')}
   }}

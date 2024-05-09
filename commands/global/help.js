@@ -8,6 +8,7 @@ module.exports = {
   .addStringOption(option => option.setName('section').setDescription('Hierarchy of Interest').addChoices(
     {name: 'For Users', value: 'Users'},
     {name: 'For Admins', value: 'Admin'},
+    {name: 'Set-Up', value: 'Setup'},
     {name: 'Role Protection', value: 'Protection'}))
   .setDMPermission(false),
 
@@ -31,7 +32,7 @@ module.exports = {
           {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins Decide i should not Edit."},
           {name: "¿What Commands does this Affect?", value: "/autopalette and /palette will __not__ Work if your **Color Role** is Protected..."},
           {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
-          {name: "¿So I Just cannot use Commands?", value: "You can Get a **New Role** with /customrole if the Server was Setup!"});
+          {name: "¿So I Just cannot use Commands?", value: "You can Get a **New Role** with /customrole if the Server was Set-Up!"});
       break;
 
       case 'Setup':

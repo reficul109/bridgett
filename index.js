@@ -62,7 +62,7 @@ client.on(Events.InteractionCreate, async interaction => {
   //Check if Server is Set-Up Correctly
   interaction.paletteRole = interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
   if (command.checkPaletteRole && !interaction.paletteRole) {
-    return interaction.replyOrFollow('Your Server is not Setup! (/setup)');
+    return interaction.replyOrFollow('Your Server is not Set-Up! (/setup)');
   }
 
   var roles = interaction.member.roles;  

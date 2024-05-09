@@ -15,8 +15,8 @@ module.exports = {
     
     } else {
       var newRole = {name: "🎨 Auto-Palette 🎨", permissions: []}
-      interaction.guilds.roles.create(newRole).catch(() => {return message.reply('I Need Permission to Create New Roles...');})
-      var paletteRole = interaction.guilds.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨")
+      interaction.guild.roles.create(newRole).catch(() => {return message.reply('I Need Permission to Create New Roles...');})
+      var paletteRole = interaction.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨")
       roles.add(paletteRole.id);
       interaction.guild.members.me.roles.add(paletteRole.id);
       interaction.reply({content: 'Your Server is Set-Up!\nI Created a New Role: <@&' + paletteRole.id + '>\nPosition it Wisely, If I Create More Roles, they Will be Above This One!>', files: './ScreenNewRoles.png'})

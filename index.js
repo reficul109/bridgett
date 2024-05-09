@@ -126,7 +126,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {
-      if (cInteraction.message.id != nInteraction.message.id) {return;}
+      if (cInteraction.message.id != nInteraction.id) {return;}
       await cInteraction.deferUpdate();
 
       var btn = (parseInt(cInteraction.customId) || cInteraction.customId);

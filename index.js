@@ -9,7 +9,7 @@ const {token} = require('./token.json');
 //Packages
 const fs = require('node:fs');
 const path = require('node:path');
-const {Client, Events, GatewayIntentBits, Collection, REST, Routes, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} = require('discord.js');
+const {Client, Events, GatewayIntentBits, Collection, REST, Routes, ActionRowBuilder, EmbedBuilder} = require('discord.js');
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
 const getColors = require('get-image-colors');

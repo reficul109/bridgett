@@ -24,7 +24,7 @@ module.exports = {
       const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {
         if (cInteraction.member.id != interaction.user.id) {return;}
-        console.log(cInteraction);
+        console.log(cInteraction.id);
 
         await cInteraction.deferUpdate();
 

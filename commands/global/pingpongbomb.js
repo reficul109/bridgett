@@ -1,4 +1,4 @@
-const {ActionRowBuilder, SlashCommandBuilder} = require('discord.js');
+const {ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
 

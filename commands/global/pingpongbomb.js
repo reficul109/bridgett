@@ -30,10 +30,10 @@ module.exports = {
 
         if (cInteraction.customId === 'd') {
           if (safes.some(word => cInteraction.id.endsWith(word))) {
-            nInteraction.edit({components: [test1]})}
+            nInteraction.update({components: [test1]})}
 
           else if (traps.some(word => cInteraction.id.endsWith(word))) {
-            nInteraction.edit({components: [test2]})}
+            nInteraction.update({components: [test2]})}
 
         } else if ((cInteraction.customId === 'b')) {
             nInteraction.edit({content: (':('), components: []})

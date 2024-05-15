@@ -19,7 +19,7 @@ module.exports = {
     const test2 = new ActionRowBuilder().addComponents(bomb);
 
     var safes = ["1", "2", "3", "4", "5"], traps = ["6", "7", "8", "9", "0"];
-    interaction.replyOrFollow({content: 'Game Start!', component: [test1]}).then(function (nInteraction) {
+    interaction.replyOrFollow({content: 'Game Start!', components: [test1]}).then(function (nInteraction) {
 
       const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {
@@ -28,10 +28,10 @@ module.exports = {
 
         if (cInteraction.customId === 'd') {
           if (safes.some(word => cInteraction.id.endsWith(word))) {
-            nInteraction.edit({component: [test1]})}
+            nInteraction.edit({components: [test1]})}
 
           else if (traps.some(word => cInteraction.id.endsWith(word))) {
-            nInteraction.edit({component: [test2]})}
+            nInteraction.edit({components: [test2]})}
 
         } else if ((cInteraction.customId === 'b')) {
             nInteraction.edit({content: (':('), components: []})

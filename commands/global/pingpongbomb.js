@@ -19,7 +19,7 @@ module.exports = {
     const test2 = new ActionRowBuilder().addComponents(bomb);
 
     var safes = ["1", "2", "3", "4", "5"], traps = ["6", "7", "8", "9", "0"];
-    interaction.replyOrFollow({component: [test1]}).then(function (nInteraction) {
+    interaction.replyOrFollow({content: 'Game Start!', component: [test1]}).then(function (nInteraction) {
 
       const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {

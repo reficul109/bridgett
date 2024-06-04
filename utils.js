@@ -25,7 +25,7 @@ EmbedBuilder.paletteEmbeds = function(colors, page) {
     .setURL('https://encycolorpedia.com/' + color.substring(1))
     .setImage('https://encycolorpedia.com/' + color.substring(1) + '.png')
     paletteEmbeds.push(embed)}
-return [paletteEmbeds];}
+return paletteEmbeds;}
 
 //Warning Embed
 EmbedBuilder.warningEmbed = function(roles) {

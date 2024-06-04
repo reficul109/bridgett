@@ -3,7 +3,7 @@ const {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} = require('di
 //Palette Embeds
 const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
 EmbedBuilder.paletteEmbeds = function(colors, page) {
-  var paletteEmbeds = [], 
+  var paletteEmbeds = []
   for (var i = 0; i < 5; i++) {
     var color = colors[i + (page * 5)].toString()
     const embed = new EmbedBuilder()

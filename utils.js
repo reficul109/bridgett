@@ -14,6 +14,19 @@ const colorsRow = new ActionRowBuilder().addComponents(color1, color2, color3, c
 const selectRow = new ActionRowBuilder().addComponents(more, less, none);
 ActionRowBuilder.paletteUI = [colorsRow, selectRow];
 
+//Palette Embeds
+EmbedBuilder.paletteEmbeds = function(colors, page) {
+  var paletteEmbeds = []
+  for (var i = 0; i < 5; i++) {
+    var color = colors[i + (page * 5)].toString()
+    const embed = new EmbedBuilder()
+    .setTitle('('+ i + ') ' + color)
+    .setColor(color)
+    .setURL('https://encycolorpedia.com/' + color.substring(1))
+    .setImage('https://encycolorpedia.com/' + color.substring(1) + '.png')
+    paletteEmbeds.push(embed)}
+return [paletteEmbeds];}
+
 //Warning Embed
 EmbedBuilder.warningEmbed = function(roles) {
   const warningEmbed = new EmbedBuilder()

@@ -20,7 +20,7 @@ EmbedBuilder.paletteEmbeds = function(colors, page) {
   for (var i = 0; i < 5; i++) {
     var color = colors[i + (page * 5)].toString()
     const embed = new EmbedBuilder()
-    .setTitle('('+ i + ') ' + color)
+    .setTitle('('+ (i + 1) + ') ' + color)
     .setColor(color)
     .setURL('https://encycolorpedia.com/' + color.substring(1))
     .setImage('https://encycolorpedia.com/' + color.substring(1) + '.png')

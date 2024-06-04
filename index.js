@@ -121,7 +121,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
   
   var page = 0;
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  newUser.send({content: ('<@' + newUser.id + '>, Pick a New Color!'), embeds: EmbedBuilder.paletteEmbeds(colors, page), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
+  newUser.send({content: '<@' + newUser.id + '>, Pick a New Color!', embeds: EmbedBuilder.paletteEmbeds(colors, page), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {

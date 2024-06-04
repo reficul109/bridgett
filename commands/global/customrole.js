@@ -34,4 +34,4 @@ module.exports = {
       if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord does not like this Color...")}
       roles.color.setColor(color).catch(() => {return interaction.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')})
       interaction.replyOrFollow('Role Updated!')}
-  }}
+}}

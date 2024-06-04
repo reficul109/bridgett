@@ -12,6 +12,7 @@ const path = require('node:path');
 const {Client, Events, GatewayIntentBits, Collection, REST, Routes, ActionRowBuilder, EmbedBuilder} = require('discord.js');
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
+const rest = new REST().setToken(token);
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30}
 
@@ -30,8 +31,6 @@ client.commands = new Collection();
           client.commands.set(command.data.name, command);
 	        globalCommands.push(command.data.toJSON())}
         else {console.log('Error en ' + filePath + '...')}}}
-
-const rest = new REST().setToken(token);
 
 //Slash Command Loader
 (async () => {

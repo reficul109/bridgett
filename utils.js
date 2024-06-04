@@ -7,7 +7,7 @@ EmbedBuilder.paletteEmbeds = function(colors, page) {
   for (var i = 0; i < 5; i++) {
     var color = colors[i + (page * 5)].toString()
     const embed = new EmbedBuilder()
-    .setTitle(emoji[i] + ' ' + color)
+    .setTitle(/*emoji[i] +*/ '  ' + color)
     .setColor(color)
     .setURL('https://encycolorpedia.com/' + color.substring(1))
     .setThumbnail('https://encycolorpedia.com/' + color.substring(1) + '.png')

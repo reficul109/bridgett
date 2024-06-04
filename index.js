@@ -121,8 +121,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
   
   var page = 0;
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  function colorPalette(colors) {return ('<@' + newUser.id + '>, Pick a New Color!\n1️⃣ https://encycolorpedia.com/' + colors[0 + (page * 5)] .toString().substring(1) + '\n2️⃣ https://encycolorpedia.com/' + colors[1 + (page * 5)].toString().substring(1) + '\n3️⃣ https://encycolorpedia.com/' + colors[2 + (page * 5)].toString().substring(1) + '\n4️⃣ https://encycolorpedia.com/' + colors[3 + (page * 5)].toString().substring(1) + '\n5️⃣ https://encycolorpedia.com/' + colors[4 + (page * 5)].toString().substring(1))}
-  newUser.send({content: colorPalette(colors), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
+  newUser.send({content: ('<@' + newUser.id + '>, Pick a New Color!'), embeds: EmbedBuilder.paletteEmbeds(colors, page), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {
@@ -134,24 +133,24 @@ client.on('userUpdate', async (oldUser, newUser) => {
         case '+':
           if (page < 4) {
             page++;
-            nInteraction.edit(colorPalette(colors))}
+            nInteraction.edit({embeds: EmbedBuilder.paletteEmbeds(colors, page)})}
         break;
 
         case '-':
           if (page > 0) {
             page--;
-            nInteraction.edit(colorPalette(colors))}
+            nInteraction.edit({embeds: EmbedBuilder.paletteEmbeds(colors, page)})}
         break;
 
         case 'x':
           collector.stop();
-          nInteraction.edit({content: ('Cancelled!'), components: []});
+          nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []})
         break;
 
         default:
           collector.stop();
           memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
-          nInteraction.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), components: []});
+          nInteraction.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []})
         break;}
       })
   })})

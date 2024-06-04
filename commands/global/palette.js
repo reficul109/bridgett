@@ -45,13 +45,13 @@ module.exports = {
 
           case 'x':
             collector.stop();
-            nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []});
+            nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []})
           break;
 
           default:
             collector.stop();
             memberPaletteGuilds.forEach(guild => guild.members.cache.get(interaction.user.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
-            nInteraction.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds:[], components: []});
+            nInteraction.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []});
           break;}
         })
     })})

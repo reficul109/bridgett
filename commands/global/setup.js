@@ -4,7 +4,7 @@ module.exports = {
   
   data: new SlashCommandBuilder()
   .setName('setup')
-  .setDescription('Allow the Bot to Start Working!')
+  .setDescription('Allow Bridgett to Start Working!')
   .setDMPermission(false),
 
   async execute(interaction, roles) {

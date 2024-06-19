@@ -4,7 +4,7 @@ module.exports = {
   
   data: new SlashCommandBuilder()
   .setName('setup')
-  .setDescription('...')
+  .setDescription('Allow the Bot to Start Working!')
   .setDMPermission(false),
 
   async execute(interaction, roles) {
@@ -17,6 +17,6 @@ module.exports = {
       var newRole = {name: "🎨 Auto-Palette 🎨", permissions: []}
       await interaction.guild.roles.create(newRole).catch(() => {return message.replyOrFollow('I Need Permission to Create New Roles...');})
       var paletteRole = interaction.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨")
-      interaction.replyOrFollow({content: 'Your Server is Set-Up!\nI Created a New Role: <@&' + paletteRole.id + '>\nPosition it Wisely, If I Create More Roles, they Will be Above This One!', files: ['./ScreenNewRoles.png']})
+      interaction.replyOrFollow({content: 'Your Server is Set-Up!\nI Created a New Role: <@&' + paletteRole.id + '>\nPosition it Wisely, If I Create More Roles, they Will be Above This One!', files: [SlashCommandBuilder.imgNew]})
     }
 }}

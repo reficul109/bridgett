@@ -29,7 +29,7 @@ module.exports = {
 
       case 'Protection':
         helpEmbed.addFields(
-          {name: "¿What is a Protected Role?", value: "It includes any Roles the Admins Decide i should not Edit."},
+          {name: "¿What is a Protected Role?", value: "It Includes any Roles the Admins Decide i should not Edit."},
           {name: "¿What Commands does this Affect?", value: "/autopalette and /palette will __not__ Work if your **Color Role** is Protected..."},
           {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
           {name: "¿So I Just cannot use Commands?", value: "You can Get a **New Role** with /customrole if the Server was Set-Up!"});
@@ -37,9 +37,9 @@ module.exports = {
 
       case 'Setup':
         helpEmbed.addFields(
-          {name: "", value: ""},
-          {name: "", value: ""},
-          {name: "", value: ""});
+          {name: "¿How to Set-up?", value: "Someone with Permission to Edit the Roles of the Server has to Use /setup!"},
+          {name: "¿What are the Changes?", value: "A New Role Called 🎨 Auto-Palette 🎨 Will be Created and Distributed through Commands!\n(This Role has no Extra Permissions)"},
+          {name: "¿Can the 🎨 Auto-Palette 🎨 Role be Edited?", value: "We Recommend you Edit the Position!\nThe Name is Editable, but the Emojis **Have** to Stay"});
       break;
 
       default:

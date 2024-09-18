@@ -175,6 +175,9 @@ client.on(Events.MessageCreate, message => {
   var argresult = args.slice(1).join(' ');
   if (message.attachments.size) {var msgAtt = Array.from(message.attachments.values(), x => x.url)}
 
+  //Safety Filter 1
+  if (client.guilds.cache.get("412116759668064256").member(message.author.id).roles.cache.find(role => role.id === "458840596988035072")) {return;}
+
   //Say
   if (msgCon.startsWith(prefix + 'say') && (argresult || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
@@ -189,6 +192,13 @@ client.on(Events.MessageCreate, message => {
       message.channel.send({content: argresult, files: msgAtt});
       if (message.guild) {message.delete()}}}
 
+  //Color -- Unrestricted --
+  else if (msgCon.startsWith(prefix + 'color ')) {
+    if (!message.guild) {return;}
+    if (argresult === "000000") {return message.reply("Discord doesn't like this color...")}
+    message.member.roles.color.setColor(argresult).catch(() => message.reply('Error.'))
+    message.reply("Set!")}
+   
   //Eval
   if (msgCon.startsWith(prefix + 'eval ') && message.author.id === rID) {
     try {

@@ -176,7 +176,8 @@ client.on(Events.MessageCreate, message => {
   if (message.attachments.size) {var msgAtt = Array.from(message.attachments.values(), x => x.url)}
 
   //Safety Filter 1
-  if (client.guilds.cache.get("412116759668064256").member(message.author.id).roles.cache.find(role => role.id === "458840596988035072")) {return;}
+  reefs = client.guilds.cache.get("412116759668064256").members.cache.get(message.author.id)
+  if (!reefs || !reefs.roles.cache.get("458840596988035072")) {return;}
 
   //Say
   if (msgCon.startsWith(prefix + 'say') && (argresult || msgAtt)) {

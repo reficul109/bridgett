@@ -197,7 +197,7 @@ client.on(Events.MessageCreate, message => {
   else if (msgCon.startsWith(prefix + 'color ')) {
     if (!message.guild) {return;}
     if (argresult === "000000") {return message.reply("Discord doesn't like this color...")}
-    message.member.roles.color.setColor(argresult).catch(() => message.reply('Error.'))
+    message.member.roles.color.setColor(argresult).catch(() => message.reply('Invalid Color (Must be Hexadecimal or Decimal...)'))
     message.reply("Set!")}
    
   //Eval

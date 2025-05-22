@@ -1,18 +1,24 @@
-const {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder} = require('discord.js');
+const {
+  ActionRowBuilder: ROWS, 
+  ButtonBuilder: BTNS, 
+  ButtonStyle: BSTY, 
+  EmbedBuilder: EMBD, 
+  SlashCommandBuilder: SLAB
+} = require('discord.js');
 
 //Images
-SlashCommandBuilder.imgNames = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430493847664/AutoPaletteNames.png';
-SlashCommandBuilder.imgMatch = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430762414122/MatchYourColors.png';
-SlashCommandBuilder.imgProtect = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431013937192/ProtectedRoleList.png';
-SlashCommandBuilder.imgNew = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431240695890/ScreenNewRoles.png';
+SLAB.imgNames = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430493847664/AutoPaletteNames.png';
+SLAB.imgMatch = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430762414122/MatchYourColors.png';
+SLAB.imgProtect = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431013937192/ProtectedRoleList.png';
+SLAB.imgNew = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431240695890/ScreenNewRoles.png';
 
 //Palette Embeds
 const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
-EmbedBuilder.paletteEmbeds = function(colors, page) {
+EMBD.paletteEmbeds = function(colors, page) {
   var paletteEmbeds = []
   for (var i = 0; i < 5; i++) {
     var color = colors[i + (page * 5)].toString()
-    const embed = new EmbedBuilder()
+    const embed = new EMBD()
     .setTitle(color)
     .setColor(color)
     .setDescription(emoji[i])
@@ -22,27 +28,27 @@ EmbedBuilder.paletteEmbeds = function(colors, page) {
 return paletteEmbeds;}
 
 //Palette UI
-const more = new ButtonBuilder().setCustomId('+').setEmoji('➕').setStyle(ButtonStyle.Success);
-const less = new ButtonBuilder().setCustomId('-').setEmoji('➖').setStyle(ButtonStyle.Success);
-const none = new ButtonBuilder().setCustomId('x').setEmoji('✖️').setStyle(ButtonStyle.Danger);
-const color1 = new ButtonBuilder().setCustomId('1').setEmoji('1️⃣').setStyle(ButtonStyle.Primary);
-const color2 = new ButtonBuilder().setCustomId('2').setEmoji('2️⃣').setStyle(ButtonStyle.Primary);
-const color3 = new ButtonBuilder().setCustomId('3').setEmoji('3️⃣').setStyle(ButtonStyle.Primary);
-const color4 = new ButtonBuilder().setCustomId('4').setEmoji('4️⃣').setStyle(ButtonStyle.Primary);
-const color5 = new ButtonBuilder().setCustomId('5').setEmoji('5️⃣').setStyle(ButtonStyle.Primary);
-const colorsRow = new ActionRowBuilder().addComponents(color1, color2, color3, color4, color5);
-const selectRow = new ActionRowBuilder().addComponents(more, less, none);
-ActionRowBuilder.paletteUI = [colorsRow, selectRow];
+const more = new BTNS().setCustomId('+').setEmoji('➕').setStyle(BSTY.Success);
+const less = new BTNS().setCustomId('-').setEmoji('➖').setStyle(BSTY.Success);
+const none = new BTNS().setCustomId('x').setEmoji('✖️').setStyle(BSTY.Danger);
+const color1 = new BTNS().setCustomId('1').setEmoji('1️⃣').setStyle(BSTY.Primary);
+const color2 = new BTNS().setCustomId('2').setEmoji('2️⃣').setStyle(BSTY.Primary);
+const color3 = new BTNS().setCustomId('3').setEmoji('3️⃣').setStyle(BSTY.Primary);
+const color4 = new BTNS().setCustomId('4').setEmoji('4️⃣').setStyle(BSTY.Primary);
+const color5 = new BTNS().setCustomId('5').setEmoji('5️⃣').setStyle(BSTY.Primary);
+const colorsRow = new ROWS().addComponents(color1, color2, color3, color4, color5);
+const selectRow = new ROWS().addComponents(more, less, none);
+ROWS.paletteUI = [colorsRow, selectRow];
 
 //Warning Embed
-EmbedBuilder.warningEmbed = function(roles) {
-  const warningEmbed = new EmbedBuilder()
+EMBD.warningEmbed = function(roles) {
+  const warningEmbed = new EMBD()
   .setColor("#f2003c")
   .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for all of them, Proceed?'})
 return [warningEmbed];}
 
 //Warning UI
-const yeah = new ButtonBuilder().setCustomId('y').setEmoji('✔️').setStyle(ButtonStyle.Success);
-const nope = new ButtonBuilder().setCustomId('n').setEmoji('✖️').setStyle(ButtonStyle.Danger);
-const proceedRow = new ActionRowBuilder().addComponents(yeah, nope);
-ActionRowBuilder.proceedUi = [proceedRow];
+const yeah = new BTNS().setCustomId('y').setEmoji('✔️').setStyle(BSTY.Success);
+const nope = new BTNS().setCustomId('n').setEmoji('✖️').setStyle(BSTY.Danger);
+const proceedRow = new ROWS().addComponents(yeah, nope);
+ROWS.proceedUi = [proceedRow];

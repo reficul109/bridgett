@@ -9,8 +9,17 @@ const {token} = require('./token.json');
 //Packages
 const fs = require('node:fs');
 const path = require('node:path');
-const {Client, Events, GatewayIntentBits, Collection, REST, Routes, ActionRowBuilder, EmbedBuilder} = require('discord.js');
-const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages];
+const {
+  Client, Events, 
+  GatewayIntentBits: GBIT, 
+  Collection, 
+  REST, Routes, 
+  ActionRowBuilder: ROWS, 
+  EmbedBuilder: EMBD,
+  SlashCommandBuilder: SLAB
+} = require('discord.js');
+
+const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
 const rest = new REST().setToken(token);
 const getColors = require('get-image-colors');
@@ -47,42 +56,32 @@ client.once(Events.ClientReady, readyClient => {
   console.log('🐙');
 });
 
-//Slash Command Answer
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isChatInputCommand()) {return;}
-  const command = interaction.client.commands.get(interaction.commandName);
-  if (!command) {return;}
+//Flexible Response
+SLAB.replyOrFollow = function(interaction, ...args) {
+  if (interaction.replied) {return interaction.followUp(...args);}
+  else {return interaction.reply(...args);}}
 
-  //Flexible Response
-  interaction.replyOrFollow = function(...args) {
-    if (interaction.replied) {return interaction.followUp(...args);}
-    else {return interaction.reply(...args);}}
-
-  //Check if Server is Set-Up Correctly
-  interaction.paletteRole = interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
-  if (command.checkPaletteRole && !interaction.paletteRole) {
-    return interaction.replyOrFollow('Your Server is not Set-Up! (/setup)');
-  }
-
+//Validity
+isInvalid = async function(interaction, command) {
   var roles = interaction.member.roles;  
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
-      return interaction.replyOrFollow('You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)');
+      return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)';
     }
 
   } else {
     
     if (command.checkColorEditable && !roles.color.editable) {
-      return interaction.replyOrFollow('Not Enough Permissions to Update your Color Role...');
+      return 'Not Enough Permissions to Update your Color Role...';
     }
 
     if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
-      return interaction.replyOrFollow('I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)');
+      return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)';
     }
 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
-      await interaction.replyOrFollow({embeds: EmbedBuilder.warningEmbed(roles), components: ActionRowBuilder.proceedUi}).then(function (nInteraction) {
+      await SLAB.replyOrFollow(interaction, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (nInteraction) {
         const collector = interaction.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async cInteraction => {
 
@@ -96,20 +95,47 @@ client.on(Events.InteractionCreate, async interaction => {
 
             catch (error) {
                 console.error(error);
-              interaction.followUp({content: 'Error...', ephemeral: true})}} 
+                interaction.followUp({content: 'Error...', ephemeral: true})}} 
             
           else {nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []})}
         })
       });
-    return;
+
+      return 'Executing Remotely...';
     }
   }
+}
 
+//Slash Command Answer
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isChatInputCommand()) {return;}
+  const command = interaction.client.commands.get(interaction.commandName);
+  if (!command) {return;}
+
+  //Check if Server is Set-Up Correctly
+  interaction.paletteRole = interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
+  if (command.checkPaletteRole && !interaction.paletteRole) {
+    return SLAB.replyOrFollow(interaction, 'Your Server is not Set-Up! (/setup)');
+  }
+
+  //Stop Invalid Commands
+  errorResponse = isInvalid(interaction, command)
+  if (errorResponse) {
+
+    if (errorResponse === 'Executing Remotely...') {
+      return;
+    }
+
+    return SLAB.replyOrFollow(interaction, errorResponse);
+  }
+
+  //
   try {await command.execute(interaction, roles)}
 
   catch (error) {
     console.error(error);
-    interaction.replyOrFollow({content: 'Error...', ephemeral: true})}
+    SLAB.replyOrFollow(interaction, {content: 'Error...', ephemeral: true})
+  }
 });
 
 //Auto-Palette
@@ -120,7 +146,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
   
   var page = 0;
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  newUser.send({content: '<@' + newUser.id + '>, Pick a New Color!', embeds: EmbedBuilder.paletteEmbeds(colors, page), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
+  newUser.send({content: '<@' + newUser.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (nInteraction) {
 
     const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
     collector.on('collect', async cInteraction => {
@@ -132,13 +158,13 @@ client.on('userUpdate', async (oldUser, newUser) => {
         case '+':
           if (page < 4) {
             page++;
-            nInteraction.edit({embeds: EmbedBuilder.paletteEmbeds(colors, page)})}
+            nInteraction.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
         break;
 
         case '-':
           if (page > 0) {
             page--;
-            nInteraction.edit({embeds: EmbedBuilder.paletteEmbeds(colors, page)})}
+            nInteraction.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
         break;
 
         case 'x':

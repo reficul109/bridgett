@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require('discord.js');
+const {SlashCommandBuilder: SLAB} = require('discord.js');
 
 module.exports = {
 
@@ -6,7 +6,7 @@ module.exports = {
   checkColorEditable: true,
   warnMultipleEffect: true,
 
-  data: new SlashCommandBuilder()
+  data: new SLAB()
 	.setName('customrole')
 	.setDescription('Customize your Custom Role!')
   .addStringOption(option => option.setName('name').setDescription('Name to Display in the Role'))
@@ -19,19 +19,19 @@ module.exports = {
       var color = (interaction.options.getString('color') ?? '#ffffff');
       var position = (interaction.paletteRole.position + 1);
 
-      if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord does not like this Color...")}
+      if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.replyOrFollow("Discord does not like this Color...")}
       var newRole = {name: name, color: color, position: position, permissions: []}
-      await interaction.guild.roles.create(newRole).catch(() => {return interaction.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')});
+      await interaction.guild.roles.create(newRole).catch(() => {return SLAB.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')});
 
       roles.add(interaction.guild.roles.cache.find(role => role.position === position));
-      interaction.replyOrFollow('Role Created!');
+      SLAB.replyOrFollow('Role Created!');
 
     } else {
       var name = (interaction.options.getString('name') ?? roles.color.name);
       var color = (interaction.options.getString('color') ?? roles.color.color);
 
       roles.color.setName(name);
-      if (parseInt(color.toString()) === 0 || color === '#000000') {return interaction.replyOrFollow("Discord does not like this Color...")}
-      roles.color.setColor(color).catch(() => {return interaction.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')})
-      interaction.replyOrFollow('Role Updated!')}
+      if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.replyOrFollow("Discord does not like this Color...")}
+      roles.color.setColor(color).catch(() => {return SLAB.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')})
+      SLAB.replyOrFollow('Role Updated!')}
 }}

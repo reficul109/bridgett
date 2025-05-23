@@ -26,7 +26,7 @@ module.exports = {
    
     var page = 0;
     await getColors(interaction.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-    SLAB.replyOrFollow({content: '<@' + interaction.user.id + '>, Pick a New Color!', embeds: EmbedBuilder.paletteEmbeds(colors, page), components: ActionRowBuilder.paletteUI}).then(function (nInteraction) {
+    SLAB.replyOrFollow(interaction, {content: '<@' + interaction.user.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (nInteraction) {
 
       const collector = interaction.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async cInteraction => {
@@ -38,13 +38,13 @@ module.exports = {
           case '+':
             if (page < 4) {
               page++;
-              nInteraction.edit({embeds: EmbedBuilder.paletteEmbeds(colors, page)})}
+              nInteraction.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
           break;
 
           case '-':
             if (page > 0) {
               page--;
-              nInteraction.edit({embeds: EmbedBuilder.paletteEmbeds(colors, page)})}
+              nInteraction.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
           break;
 
           case 'x':

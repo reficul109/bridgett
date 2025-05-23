@@ -19,19 +19,19 @@ module.exports = {
       var color = (interaction.options.getString('color') ?? '#ffffff');
       var position = (interaction.paletteRole.position + 1);
 
-      if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.replyOrFollow("Discord does not like this Color...")}
+      if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.replyOrFollow(interaction, "Discord does not like this Color...")}
       var newRole = {name: name, color: color, position: position, permissions: []}
-      await interaction.guild.roles.create(newRole).catch(() => {return SLAB.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')});
+      await interaction.guild.roles.create(newRole).catch(() => {return SLAB.replyOrFollow(interaction, 'Invalid Color (Must be Hexadecimal or Decimal...)')});
 
       roles.add(interaction.guild.roles.cache.find(role => role.position === position));
-      SLAB.replyOrFollow('Role Created!');
+      SLAB.replyOrFollow(interaction, 'Role Created!');
 
     } else {
       var name = (interaction.options.getString('name') ?? roles.color.name);
       var color = (interaction.options.getString('color') ?? roles.color.color);
 
       roles.color.setName(name);
-      if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.replyOrFollow("Discord does not like this Color...")}
-      roles.color.setColor(color).catch(() => {return SLAB.replyOrFollow('Invalid Color (Must be Hexadecimal or Decimal...)')})
-      SLAB.replyOrFollow('Role Updated!')}
+      if (parseInt(color.toString()) === 0 || color === '#000000') {SLAB.replyOrFollow(interaction, "Discord does not like this Color...")}
+      roles.color.setColor(color).catch(() => {SLAB.replyOrFollow(interaction, 'Invalid Color (Must be Hexadecimal or Decimal...)')})
+      SLAB.replyOrFollow(interaction, 'Role Updated!')}
 }}

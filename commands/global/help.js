@@ -58,5 +58,5 @@ module.exports = {
         .setImage(SLAB.imgMatch);
       break;}
 
-    SLAB.replyOrFollow({embeds: [helpEmbed]});
+    SLAB.replyOrFollow(interaction, {embeds: [helpEmbed]});
 }}

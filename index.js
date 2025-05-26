@@ -81,7 +81,7 @@ isInvalid = async function(interaction, command) {
     }
 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
-      await SLAB.replyOrFollow(interaction, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (nInteraction) {
+      await interaction.reply({embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (nInteraction) {
         const collector = interaction.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async cInteraction => {
 
@@ -120,7 +120,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
   //Command Caution Handler
   errorResponse = isInvalid(interaction, command)
-  if (errorResponse) {
+  if (typeof errorResponse === 'string') {
 
     //Performing Command Under Caution Flag
     if (errorResponse === 'Executing Remotely...') {

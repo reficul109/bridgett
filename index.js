@@ -57,12 +57,19 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 //Flexible Response
-SLAB.replyOrFollow = function(interaction, ...args) {
-  if (interaction.replied) {return interaction.followUp(...args);}
-  else {return interaction.reply(...args);}}
+SLAB.smartReply = function(cmd, ...args) {
+  if (cmd.replied) {return cmd.followUp(...args);}
+  else {return cmd.reply(...args);}}
 
 //Validity
-isInvalid = async function(interaction, roles, command) {
+isInvalid = async function(cmd, roles, command) {
+
+  //Check if Server is Set-Up Correctly
+  cmd.paletteRole = cmd.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
+  if (command.checkPaletteRole && !cmd.paletteRole) {
+    return 'Your Server is not Set-Up! (/setup)';
+  }
+
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
@@ -75,28 +82,28 @@ isInvalid = async function(interaction, roles, command) {
       return 'Not Enough Permissions to Update your Color Role...';
     }
 
-    if (command.protectColorRole && interaction.guild.members.me.roles.cache.get(roles.color.id)) {
+    if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color.id)) {
       return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)';
     }
 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
-      await interaction.reply({embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (nInteraction) {
-        const collector = interaction.channel.createMessageComponentCollector({time: 600000});
-        collector.on('collect', async cInteraction => {
+      await cmd.reply({embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
+        const collector = cmd.channel.createMessageComponentCollector({time: 600000});
+        collector.on('collect', async userReply => {
 
-          if (cInteraction.user.id != interaction.user.id) {return;}
-            await cInteraction.deferUpdate();
+          if (userReply.user.id != cmd.user.id) {return;}
+            await userReply.deferUpdate();
             collector.stop();
 
-          if (cInteraction.customId === 'y') {
-            nInteraction.edit({content: ('Proceeding...'), embeds: [], components: []})
-            try {await command.execute(interaction, roles)}
+          if (userReply.customId === 'y') {
+            botReply.edit({content: ('Proceeding...'), embeds: [], components: []})
+            try {await command.execute(cmd, roles)}
 
             catch (error) {
                 console.error(error);
-                interaction.followUp({content: 'Error...', ephemeral: true})}} 
+                cmd.followUp({content: 'Error...', ephemeral: true})}}
             
-          else {nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []})}
+          else {botReply.edit({content: ('Cancelled!'), embeds: [], components: []})}
         })
       });
 
@@ -106,37 +113,33 @@ isInvalid = async function(interaction, roles, command) {
 }
 
 //Slash Command Answer
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isChatInputCommand()) {return;}
-  const command = interaction.client.commands.get(interaction.commandName);
+client.on(Events.InteractionCreate, async iCom => {
+  if (!iCom.isChatInputCommand()) {return;}
+  const command = iCom.client.commands.get(iCom.commandName);
   if (!command) {return;}
 
-  //Check if Server is Set-Up Correctly
-  interaction.paletteRole = interaction.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
-  if (command.checkPaletteRole && !interaction.paletteRole) {
-    return SLAB.replyOrFollow(interaction, 'Your Server is not Set-Up! (/setup)');
-  }
-
   //Command Caution Handler
-  var roles = interaction.member.roles;  
-  errorResponse = isInvalid(interaction, roles, command)
+  var roles = iCom.member.roles;  
+  errorResponse = isInvalid(iCom, roles, command);
   if (typeof errorResponse === 'string') {
 
-    //Performing Command Under Caution Flag
     if (errorResponse === 'Executing Remotely...') {
       return;
-    }
 
-    //Invalid Command Response
-    return SLAB.replyOrFollow(interaction, errorResponse);
+    } else {
+
+      //Invalid Command Response
+      return SLAB.smartReply(iCom, errorResponse);
+    }
   }
 
-  //Perform Valid Command
-  try {await command.execute(interaction, roles)}
+  //Perform Valid Commands
+  console.log('vivi was here');
+  try {await command.execute(iCom, roles)}
 
   catch (error) {
     console.error(error);
-    SLAB.replyOrFollow(interaction, {content: 'Error...', ephemeral: true})
+    SLAB.smartReply(iCom, {content: 'Error...', ephemeral: true})
   }
 });
 
@@ -148,94 +151,94 @@ client.on('userUpdate', async (oldUser, newUser) => {
   
   var page = 0;
   await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  newUser.send({content: '<@' + newUser.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (nInteraction) {
+  newUser.send({content: '<@' + newUser.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (botReply) {
 
-    const collector = nInteraction.channel.createMessageComponentCollector({time: 1800000});
-    collector.on('collect', async cInteraction => {
-      if (cInteraction.message.id != nInteraction.id) {return;}
-      await cInteraction.deferUpdate();
+    const collector = botReply.channel.createMessageComponentCollector({time: 1800000});
+    collector.on('collect', async userReply => {
+      if (userReply.user.id != newUser.id) {return;}
+      await userReply.deferUpdate();
 
-      var btn = (parseInt(cInteraction.customId) || cInteraction.customId);
+      var btn = (parseInt(userReply.customId) || userReply.customId);
       switch (btn) {
         case '+':
           if (page < 4) {
             page++;
-            nInteraction.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
+            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
         break;
 
         case '-':
           if (page > 0) {
             page--;
-            nInteraction.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
+            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
         break;
 
         case 'x':
           collector.stop();
-          nInteraction.edit({content: ('Cancelled!'), embeds: [], components: []})
+          botReply.edit({content: ('Cancelled!'), embeds: [], components: []})
         break;
 
         default:
           collector.stop();
           memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
-          nInteraction.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []})
+          botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []})
         break;}
       })
   })})
 })
 
 //Britt Stuff
-client.on(Events.MessageCreate, message => {
-  if (message.author.bot || message.system) {return;}
-  var msgCon = message.content.toLowerCase();
+client.on(Events.MessageCreate, mCom => {
+  if (mCom.author.bot || mCom.system) {return;}
+  var msgCon = mCom.content.toLowerCase();
 
   //Boxie
   if (wBox.some(word => msgCon.includes(word))) {
-    message.react('📦');
-    message.channel.send('Boxie!')}
+    mCom.react('📦');
+    mCom.channel.send('Boxie!')}
 
   //Britt
   else if (wBritt.some(word => msgCon.includes(word))) {
-    message.channel.send('Me!')}
+    mCom.channel.send('Me!')}
 
   //Non-Prefix
   if (!msgCon.startsWith(prefix)) {return;}
-  var args = message.content.split(' ');
+  var args = mCom.content.split(' ');
   var argresult = args.slice(1).join(' ');
-  if (message.attachments.size) {var msgAtt = Array.from(message.attachments.values(), x => x.url)}
+  if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
 
   //Safety Filter 1
-  reefs = client.guilds.cache.get("412116759668064256").members.cache.get(message.author.id)
+  reefs = client.guilds.cache.get("412116759668064256").members.cache.get(mCom.author.id)
   if (!reefs || !reefs.roles.cache.get("458840596988035072")) {return;}
 
   //Say
   if (msgCon.startsWith(prefix + 'say') && (argresult || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
       client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
-      message.reply('Done!');
+      mCom.reply('Done!');
 
     } else if (client.users.cache.get(args[1])) {
       client.users.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
-      message.reply('Done!');
+      mCom.reply('Done!');
 
     } else {
-      message.channel.send({content: argresult, files: msgAtt});
-      if (message.guild) {message.delete()}}}
+      mCom.channel.send({content: argresult, files: msgAtt});
+      if (mCom.guild) {mCom.delete()}}}
 
   //Color -- Unrestricted --
   //else if (msgCon.startsWith(prefix + 'color ')) {
-    //if (!message.guild) {return;}
-    //if (argresult === "000000") {return message.reply("Discord doesn't like this color...")}
-    //message.member.roles.color.setColor(argresult).catch(() => message.reply('Invalid Color (Must be Hexadecimal or Decimal...)'))
-    //message.reply("Set!")}
+    //if (!mCom.guild) {return;}
+    //if (argresult === "000000") {return mCom.reply("Discord doesn't like this color...")}
+    //mCom.member.roles.color.setColor(argresult).catch(() => mCom.reply('Invalid Color (Must be Hexadecimal or Decimal...)'))
+    //mCom.reply("Set!")}
    
   //Eval
-  if (msgCon.startsWith(prefix + 'eval ') && message.author.id === rID) {
+  if (msgCon.startsWith(prefix + 'eval ') && mCom.author.id === rID) {
     try {
       eval(argresult);
-      message.reply('Done!')} 
+      mCom.reply('Done!')} 
     catch (error) {
       console.log(error);
-      message.reply("Error...")}}
+      mCom.reply("Error...")}}
 })
 
 //Token

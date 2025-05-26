@@ -13,12 +13,12 @@ module.exports = {
 	.setDescription('Enable Automatic Color Recomendations!')
   .setDMPermission(false),
 
-  async execute(interaction, roles) {
-    if (!roles.cache.find(role => role.id === interaction.paletteRole.id)) {
-      roles.add(interaction.paletteRole.id);
-      SLAB.replyOrFollow(interaction, 'Role Set!')
+  async execute(cmd, roles) {
+    if (!roles.cache.find(role => role.id === cmd.paletteRole.id)) {
+      roles.add(cmd.paletteRole.id);
+      SLAB.smartReply(cmd, 'Role Set!')
 
     } else {
-      roles.remove(interaction.paletteRole.id);
-      SLAB.replyOrFollow(interaction, 'Role Removed!')}     
+      roles.remove(cmd.paletteRole.id);
+      SLAB.smartReply(cmd, 'Role Removed!')}     
 }}

@@ -33,11 +33,11 @@ module.exports = {
         helpEmbed.addFields(
           {name: "/setup", value: "Creates the 🎨 Auto-Palette 🎨 Role and Gives Users Access to the Other Commands"},
           {"name": "\u200B", "value": "\u200B"},
-          {name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, it will Create a **New Role** Above the 🎨 Auto-Palette 🎨 Role (if such Role Exists)"},
+          {name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, a **New Role** will be Created Above the 🎨 Auto-Palette 🎨 Role"},
           {"name": "\u200B", "value": "\u200B"},
           {name: "/palette", value: "Updates the **Color Role** of the User, Unless said Role is Protected"},
           {"name": "\u200B", "value": "\u200B"},
-          {name: "/autopalette", value: "Grants the User the 🎨 Auto-Palette 🎨 Role (if such Role Exists and the **Color Role** of the User is Not Protected)"})
+          {name: "/autopalette", value: "Grants the User the 🎨 Auto-Palette 🎨 Role (if the **Color Role** of the User is Not Protected)"})
         .setImage(SLAB.imgNew);
       break;
 
@@ -49,7 +49,7 @@ module.exports = {
           {"name": "\u200B", "value": "\u200B"},
           {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
           {"name": "\u200B", "value": "\u200B"},
-          {name: "¿So I Just cannot use Commands?", value: "You can Get a **New Role** with /customrole if the Server was Set-Up Correctly!"})
+          {name: "¿So I cannot use Commands?", value: "You can Get a **New Role** with /customrole if the Server was Set-Up!"})
         .setImage(SLAB.imgProtect);
       break;
 
@@ -71,7 +71,7 @@ module.exports = {
           {"name": "\u200B", "value": "\u200B"},
           {name: "/palette", value: "Find Pretty Colors for your **Color Role**\nOptions:\n- Scope (In Case of Sharing Multiple Servers)"},
           {"name": "\u200B", "value": "\u200B"},
-          {name: "/autopalette", value: "Get Color Recomendations when you Change Profile Picture!"})
+          {name: "/autopalette", value: "Get Color Recomendations the Moment you Change Profile Picture!"})
         .setImage(SLAB.imgMatch);
       break;}
 

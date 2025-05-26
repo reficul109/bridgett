@@ -1,7 +1,7 @@
 //Variables
 const prefix = 'br!';
 const bID = "530502122190405652", rID = "320398018060746752";
-const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
+const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
 const utils = require('./utils.js');
 const {token} = require('./token.json');

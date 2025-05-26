@@ -120,8 +120,7 @@ client.on(Events.InteractionCreate, async iCom => {
 
   //Command Caution Handler
   var roles = iCom.member.roles;  
-  errorResponse = isInvalid(iCom, roles, command);
-  console.log(typeof errorResponse)
+  errorResponse = await isInvalid(iCom, roles, command);
   if (typeof errorResponse === 'string') {
 
     //Invalid Command Response

@@ -87,7 +87,7 @@ isInvalid = async function(cmd, roles, command) {
     }
 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
-      await cmd.reply({embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
+      await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
 
@@ -101,7 +101,7 @@ isInvalid = async function(cmd, roles, command) {
 
             catch (error) {
               console.error(error);
-              cmd.followUp({content: 'Error...', ephemeral: true})}}
+              SLAB.smartReply(cmd, {content: 'Error...', ephemeral: true})}}
             
           else {botReply.edit({content: ('Cancelled!'), embeds: [], components: []})}
         })
@@ -124,7 +124,7 @@ client.on(Events.InteractionCreate, async iCom => {
   if (typeof errorResponse === 'string') {
 
     //Performing Command Under Caution
-    if (errorResponse === 'Executing Remotely...') {
+    if (errorResponse == 'Executing Remotely...') {
       return iCom.deferUpdate();
 
     } else {

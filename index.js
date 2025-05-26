@@ -62,8 +62,7 @@ SLAB.replyOrFollow = function(interaction, ...args) {
   else {return interaction.reply(...args);}}
 
 //Validity
-isInvalid = async function(interaction, command) {
-  var roles = interaction.member.roles;  
+isInvalid = async function(interaction, roles, command) {
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
@@ -119,7 +118,8 @@ client.on(Events.InteractionCreate, async interaction => {
   }
 
   //Command Caution Handler
-  errorResponse = isInvalid(interaction, command)
+  var roles = interaction.member.roles;  
+  errorResponse = isInvalid(interaction, roles, command)
   if (typeof errorResponse === 'string') {
 
     //Performing Command Under Caution Flag

@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require('discord.js');
+const {SlashCommandBuilder: SLAB} = require('discord.js');
 
 module.exports = {
 
@@ -8,7 +8,7 @@ module.exports = {
   protectColorRole: true,
   warnMultipleEffect: true, 
 
-  data: new SlashCommandBuilder()
+  data: new SLAB()
 	.setName('autopalette')
 	.setDescription('Enable Automatic Color Recomendations!')
   .setDMPermission(false),
@@ -16,9 +16,9 @@ module.exports = {
   async execute(interaction, roles) {
     if (!roles.cache.find(role => role.id === interaction.paletteRole.id)) {
       roles.add(interaction.paletteRole.id);
-      interaction.replyOrFollow('Role Set!')
+      SLAB.replyOrFollow(interaction, 'Role Set!')
 
     } else {
       roles.remove(interaction.paletteRole.id);
-      interaction.replyOrFollow('Role Removed!')}     
+      SLAB.replyOrFollow(interaction, 'Role Removed!')}     
 }}

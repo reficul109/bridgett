@@ -92,8 +92,8 @@ isInvalid = async function(cmd, roles, command) {
         collector.on('collect', async userReply => {
 
           if (userReply.user.id != cmd.user.id) {return;}
-            await userReply.deferUpdate();
-            collector.stop();
+          await userReply.deferUpdate();
+          collector.stop();
 
           if (userReply.customId === 'y') {
             botReply.edit({content: ('Proceeding...'), embeds: [], components: []})
@@ -121,10 +121,11 @@ client.on(Events.InteractionCreate, async iCom => {
   //Command Caution Handler
   var roles = iCom.member.roles;  
   errorResponse = isInvalid(iCom, roles, command);
+  console.log(typeof errorResponse)
   if (typeof errorResponse === 'string') {
 
     //Invalid Command Response
-    if (errorResponse != 'Executing Remotely...') {
+    if (errorResponse !== 'Executing Remotely...') {
       return SLAB.smartReply(iCom, errorResponse);
     }
 

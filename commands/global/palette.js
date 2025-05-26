@@ -30,7 +30,7 @@ module.exports = {
 
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
-        if (userReply.member.id != cmd.user.id) {return;}
+        if (userReply.user.id != cmd.user.id) {return;}
         await userReply.deferUpdate();
 
         var btn = (parseInt(userReply.customId) || userReply.customId);

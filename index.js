@@ -118,18 +118,20 @@ client.on(Events.InteractionCreate, async interaction => {
     return SLAB.replyOrFollow(interaction, 'Your Server is not Set-Up! (/setup)');
   }
 
-  //Stop Invalid Commands
+  //Command Caution Handler
   errorResponse = isInvalid(interaction, command)
   if (errorResponse) {
 
+    //Performing Command Under Caution Flag
     if (errorResponse === 'Executing Remotely...') {
       return;
     }
 
+    //Invalid Command Response
     return SLAB.replyOrFollow(interaction, errorResponse);
   }
 
-  //
+  //Perform Valid Command
   try {await command.execute(interaction, roles)}
 
   catch (error) {

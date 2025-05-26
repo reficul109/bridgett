@@ -123,23 +123,20 @@ client.on(Events.InteractionCreate, async iCom => {
   errorResponse = isInvalid(iCom, roles, command);
   if (typeof errorResponse === 'string') {
 
-    //Performing Command Under Caution
-    if (errorResponse == 'Executing Remotely...') {
-      return iCom.deferUpdate();
-
-    } else {
-
-      //Invalid Command Response
+    //Invalid Command Response
+    if (errorResponse != 'Executing Remotely...') {
       return SLAB.smartReply(iCom, errorResponse);
     }
-  }
 
-  //Perform Valid Commands
-  try {await command.execute(iCom, roles)}
+  } else {
 
-  catch (error) {
-    console.error(error);
-    SLAB.smartReply(iCom, {content: 'Error...', ephemeral: true})
+    //Perform Valid Commands
+    try {await command.execute(iCom, roles)}
+
+    catch (error) {
+      console.error(error);
+      SLAB.smartReply(iCom, {content: 'Error...', ephemeral: true})
+    }
   }
 });
 

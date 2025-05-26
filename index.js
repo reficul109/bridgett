@@ -100,8 +100,8 @@ isInvalid = async function(cmd, roles, command) {
             try {await command.execute(cmd, roles)}
 
             catch (error) {
-                console.error(error);
-                cmd.followUp({content: 'Error...', ephemeral: true})}}
+              console.error(error);
+              cmd.followUp({content: 'Error...', ephemeral: true})}}
             
           else {botReply.edit({content: ('Cancelled!'), embeds: [], components: []})}
         })
@@ -123,8 +123,9 @@ client.on(Events.InteractionCreate, async iCom => {
   errorResponse = isInvalid(iCom, roles, command);
   if (typeof errorResponse === 'string') {
 
+    //Performing Command Under Caution
     if (errorResponse === 'Executing Remotely...') {
-      return;
+      return iCom.deferUpdate();
 
     } else {
 
@@ -134,7 +135,6 @@ client.on(Events.InteractionCreate, async iCom => {
   }
 
   //Perform Valid Commands
-  console.log('vivi was here');
   try {await command.execute(iCom, roles)}
 
   catch (error) {

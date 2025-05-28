@@ -13,8 +13,8 @@ const {
 
 const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
-const token = require('./token.json');
-const rest = new REST().setToken({token});
+const {token} = require('./token.json');
+const rest = new REST().setToken(token);
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30}
 

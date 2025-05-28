@@ -68,12 +68,12 @@ SLAB.smartReply = function(cmd, ...args) {
 isInvalid = async function(cmd, roles, command) {
 
   //Check if Arguments are Met (Message Commands)
-  if (!cmd.argresult) {
+  if (!cmd.args) {
     
     if (command.correctMessageCommand) {
       return command.correctMessageCommand;}
 
-    else {cmd.argresult = 'null'}
+    else {cmd.args = 'null'}
   
   }
 

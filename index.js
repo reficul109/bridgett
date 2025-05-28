@@ -104,7 +104,7 @@ isInvalid = async function(cmd, roles, command) {
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
 
-          if (userReply.user.id != cmd.user.id) {return;}
+          if (userReply.user.id != cmd.member.user.id) {return;}
           await userReply.deferUpdate();
           collector.stop();
 

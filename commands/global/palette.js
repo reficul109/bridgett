@@ -23,17 +23,18 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(cmd, roles) {
+    var user = (null || cmd.member.user)
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
     if (scope.includes('one')) {var memberPaletteGuilds = cmd.client.guilds.cache.filter(guild => guild === cmd.guild)}
-    else {var memberPaletteGuilds = cmd.client.guilds.cache.filter(guild => guild.members.cache.get(cmd.user) && guild.members.cache.get(cmd.user).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}
+    else {var memberPaletteGuilds = cmd.client.guilds.cache.filter(guild => guild.members.cache.get(user) && guild.members.cache.get(user).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}
    
     var page = 0;
-    await getColors(cmd.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-    SLAB.smartReply(cmd, {content: '<@' + cmd.user.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (botReply) {
+    await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
+    SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (botReply) {
 
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
-        if (userReply.user.id != cmd.user.id) {return;}
+        if (userReply.user.id != user.id) {return;}
         await userReply.deferUpdate();
 
         var btn = (parseInt(userReply.customId) || userReply.customId);
@@ -57,7 +58,7 @@ module.exports = {
 
           default:
             collector.stop();
-            memberPaletteGuilds.forEach(guild => guild.members.cache.get(cmd.user).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
+            memberPaletteGuilds.forEach(guild => guild.members.cache.get(user).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
             botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []});
           break;}
         })

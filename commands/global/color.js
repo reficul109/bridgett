@@ -30,8 +30,8 @@ module.exports = {
 
     } else {
       var color = (cmd.args ?? cmd.options.getString('color'));
-      if (parseInt(color.toString()) === 0 || color === '#000000') {SLAB.smartReply(cmd, "Discord does not like this Color...")}
+      if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.smartReply(cmd, "Discord does not like this Color...")}
       
-      roles.color.setColor(color).catch(() => {SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal or Decimal...)')})
+      roles.color.setColor(color).catch(() => {return SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal or Decimal...)')})
       SLAB.smartReply(cmd, 'Role Updated!')}
 }}

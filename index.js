@@ -155,7 +155,7 @@ client.on(Events.InteractionCreate, async iCom => {
 //Auto-Palette
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
-  var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser) && guild.members.cache.get(newUser).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
+  var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
   if (!memberPaletteGuilds.size) {return;}
   
   var page = 0;
@@ -188,7 +188,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 
         default:
           collector.stop();
-          memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
+          memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
           botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []})
         break;}
       })
@@ -214,10 +214,6 @@ client.on(Events.MessageCreate, async mCom => {
   var args = mCom.content.split(' ');
   var argresult = args.slice(1).join(' ');
   if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
-
-  //Safety Filter 1
-  //reefs = client.guilds.cache.get("412116759668064256").members.cache.get(mCom.author)
-  //if (!reefs || !reefs.roles.cache.get("458840596988035072")) {return;}
 
   //Say
   if (msgCon.startsWith(SLAB.prefix + 'say') && (argresult || msgAtt)) {

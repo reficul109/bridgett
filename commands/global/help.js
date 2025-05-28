@@ -10,6 +10,7 @@ module.exports = {
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
+  //correctMessageCommand: '<usage>',
   
   data: new SLAB()
 	.setName('help')

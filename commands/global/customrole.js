@@ -7,6 +7,7 @@ module.exports = {
   checkColorEditable: true,
   //protectColorRole: true,
   warnMultipleEffect: true,
+  correctMessageCommand: ('Correct usage is: ' + SLAB.prefix + 'customrole <name>'),
 
   data: new SLAB()
 	.setName('customrole')
@@ -17,7 +18,7 @@ module.exports = {
 
   async execute(cmd, roles) {
     if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color)) {
-      var name = (cmd.args ?? cmd.options.getString('name') ?? 'My Role');
+      var name = (cmd.args ?? cmd.options.getString('name') ?? 'My Color Role');
       var color = (cmd.options.getString('color') ?? '#ffffff');
       var position = (cmd.paletteRole.position + 1);
 

@@ -1,11 +1,3 @@
-//Variables
-const prefix = 'br!';
-const bID = "530502122190405652", rID = "320398018060746752";
-const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
-const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
-const utils = require('./utils.js');
-const {token} = require('./token.json');
-
 //Packages
 const fs = require('node:fs');
 const path = require('node:path');
@@ -21,9 +13,17 @@ const {
 
 const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
-const rest = new REST().setToken(token);
+const token = require('./token.json');
+const rest = new REST().setToken({token});
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30}
+
+//Variables and Utils
+SLAB.prefix = 'br!';
+SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
+const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
+const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
+const utils = require('./utils.js');
 
 //Slash Command Gather
 const globalCommands = [];
@@ -47,7 +47,7 @@ client.commands = new Collection();
 (async () => {
   try {
     console.log('Cargando ' + globalCommands.length + ' Comandos...');
-    const data = await rest.put(Routes.applicationCommands(bID), {body: globalCommands});
+    const data = await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands});
     await console.log('Comandos Cargados con Exito!')
   } catch (error) {console.error(error)}
 })();
@@ -67,6 +67,16 @@ SLAB.smartReply = function(cmd, ...args) {
 //Validity
 isInvalid = async function(cmd, roles, command) {
 
+  //Check if Arguments are Met (Message Commands)
+  if (!cmd.argresult) {
+    
+    if (command.correctMessageCommand) {
+      return command.correctMessageCommand;}
+
+    else {cmd.argresult = 'null'}
+  
+  }
+
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
   if (command.checkPaletteRole && !cmd.paletteRole) {
@@ -74,17 +84,21 @@ isInvalid = async function(cmd, roles, command) {
 
   if (!roles.color) {
 
+    //Check if A Color Role is Needed for the Command
     if (command.colorRoleRequired) {
       return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)';}
 
   } else {
     
+    //Check if Role Editing is Needed for the Command
     if (command.checkColorEditable && !roles.color.editable) {
       return 'Not Enough Permissions to Update your Color Role...';}
 
+    //Check if Role Protection Should Stop the Command
     if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color)) {
       return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)';}
 
+    //Warn Users if the Command Will Affect Multiple Users 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
@@ -196,7 +210,7 @@ client.on(Events.MessageCreate, async mCom => {
     mCom.channel.send('Me!')}
 
   //Non-Prefix
-  if (!msgCon.startsWith(prefix)) {return;}
+  if (!msgCon.startsWith(SLAB.prefix)) {return;}
   var args = mCom.content.split(' ');
   var argresult = args.slice(1).join(' ');
   if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
@@ -206,7 +220,7 @@ client.on(Events.MessageCreate, async mCom => {
   //if (!reefs || !reefs.roles.cache.get("458840596988035072")) {return;}
 
   //Say
-  if (msgCon.startsWith(prefix + 'say') && (argresult || msgAtt)) {
+  if (msgCon.startsWith(SLAB.prefix + 'say') && (argresult || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
       client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
       mCom.reply('Done!');
@@ -220,7 +234,7 @@ client.on(Events.MessageCreate, async mCom => {
       mCom.delete()}}
 
   //Eval
-  if (msgCon.startsWith(prefix + 'eval ') && mCom.author.id === rID) {
+  if (msgCon.startsWith(SLAB.prefix + 'eval ') && mCom.author.id === SLAB.rID) {
     try {
       eval(argresult);
       mCom.reply('Done!')} 
@@ -229,7 +243,7 @@ client.on(Events.MessageCreate, async mCom => {
       mCom.reply("Error...")}}
 
   //Text Command Answer
-  const command = client.commands.get(args[0].substring(prefix.length));
+  const command = client.commands.get(args[0].substring(SLAB.prefix.length));
   if (!command) {return;}
 
   //Command Caution Handler

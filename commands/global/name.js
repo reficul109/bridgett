@@ -29,6 +29,7 @@ module.exports = {
 
     } else {
       var name = (cmd.args ?? cmd.options.getString('name'));
+      
       roles.color.setName(name);
       SLAB.smartReply(cmd, 'Role Updated!')}
 }}

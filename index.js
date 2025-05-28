@@ -183,7 +183,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 
 //Britt Stuff
 client.on(Events.MessageCreate, async mCom => {
-  if (mCom.author.bot || mCom.system || !mcom.guild) {return;}
+  if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
 
   //Boxie

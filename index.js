@@ -39,7 +39,9 @@ client.commands = new Collection();
 	      if ('data' in command && 'execute' in command) {
           client.commands.set(command.data.name, command);
 	        globalCommands.push(command.data.toJSON())}
-        else {console.log('Error en ' + filePath + '...')}}}
+        else {console.log('Error en ' + filePath + '...')}
+      }
+  }
 
 //Slash Command Loader
 (async () => {
@@ -59,7 +61,8 @@ client.once(Events.ClientReady, readyClient => {
 //Flexible Response
 SLAB.smartReply = function(cmd, ...args) {
   if (cmd.replied) {return cmd.followUp(...args);}
-  else {return cmd.reply(...args);}}
+  else {return cmd.reply(...args);}
+}
 
 //Validity
 isInvalid = async function(cmd, roles, command) {
@@ -67,24 +70,20 @@ isInvalid = async function(cmd, roles, command) {
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
   if (command.checkPaletteRole && !cmd.paletteRole) {
-    return 'Your Server is not Set-Up! (/setup)';
-  }
+    return 'Your Server is not Set-Up! (/setup)';}
 
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
-      return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)';
-    }
+      return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)';}
 
   } else {
     
     if (command.checkColorEditable && !roles.color.editable) {
-      return 'Not Enough Permissions to Update your Color Role...';
-    }
+      return 'Not Enough Permissions to Update your Color Role...';}
 
-    if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color.id)) {
-      return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)';
-    }
+    if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color)) {
+      return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)';}
 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
@@ -115,18 +114,17 @@ isInvalid = async function(cmd, roles, command) {
 //Slash Command Answer
 client.on(Events.InteractionCreate, async iCom => {
   if (!iCom.isChatInputCommand()) {return;}
-  const command = iCom.client.commands.get(iCom.commandName);
+  const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
 
   //Command Caution Handler
-  var roles = iCom.member.roles;  
+  var roles = iCom.member.roles;
   errorResponse = await isInvalid(iCom, roles, command);
   if (typeof errorResponse === 'string') {
 
     //Invalid Command Response
     if (errorResponse !== 'Executing Remotely...') {
-      return SLAB.smartReply(iCom, errorResponse);
-    }
+      return SLAB.smartReply(iCom, errorResponse);}
 
   } else {
 
@@ -143,7 +141,7 @@ client.on(Events.InteractionCreate, async iCom => {
 //Auto-Palette
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
-  var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
+  var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser) && guild.members.cache.get(newUser).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
   if (!memberPaletteGuilds.size) {return;}
   
   var page = 0;
@@ -176,7 +174,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 
         default:
           collector.stop();
-          memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
+          memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
           botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []})
         break;}
       })
@@ -184,8 +182,8 @@ client.on('userUpdate', async (oldUser, newUser) => {
 })
 
 //Britt Stuff
-client.on(Events.MessageCreate, mCom => {
-  if (mCom.author.bot || mCom.system) {return;}
+client.on(Events.MessageCreate, async mCom => {
+  if (mCom.author.bot || mCom.system || !mcom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
 
   //Boxie
@@ -204,8 +202,8 @@ client.on(Events.MessageCreate, mCom => {
   if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
 
   //Safety Filter 1
-  reefs = client.guilds.cache.get("412116759668064256").members.cache.get(mCom.author.id)
-  if (!reefs || !reefs.roles.cache.get("458840596988035072")) {return;}
+  //reefs = client.guilds.cache.get("412116759668064256").members.cache.get(mCom.author)
+  //if (!reefs || !reefs.roles.cache.get("458840596988035072")) {return;}
 
   //Say
   if (msgCon.startsWith(prefix + 'say') && (argresult || msgAtt)) {
@@ -219,15 +217,8 @@ client.on(Events.MessageCreate, mCom => {
 
     } else {
       mCom.channel.send({content: argresult, files: msgAtt});
-      if (mCom.guild) {mCom.delete()}}}
+      mCom.delete()}}
 
-  //Color -- Unrestricted --
-  //else if (msgCon.startsWith(prefix + 'color ')) {
-    //if (!mCom.guild) {return;}
-    //if (argresult === "000000") {return mCom.reply("Discord doesn't like this color...")}
-    //mCom.member.roles.color.setColor(argresult).catch(() => mCom.reply('Invalid Color (Must be Hexadecimal or Decimal...)'))
-    //mCom.reply("Set!")}
-   
   //Eval
   if (msgCon.startsWith(prefix + 'eval ') && mCom.author.id === rID) {
     try {
@@ -236,6 +227,31 @@ client.on(Events.MessageCreate, mCom => {
     catch (error) {
       console.log(error);
       mCom.reply("Error...")}}
+
+  //Text Command Answer
+  const command = client.commands.get(args[0].substring(prefix.length));
+  if (!command) {return;}
+
+  //Command Caution Handler
+  var roles = mCom.member.roles;
+  mCom.args = argresult;
+  errorResponse = await isInvalid(mCom, roles, command);
+  if (typeof errorResponse === 'string') {
+
+    //Invalid Command Response
+    if (errorResponse !== 'Executing Remotely...') {
+      return SLAB.smartReply(mCom, errorResponse);}
+
+  } else {
+
+    //Perform Valid Commands
+    try {await command.execute(mCom, roles)}
+
+    catch (error) {
+      console.error(error);
+      SLAB.smartReply(mCom, {content: 'Error...', ephemeral: true})
+    }
+  }
 })
 
 //Token

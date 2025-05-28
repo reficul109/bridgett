@@ -16,13 +16,15 @@ module.exports = {
   data: new SLAB()
 	.setName('palette')
 	.setDescription('Match your Color and Profile Picture!')
-  .addStringOption(option => option.setName('scope').setDescription('Amount of Server Roles to Update').addChoices({name: 'For all Servers', value: 'ForAll'}, {name: 'For this Server', value: 'ForOne'}))
+  .addStringOption(option => option.setName('scope').setDescription('Amount of Server Roles to Update').addChoices(
+    {name: 'For all Servers', value: 'All'}, 
+    {name: 'For this Server', value: 'One'}))
   .setDMPermission(false),
 
   async execute(cmd, roles) {
-    var scope = (cmd.options.getString('scope') ?? 'ForAll');
-    if (scope === 'ForOne') {var memberPaletteGuilds = cmd.client.guilds.cache.filter(guild => guild === cmd.guild)}
-    else {var memberPaletteGuilds = cmd.client.guilds.cache.filter(guild => guild.members.cache.get(cmd.user.id) && guild.members.cache.get(cmd.user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}
+    var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
+    if (scope.includes('one')) {var memberPaletteGuilds = cmd.client.guilds.cache.filter(guild => guild === cmd.guild)}
+    else {var memberPaletteGuilds = cmd.client.guilds.cache.filter(guild => guild.members.cache.get(cmd.user) && guild.members.cache.get(cmd.user).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")))}
    
     var page = 0;
     await getColors(cmd.user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
@@ -54,7 +56,7 @@ module.exports = {
 
           default:
             collector.stop();
-            memberPaletteGuilds.forEach(guild => guild.members.cache.get(cmd.user.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
+            memberPaletteGuilds.forEach(guild => guild.members.cache.get(cmd.user).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
             botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []});
           break;}
         })

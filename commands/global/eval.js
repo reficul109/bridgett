@@ -13,7 +13,7 @@ module.exports = {
   data: new SLAB()
   .setName('eval')
   .setDescription('Pain.')
-  .addStringOption(option => option.setName('code').setRequired(true))
+  .addStringOption(option => option.setName('code').setRequired(true).setDescription('Remeber to use "cmd"!'))
   .setDMPermission(false),
 
   async execute(cmd, roles) {

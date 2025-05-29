@@ -26,10 +26,10 @@ module.exports = {
   async execute(cmd, roles) {
     var user = (null || cmd.member.user)
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
-    var memberPaletteGuilds = cmd.client.guilds.cache;
+    var paletteGuilds = cmd.client.guilds.cache;
 
-    if (scope.includes('one')) {memberPaletteGuilds = memberPaletteGuilds.filter(guild => guild === cmd.guild);}
-    else {memberPaletteGuilds = memberPaletteGuilds.filter(guild => guild.members.cache.get(user.id) && guild.members.cache.get(user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));}
+    if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
+    else {paletteGuilds = paletteGuilds.filter(guild => guild.members.cache.get(user.id) && guild.members.cache.get(user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));}
    
     var page = 0;
     await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
@@ -61,7 +61,7 @@ module.exports = {
 
           default:
             collector.stop();
-            memberPaletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
+            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
             botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []});
           break;}
         })

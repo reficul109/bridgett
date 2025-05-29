@@ -12,10 +12,11 @@ module.exports = {
   
   data: new SLAB()
   .setName('eval')
-  .setDescription('Pain.')
+  .addStringOption(option => option.setName('code').setRequired(true))
   .setDMPermission(false),
 
   async execute(cmd, roles) {
-    eval(cmd.args);
+    var code = (cmd.args ?? cmd.options.getString('code'));
+    eval(code);
     SLAB.smartReply(cmd, 'Done!')
 }}

@@ -18,6 +18,6 @@ module.exports = {
 
   async execute(cmd, roles) {
     var code = (cmd.args ?? cmd.options.getString('code'));
-    eval(code);
+    await eval(code);
     SLAB.smartReply(cmd, 'Done!')
 }}

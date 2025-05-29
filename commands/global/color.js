@@ -8,6 +8,7 @@ module.exports = {
   //protectColorRole: true,
   warnMultipleEffect: true,
   correctMessageCommand: ('Correct usage is: ' + SLAB.prefix + 'color <hexColor>'),
+  //restrictedCommand: true,
 
   data: new SLAB()
 	.setName('color')
@@ -32,6 +33,6 @@ module.exports = {
       var color = (cmd.args ?? cmd.options.getString('color'));
       if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.smartReply(cmd, "Discord does not like this Color...")}
       
-      roles.color.setColor(color).catch(() => {return SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal or Decimal...)')})
+      await roles.color.setColor(color).catch(() => {return SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal or Decimal...)')})
       SLAB.smartReply(cmd, 'Role Updated!')}
 }}

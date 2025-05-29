@@ -8,6 +8,7 @@ module.exports = {
   //protectColorRole: true,
   warnMultipleEffect: true,
   correctMessageCommand: ('Correct usage is: ' + SLAB.prefix + 'name <roleName>'),
+  //restrictedCommand: true,
 
   data: new SLAB()
 	.setName('name')

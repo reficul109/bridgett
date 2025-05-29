@@ -7,7 +7,8 @@ module.exports = {
   checkColorEditable: true,
   protectColorRole: true,
   warnMultipleEffect: true,
-  //correctMessageCommand: '<usage>',  
+  //correctMessageCommand: '<usage>',
+  //restrictedCommand: true, 
 
   data: new SLAB()
 	.setName('autopalette')

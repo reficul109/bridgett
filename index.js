@@ -67,44 +67,46 @@ SLAB.smartReply = function(cmd, ...args) {
 //Validity
 isInvalid = async function(cmd, roles, command) {
 
+  //Check if User is Allowed to Use this Command
+  if (command.restrictedCommand && cmd.member.id !== SLAB.rID) {
+    return 'You are not Allowed to do That!';}
+
   //Check if Arguments are Met (Message Commands)
   if (!cmd.options && !cmd.args) {
     
     if (command.correctMessageCommand) {
       return command.correctMessageCommand;}
 
-    else {cmd.args = 'null'}
-  
-  }
+    else {cmd.args = 'null'}}
 
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
   if (command.checkPaletteRole && !cmd.paletteRole) {
     return 'Your Server is not Set-Up! (/setup)';}
 
+  //Check if A Color Role is Needed for this Command
   if (!roles.color) {
 
-    //Check if A Color Role is Needed for the Command
     if (command.colorRoleRequired) {
       return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)';}
 
   } else {
     
-    //Check if Role Editing is Needed for the Command
+    //Check if Role Editing is Needed for this Command
     if (command.checkColorEditable && !roles.color.editable) {
       return 'Not Enough Permissions to Update your Color Role...';}
 
-    //Check if Role Protection Should Stop the Command
+    //Check if Role Protection Should Stop this Command
     if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color)) {
       return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)';}
 
-    //Warn Users if the Command Will Affect Multiple Users 
+    //Warn Users if this Command Will Affect Multiple Users 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
 
-          if (userReply.user.id != cmd.member.user.id) {return;}
+          if (userReply.user.id != cmd.member.id) {return;}
           await userReply.deferUpdate();
           collector.stop();
 
@@ -228,15 +230,6 @@ client.on(Events.MessageCreate, async mCom => {
     } else {
       mCom.channel.send({content: argresult, files: msgAtt});
       mCom.delete()}}
-
-  //Eval
-  if (msgCon.startsWith(SLAB.prefix + 'eval ') && mCom.author.id === SLAB.rID) {
-    try {
-      eval(argresult);
-      mCom.reply('Done!')} 
-    catch (error) {
-      console.log(error);
-      mCom.reply("Error...")}}
 
   //Text Command Answer
   const command = client.commands.get(args[0].substring(SLAB.prefix.length));

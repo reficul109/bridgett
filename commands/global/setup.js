@@ -11,6 +11,7 @@ module.exports = {
   //protectColorRole: true,
   //warnMultipleEffect: true,
   //correctMessageCommand: '<usage>',
+  //restrictedCommand: true,
   
   data: new SLAB()
   .setName('setup')

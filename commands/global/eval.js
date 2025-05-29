@@ -12,6 +12,7 @@ module.exports = {
   
   data: new SLAB()
   .setName('eval')
+  .setDescription('Pain.')
   .addStringOption(option => option.setName('code').setRequired(true))
   .setDMPermission(false),
 

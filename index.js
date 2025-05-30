@@ -28,28 +28,25 @@ const utils = require('./utils.js');
 //Slash Command Gather
 const globalCommands = [];
 client.commands = new Collection();
-  const foldersPath = path.join(__dirname, 'commands');
-  const commandFolders = fs.readdirSync(foldersPath);
-  for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-      for (const file of commandFiles) {
-	      const filePath = path.join(commandsPath, file);
-	      const command = require(filePath);
-	      if ('data' in command && 'execute' in command) {
-          client.commands.set(command.data.name, command);
-	        globalCommands.push(command.data.toJSON())}
-        else {console.log('Error en ' + filePath + '...')}
-      }
+  const commandsPath = path.join(__dirname, 'commands/global');
+  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+  for (const file of commandFiles) {
+	  const filePath = path.join(commandsPath, file);
+	  const command = require(filePath);
+	  if ('data' in command && 'execute' in command) {
+      client.commands.set(command.data.name, command);
+	    globalCommands.push(command.data.toJSON())}
+    else {console.log('Error en ' + filePath + '...')}
   }
 
 //Slash Command Loader
 (async () => {
   try {
     console.log('Cargando ' + globalCommands.length + ' Comandos...');
-    const data = await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands});
-    await console.log('Comandos Cargados con Exito!')
-  } catch (error) {console.error(error)}
+    await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands});
+    console.log('Comandos Cargados con Exito!')} 
+  catch (error) {
+    console.error(error)}
 })();
 
 //Ready

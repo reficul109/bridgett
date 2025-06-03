@@ -61,16 +61,20 @@ SLAB.smartReply = function(cmd, ...args) {
   else {return cmd.reply(...args);}
 }
 
-//Validity
+/* Validity
+Returns an Error Message String if the Command Cant Continue
+Returns Nothing if the Command Can Continue
+*/
 isInvalid = async function(cmd, roles, command) {
 
   //Check if User is Allowed to Use this Command
-  if (command.restrictedCommand && cmd.member.id !== SLAB.rID) {
+  if (command.adminCommand && cmd.member.id !== SLAB.rID) {
     return 'You are not Allowed to do That!';}
 
-  //Check if Arguments are Met (Message Commands)
+  //Check if There is Enough User Input
   if (!cmd.options && !cmd.args) {
     
+    //No User Input Error (Message Commands)
     if (command.correctMessageCommand) {
       return command.correctMessageCommand;}
 
@@ -85,7 +89,7 @@ isInvalid = async function(cmd, roles, command) {
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
-      return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/customrole)';}
+      return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/help)';}
 
   } else {
     
@@ -95,7 +99,7 @@ isInvalid = async function(cmd, roles, command) {
 
     //Check if Role Protection Should Stop this Command
     if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color)) {
-      return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/customrole)';}
+      return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)';}
 
     //Warn Users if this Command Will Affect Multiple Users 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
@@ -124,31 +128,39 @@ isInvalid = async function(cmd, roles, command) {
   }
 }
 
+//Command Handler
+handleCommand = async function(cmd, command) {
+
+  //Perform with Caution
+  var roles = cmd.member.roles;
+  errorResponse = await isInvalid(cmd, roles, command);
+  if (typeof errorResponse === 'string') {
+
+    //Invalid Command Response
+    if (errorResponse !== 'Executing Remotely...') {
+      return SLAB.smartReply(cmd, errorResponse);}
+
+  } else {
+
+    //Perform Valid Commands
+    try {await command.execute(cmd, roles)}
+
+    catch (error) {
+      console.error(error);
+      SLAB.smartReply(cmd, {content: 'Error...', ephemeral: true})
+    }
+  }
+
+}
+
 //Slash Command Answer
 client.on(Events.InteractionCreate, async iCom => {
   if (!iCom.isChatInputCommand()) {return;}
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
 
-  //Command Caution Handler
-  var roles = iCom.member.roles;
-  errorResponse = await isInvalid(iCom, roles, command);
-  if (typeof errorResponse === 'string') {
+  handleCommand(iCom, command)
 
-    //Invalid Command Response
-    if (errorResponse !== 'Executing Remotely...') {
-      return SLAB.smartReply(iCom, errorResponse);}
-
-  } else {
-
-    //Perform Valid Commands
-    try {await command.execute(iCom, roles)}
-
-    catch (error) {
-      console.error(error);
-      SLAB.smartReply(iCom, {content: 'Error...', ephemeral: true})
-    }
-  }
 });
 
 //Auto-Palette
@@ -231,27 +243,10 @@ client.on(Events.MessageCreate, async mCom => {
   //Text Command Answer
   const command = client.commands.get(args[0].substring(SLAB.prefix.length));
   if (!command) {return;}
-
-  //Command Caution Handler
-  var roles = mCom.member.roles;
   mCom.args = argresult;
-  errorResponse = await isInvalid(mCom, roles, command);
-  if (typeof errorResponse === 'string') {
 
-    //Invalid Command Response
-    if (errorResponse !== 'Executing Remotely...') {
-      return SLAB.smartReply(mCom, errorResponse);}
+  handleCommand(mCom, command)
 
-  } else {
-
-    //Perform Valid Commands
-    try {await command.execute(mCom, roles)}
-
-    catch (error) {
-      console.error(error);
-      SLAB.smartReply(mCom, {content: 'Error...', ephemeral: true})
-    }
-  }
 })
 
 //Token

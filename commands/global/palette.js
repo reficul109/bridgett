@@ -13,7 +13,7 @@ module.exports = {
   protectColorRole: true,
   warnMultipleEffect: true,
   //correctMessageCommand: '<usage>',
-  //restrictedCommand: true,
+  //adminCommand: true,
 
   data: new SLAB()
 	.setName('palette')

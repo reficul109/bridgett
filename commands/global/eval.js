@@ -8,7 +8,7 @@ module.exports = {
   //protectColorRole: true,
   //warnMultipleEffect: true,
   correctMessageCommand: ('Correct usage is: ' + SLAB.prefix + 'eval <code>'),
-  restrictedCommand: true,
+  adminCommand: true,
   
   data: new SLAB()
   .setName('eval')

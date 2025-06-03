@@ -11,7 +11,7 @@ module.exports = {
   //protectColorRole: true,
   //warnMultipleEffect: true,
   //correctMessageCommand: '<usage>',
-  //restrictedCommand: true,
+  //adminCommand: true,
   
   data: new SLAB()
 	.setName('help')
@@ -34,7 +34,9 @@ module.exports = {
       helpEmbed.addFields(
         {name: "/setup", value: "Creates the 🎨 Auto-Palette 🎨 Role and Gives Users Access to the Other Commands"},
         {"name": "\u200B", "value": "\u200B"},
-        {name: "/customrole", value: "Updates the Name And Color of the User's **Color Role**\nIf said Role is Protected, a **New Role** will be Created Above the 🎨 Auto-Palette 🎨 Role"},
+        {name: "/color", value: "Updates the Color of the User's **Color Role**\nIf said Role is Protected, a **New Role** will be Created Above the 🎨 Auto-Palette 🎨 Role"},
+        {"name": "\u200B", "value": "\u200B"},
+        {name: "/name", value: "Updates the Name of the User's **Color Role**\nIf said Role is Protected, a **New Role** will be Created Above the 🎨 Auto-Palette 🎨 Role"},
         {"name": "\u200B", "value": "\u200B"},
         {name: "/palette", value: "Updates the **Color Role** of the User, Unless said Role is Protected"},
         {"name": "\u200B", "value": "\u200B"},
@@ -50,7 +52,7 @@ module.exports = {
         {"name": "\u200B", "value": "\u200B"},
         {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
         {"name": "\u200B", "value": "\u200B"},
-        {name: "¿So I cannot use Commands?", value: "You can Get a **New Role** with /customrole if the Server was Set-Up!"})
+        {name: "¿So I cannot use Commands?", value: "You can Get a **New Role** with /color if the Server was Set-Up!"})
       .setImage(SLAB.imgProtect);
     }
 
@@ -68,7 +70,9 @@ module.exports = {
       helpEmbed.addFields(
         {name: "/setup", value: "Allow Everyone to Start Choosing their Own Color!"},
         {"name": "\u200B", "value": "\u200B"},
-        {name: "/customrole", value: "Update your **Color Role!**\nOptions:\n- Name\n- Color (Hex / Decimal)"},
+        {name: "/color", value: "Update your **Color Role!**\nInput a Hexadecimal Color!"},
+        {"name": "\u200B", "value": "\u200B"},
+        {name: "/name", value: "Update your **Color Role!**\nInput the Name you Want!"},
         {"name": "\u200B", "value": "\u200B"},
         {name: "/palette", value: "Find Pretty Colors for your **Color Role**\nOptions:\n- Scope (In Case of Sharing Multiple Servers)"},
         {"name": "\u200B", "value": "\u200B"},

@@ -62,7 +62,7 @@ module.exports = {
             collector.stop();
             var choice = colors[(btn + (page * 5) - 1)];
             paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice.toString()));
-            botReply.edit({content: (choice + ' Selected!\nLooks like, ' + getColors.findName(choice)), embeds: [], components: []});
+            botReply.edit({content: (choice + ' Selected!\nLooks like, ' + nearestColor.find(choice)), embeds: [], components: []});
           break;}
         })
     })})

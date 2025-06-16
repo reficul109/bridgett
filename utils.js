@@ -6,8 +6,8 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 
-const nearestColor = require('nearest-color');
-const {colornames} = require('color-name-list');
+import nearestColor from 'nearest-color';
+import {colornames} from 'color-name-list';
 
 const colors = colornames.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
 nearestColor.find = function () {return nearestColor.from(colors)};

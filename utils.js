@@ -6,6 +6,8 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 
+const nearestColor = require('nearest-color');
+
 //Images
 SLAB.imgNames = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430493847664/AutoPaletteNames.png';
 SLAB.imgMatch = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430762414122/MatchYourColors.png';
@@ -18,12 +20,12 @@ EMBD.paletteEmbeds = function(colors, page) {
   var paletteEmbeds = []
   for (var i = 0; i < 5; i++) {
     var color = colors[i + (page * 5)].toString()
+    var match = nearestColor.find(color)
     const embed = new EMBD()
     .setTitle(color)
     .setColor(color)
-    .setDescription(emoji[i])
+    .setDescription('Closest Match: [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!\n' + emoji[i])
     .setURL('https://encycolorpedia.com/' + color.substring(1))
-    .setThumbnail('https://encycolorpedia.com/' + color.substring(1) + '.png')
     paletteEmbeds.push(embed)}
 return paletteEmbeds;}
 

@@ -63,10 +63,10 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 //Flexible Response
-SLAB.smartReply = async function(cmd, ...args) {
-  if (cmd.discriminator) {return await cmd.send(...args);}
-  else if (cmd.replied) {return await cmd.followUp(...args);}
-  else {return await cmd.reply(...args);}
+SLAB.smartReply = function(cmd, ...args) {
+  if (cmd.discriminator) {return cmd.dmChannel.send(...args);}
+  else if (cmd.replied) {return cmd.followUp(...args);}
+  else {return cmd.reply(...args);}
 }
 
 /* Validity

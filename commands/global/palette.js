@@ -3,8 +3,6 @@ const {
   EmbedBuilder: EMBD, 
   SlashCommandBuilder: SLAB
 } = require('discord.js');
-const getColors = require('get-image-colors');
-const nearestColor = require('nearest-color');
 
 module.exports = {
 
@@ -64,7 +62,7 @@ module.exports = {
             collector.stop();
             var choice = colors[(btn + (page * 5) - 1)];
             paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice.toString()));
-            botReply.edit({content: (choice + ' Selected!\nLooks like, ' + nearestColor.find(choice)), embeds: [], components: []});
+            botReply.edit({content: (choice + ' Selected!\nLooks like, ' + getColors.findName(choice)), embeds: [], components: []});
           break;}
         })
     })})

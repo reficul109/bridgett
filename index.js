@@ -18,12 +18,12 @@ const {token} = require('./token.json');
 const rest = new REST().setToken(token);
 
 //Color Stuff
-import nearestColor from 'nearest-color';
-import {colornames} from 'color-name-list';
-const colors = colornames.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
-nearestColor.find = function () {return nearestColor.from(colors)};
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30}
+import nearestColor from 'nearest-color';
+import {colornames} from 'color-name-list';
+const colorObjects = colornames.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
+getColors.findName = function () {return nearestColor.from(colorObjects)};
 
 //Variables and Utils
 SLAB.prefix = 'br!';

@@ -30,7 +30,7 @@ module.exports = {
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
 
-    if (cmd.discriminator) {user = cmd} 
+    if (typeof cmd.discriminator === 'string') {user = cmd} 
     else {user =  cmd.member.user}
 
     if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}

@@ -63,10 +63,9 @@ module.exports = {
 
           default:
             collector.stop();
-            var choice = colors[(btn + (page * 5) - 1)];
-            var matchFound = await nearestColor.find(choice);
-            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice.toString()));
-            botReply.edit({content: (choice + ' Selected!\nLooks like, ' + matchFound.name), embeds: [], components: []});
+            var choice = colors[(btn + (page * 5) - 1)].toString();
+            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice));
+            botReply.edit({content: (choice + ' Selected!\nLooks like, ' + nearestColor.find(choice).name), embeds: [], components: []});
           break;}
         })
     })})

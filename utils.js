@@ -14,18 +14,23 @@ SLAB.imgMatch = 'https://cdn.discordapp.com/attachments/530524839321010188/12530
 SLAB.imgProtect = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431013937192/ProtectedRoleList.png';
 SLAB.imgNew = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431240695890/ScreenNewRoles.png';
 
+//Color Chips
+EMBD.colorChip = function(color, emoji) {
+  var match = nearestColor.find(color)
+  const embed = new EMBD()
+  .setTitle(emoji + ' ' + color)
+  .setColor(color)
+  .setDescription('Closest Match: [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!')
+  .setURL('https://encycolorpedia.com/' + color.substring(1))
+return embed;}
+
 //Palette Embeds
 const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
 EMBD.paletteEmbeds = function(colors, page) {
   var paletteEmbeds = []
   for (var i = 0; i < 5; i++) {
     var color = colors[i + (page * 5)].toString()
-    var match = nearestColor.find(color)
-    const embed = new EMBD()
-    .setTitle(color)
-    .setColor(color)
-    .setDescription('Closest Match: [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!\n' + emoji[i])
-    .setURL('https://encycolorpedia.com/' + color.substring(1))
+    embed = EMBD.colorChip(color, emoji[i])
     paletteEmbeds.push(embed)}
 return paletteEmbeds;}
 

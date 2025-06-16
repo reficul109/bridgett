@@ -4,6 +4,7 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 const getColors = require('get-image-colors');
+const nearestColor = require('nearest-color');
 
 module.exports = {
 
@@ -61,8 +62,9 @@ module.exports = {
 
           default:
             collector.stop();
-            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
-            botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []});
+            var choice = colors[(btn + (page * 5) - 1)];
+            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice.toString()));
+            botReply.edit({content: (choice + ' Selected!\nLooks like, ' + nearestColor.find(choice)), embeds: [], components: []});
           break;}
         })
     })})

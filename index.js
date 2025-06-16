@@ -20,10 +20,9 @@ const rest = new REST().setToken(token);
 //Color Stuff
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30}
-
-const {colorList} = require('./colornames.json');
-const colorObjects = colorList.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
+const colorList = require('./colornames.json');
 const nearestColor  = require('nearest-color');
+const colorObjects = colorList.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
 nearestColor.find = function () {return nearestColor.from(colorObjects)};
 
 //Variables and Utils

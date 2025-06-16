@@ -64,7 +64,7 @@ client.once(Events.ClientReady, readyClient => {
 
 //Flexible Response
 SLAB.smartReply = function(cmd, ...args) {
-  if (cmd.discriminator) {return cmd.dmChannel.send(...args);}
+  if (typeof cmd.discriminator === 'string') {return cmd.send(...args);}
   else if (cmd.replied) {return cmd.followUp(...args);}
   else {return cmd.reply(...args);}
 }

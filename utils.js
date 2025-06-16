@@ -20,7 +20,7 @@ EMBD.colorChip = function(color, emoji) {
   const embed = new EMBD()
   .setTitle(emoji + ' ' + color)
   .setColor(color)
-  .setDescription('Closest Match: [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!')
+  .setDescription('This Color looks like... [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!')
   .setURL('https://encycolorpedia.com/' + color.substring(1))
 return embed;}
 

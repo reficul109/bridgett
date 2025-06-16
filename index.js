@@ -63,10 +63,10 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 //Flexible Response
-SLAB.smartReply = function(cmd, ...args) {
-  if (cmd.discriminator) {return cmd.send(...args);}
-  else if (cmd.replied) {return cmd.followUp(...args);}
-  else {return cmd.reply(...args);}
+SLAB.smartReply = async function(cmd, ...args) {
+  if (cmd.discriminator) {return await cmd.send(...args);}
+  else if (cmd.replied) {return await cmd.followUp(...args);}
+  else {return await cmd.reply(...args);}
 }
 
 /* Validity
@@ -112,11 +112,11 @@ isInvalid = async function(cmd, roles, command) {
     //Warn Users if this Command Will Affect Multiple Users 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
+        
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
-
           if (userReply.user.id != cmd.member.id) {return;}
-          await userReply.deferUpdate();
+          userReply.deferUpdate();
           collector.stop();
 
           if (userReply.customId === 'y') {

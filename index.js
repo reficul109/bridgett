@@ -11,10 +11,17 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 
+//Client Stuff
 const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
 const {token} = require('./token.json');
 const rest = new REST().setToken(token);
+
+//Color Stuff
+import nearestColor from 'nearest-color';
+import {colornames} from 'color-name-list';
+const colors = colornames.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
+nearestColor.find = function () {return nearestColor.from(colors)};
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30}
 

@@ -22,7 +22,7 @@ EMBD.colorChip = function(color, emoji) {
   .setColor(color)
   .setDescription('Closest Match: [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!')
   .setURL('https://encycolorpedia.com/' + color.substring(1))
-return [embed];}
+return embed;}
 
 //Palette Embeds
 const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']

@@ -21,7 +21,7 @@ const rest = new REST().setToken(token);
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30}
 const colorList = require('./colornames.json');
-const nearestColor  = require('nearest-color');
+const nearestColor = require('nearest-color');
 const colorObjects = colorList.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
 nearestColor.find = function () {return nearestColor.from(colorObjects)};
 

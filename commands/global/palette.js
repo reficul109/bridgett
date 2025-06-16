@@ -4,6 +4,9 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 
+const getColors = require('get-image-colors');
+const nearestColor = require('nearest-color');
+
 module.exports = {
 
   checkPaletteRole: true,

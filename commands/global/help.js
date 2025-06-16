@@ -52,7 +52,7 @@ module.exports = {
         {"name": "\u200B", "value": "\u200B"},
         {name: "¿How to Protect / Unprotect a Role?", value: "Every Role I am Given in a Server by an Admin is Protected!"},
         {"name": "\u200B", "value": "\u200B"},
-        {name: "¿So I cannot use Commands?", value: "You can Get a **New Role** with /color if the Server was Set-Up!"})
+        {name: "¿So I cannot use Commands?", value: "You can Get a **Custom Role** with /color if the Server was Set-Up!"})
       .setImage(SLAB.imgProtect);
     }
 
@@ -68,7 +68,7 @@ module.exports = {
 
     else {
       helpEmbed.addFields(
-        {name: "/setup", value: "Allow Everyone to Start Choosing their Own Color!"},
+        {name: "/setup", value: "Allow Everyone to Create and Customize their Own **Color Role**!"},
         {"name": "\u200B", "value": "\u200B"},
         {name: "/color", value: "Update your **Color Role!**\nInput a Hexadecimal Color!"},
         {"name": "\u200B", "value": "\u200B"},

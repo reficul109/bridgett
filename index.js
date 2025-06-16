@@ -177,7 +177,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 
   const autoPalette = client.commands.get('palette');
   newUser.args = 'No Args';
-  autoPalette.execute(newUser, null)
+  await autoPalette.execute(newUser, null)
  
 })
 

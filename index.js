@@ -64,12 +64,13 @@ client.once(Events.ClientReady, readyClient => {
 
 //Flexible Response
 SLAB.smartReply = function(cmd, ...args) {
-  if (cmd.replied) {return cmd.followUp(...args);}
+  if (cmd.discriminator) {return cmd.send(...args);}
+  else if (cmd.replied) {return cmd.followUp(...args);}
   else {return cmd.reply(...args);}
 }
 
 /* Validity
-Returns an Error Message String if the Command Cant Continue
+Returns an Error Message String if the Command Cannot Continue
 Returns Nothing if the Command Can Continue
 */
 isInvalid = async function(cmd, roles, command) {
@@ -85,7 +86,7 @@ isInvalid = async function(cmd, roles, command) {
     if (command.correctMessageCommand) {
       return command.correctMessageCommand;}
 
-    else {cmd.args = 'null'}}
+    else {cmd.args = 'No Args'}}
 
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
@@ -120,7 +121,7 @@ isInvalid = async function(cmd, roles, command) {
 
           if (userReply.customId === 'y') {
             botReply.edit({content: ('Proceeding...'), embeds: [], components: []})
-            try {await command.execute(cmd, roles)}
+            try {await command.execute(cmd, roles);}
 
             catch (error) {
               console.error(error);
@@ -150,7 +151,7 @@ handleCommand = async function(cmd, command) {
   } else {
 
     //Perform Valid Commands
-    try {await command.execute(cmd, roles)}
+    try {await command.execute(cmd, roles);}
 
     catch (error) {
       console.error(error);
@@ -166,51 +167,18 @@ client.on(Events.InteractionCreate, async iCom => {
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
 
-  handleCommand(iCom, command)
+  handleCommand(iCom, command);
 
 });
 
 //Auto-Palette
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
-  var memberPaletteGuilds = client.guilds.cache.filter(guild => guild.members.cache.get(newUser.id) && guild.members.cache.get(newUser.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));
-  if (!memberPaletteGuilds.size) {return;}
-  
-  var page = 0;
-  await getColors(newUser.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
-  newUser.send({content: '<@' + newUser.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (botReply) {
 
-    const collector = botReply.channel.createMessageComponentCollector({time: 1800000});
-    collector.on('collect', async userReply => {
-      if (userReply.user.id != newUser.id) {return;}
-      await userReply.deferUpdate();
-
-      var btn = (parseInt(userReply.customId) || userReply.customId);
-      switch (btn) {
-        case '+':
-          if (page < 4) {
-            page++;
-            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
-        break;
-
-        case '-':
-          if (page > 0) {
-            page--;
-            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page)})}
-        break;
-
-        case 'x':
-          collector.stop();
-          botReply.edit({content: ('Cancelled!'), embeds: [], components: []})
-        break;
-
-        default:
-          collector.stop();
-          memberPaletteGuilds.forEach(guild => guild.members.cache.get(newUser.id).roles.color.setColor(colors[(btn + (page * 5) - 1)].toString()));
-          botReply.edit({content: (colors[(btn + (page * 5) - 1)] + ' Selected!'), embeds: [], components: []})
-        break;}
-      })
-  })})
+  const autoPalette = client.commands.get('palette');
+  newUser.args = 'No Args';
+  autoPalette.execute(newUser, null)
+ 
 })
 
 //Britt Stuff
@@ -252,7 +220,7 @@ client.on(Events.MessageCreate, async mCom => {
   if (!command) {return;}
   mCom.args = argresult;
 
-  handleCommand(mCom, command)
+  handleCommand(mCom, command);
 
 })
 

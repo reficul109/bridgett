@@ -26,18 +26,23 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(cmd, roles) {
-    var user = (null || cmd.member.user)
+
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
 
+    if (cmd.discriminator) {user = cmd} 
+    else {user =  cmd.member.user}
+
     if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
     else {paletteGuilds = paletteGuilds.filter(guild => guild.members.cache.get(user.id) && guild.members.cache.get(user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));}
-   
+    
+    if (!paletteGuilds.size) {return;}
+
     var page = 0;
     await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(colors => {
     SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (botReply) {
 
-      const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
+      const collector = botReply.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
         if (userReply.user.id != user.id) {return;}
         await userReply.deferUpdate();

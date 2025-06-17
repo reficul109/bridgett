@@ -29,7 +29,7 @@ module.exports = {
 
     if (typeof cmd.discriminator === 'string') {
       user = cmd;
-      channel = user.dmChannel;} 
+      channel = user.createDM();} 
     else {
       user = cmd.member.user;
       channel = cmd.channel;}

@@ -42,7 +42,7 @@ client.commands = new Collection();
 (async () => {
   try {
     console.log('Cargando ' + globalCommands.length + ' Comandos...');
-    await rest.put(Routes.applicationCommands(SLAB.bID), {body: []});
+    await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands});
     console.log('Comandos Cargados con Exito!')} 
   catch (error) {
     console.error(error)}

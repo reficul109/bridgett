@@ -17,14 +17,6 @@ const client = new Client({intents: intents, allowedMentions: {parse: ['users', 
 const {token} = require('./token.json');
 const rest = new REST().setToken(token);
 
-//Color Stuff
-const getColors = require('get-image-colors');
-getColors.paletteCount = {count: 30}
-const colorList = require('./colornames.json');
-const nearestColor = require('nearest-color');
-const colorObjects = colorList.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
-nearestColor.find = nearestColor.from(colorObjects);
-
 //Variables and Utils
 SLAB.prefix = 'br!';
 SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
@@ -173,9 +165,9 @@ client.on(Events.InteractionCreate, async iCom => {
 //Auto-Palette
 client.on('userUpdate', async (oldUser, newUser) => {
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
-
   const autoPalette = client.commands.get('palette');
   newUser.args = 'No Args';
+  
   await autoPalette.execute(newUser, null)
  
 });

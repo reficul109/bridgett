@@ -6,13 +6,13 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 
+//Color Stuff
+const getColors = require('get-image-colors');
+getColors.paletteCount = {count: 30}
+const colorList = require('./colornames.json');
 const nearestColor = require('nearest-color');
-
-//Images
-SLAB.imgNames = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430493847664/AutoPaletteNames.png';
-SLAB.imgMatch = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076430762414122/MatchYourColors.png';
-SLAB.imgProtect = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431013937192/ProtectedRoleList.png';
-SLAB.imgNew = 'https://cdn.discordapp.com/attachments/530524839321010188/1253076431240695890/ScreenNewRoles.png';
+const colorObjects = colorList.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
+nearestColor.find = nearestColor.from(colorObjects);
 
 //Color Chips
 EMBD.colorChip = function(color, emoji) {
@@ -59,3 +59,9 @@ const yeah = new BTNS().setCustomId('y').setEmoji('✔️').setStyle(BSTY.Succes
 const nope = new BTNS().setCustomId('n').setEmoji('✖️').setStyle(BSTY.Danger);
 const proceedRow = new ROWS().addComponents(yeah, nope);
 ROWS.proceedUi = [proceedRow];
+
+//Images
+SLAB.imgNames = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/AutoPaletteNames.png';
+SLAB.imgMatch = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/MatchYourColors.png';
+SLAB.imgProtect = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/ProtectedRoleList.png';
+SLAB.imgNew = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/ScreenNewRoles.png';

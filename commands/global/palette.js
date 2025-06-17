@@ -5,7 +5,6 @@ const {
 } = require('discord.js');
 
 const getColors = require('get-image-colors');
-const nearestColor = require('nearest-color');
 
 module.exports = {
 
@@ -27,6 +26,7 @@ module.exports = {
 
   async execute(cmd, roles) {
 
+    //Align Behavior for Automatic Executions
     if (typeof cmd.discriminator === 'string') {
       user = cmd;
       channel = await user.createDM();} 
@@ -34,6 +34,7 @@ module.exports = {
       user = cmd.member.user;
       channel = cmd.channel;}
 
+    //Area of Effect
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
     if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}

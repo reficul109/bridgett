@@ -158,7 +158,6 @@ handleCommand = async function(cmd, command) {
       SLAB.smartReply(cmd, {content: 'Error...', ephemeral: true})
     }
   }
-
 }
 
 //Slash Command Answer
@@ -179,7 +178,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
   newUser.args = 'No Args';
   await autoPalette.execute(newUser, null)
  
-})
+});
 
 //Britt Stuff
 client.on(Events.MessageCreate, async mCom => {
@@ -222,7 +221,7 @@ client.on(Events.MessageCreate, async mCom => {
 
   handleCommand(mCom, command);
 
-})
+});
 
 //Token
 client.login(token);

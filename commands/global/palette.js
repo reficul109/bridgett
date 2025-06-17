@@ -27,12 +27,15 @@ module.exports = {
 
   async execute(cmd, roles) {
 
+    if (typeof cmd.discriminator === 'string') {
+      user = cmd;
+      channel = user.dmChannel;} 
+    else {
+      user = cmd.member.user;
+      channel = cmd.channel;}
+
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
-
-    if (typeof cmd.discriminator === 'string') {user = cmd} 
-    else {user =  cmd.member.user}
-
     if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
     else {paletteGuilds = paletteGuilds.filter(guild => guild.members.cache.get(user.id) && guild.members.cache.get(user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));}
     
@@ -42,7 +45,7 @@ module.exports = {
     await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), getColors.paletteCount).then(async colors => {
     await SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (botReply) {
 
-      const collector = botReply.channel.createMessageComponentCollector({time: 1800000});
+      const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', userReply => {
         if (userReply.user.id != user.id) {return;}
         userReply.deferUpdate();

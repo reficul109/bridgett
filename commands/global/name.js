@@ -17,8 +17,9 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(cmd, roles) {
+    var name = (cmd.args ?? cmd.options.getString('name'));
+
     if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color)) {
-      var name = (cmd.args ?? cmd.options.getString('name'));
       var color = '#ffffff';
       var position = (cmd.paletteRole.position + 1);
 
@@ -29,8 +30,6 @@ module.exports = {
       SLAB.smartReply(cmd, 'Role Created!');
 
     } else {
-      var name = (cmd.args ?? cmd.options.getString('name'));
-      
       roles.color.setName(name);
       SLAB.smartReply(cmd, 'Role Updated!')}
 }}

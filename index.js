@@ -49,7 +49,7 @@ client.commands = new Collection();
 })();
 
 //Ready
-client.once(Events.ClientReady, readyClient => {
+client.once(Events.ClientReady, () => {
   client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'});
   console.log('🐙');
 });

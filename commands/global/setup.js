@@ -29,6 +29,6 @@ module.exports = {
       await cmd.guild.roles.create(newRole).catch(() => {return SLAB.smartReply(cmd, 'I Need Permission to Create New Roles...');})
       var paletteRole = cmd.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨")
       cmd.guild.members.me.roles.add(paletteRole)
-      SLAB.smartReply(cmd, {content: 'Your Server is Set-Up!\nI Created a New Role: <@&' + paletteRole.id + '>\nPosition it Wisely, If I Create More Roles, they Will be Above This One!', files: ['./ScreenNewRoles.png']})
+      SLAB.smartReply(cmd, {content: 'Your Server is Set-Up!\nI Created a New Role: <@&' + paletteRole.id + '>\nPosition it Wisely, If I Create More Roles, they Will be Above This One!', files: ['./images/ScreenNewRoles.png']})
     }
 }}

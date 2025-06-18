@@ -47,9 +47,9 @@ module.exports = {
     await SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!', embeds: EMBD.paletteEmbeds(colors, page), components: ROWS.paletteUI}).then(function (botReply) {
 
       const collector = channel.createMessageComponentCollector({time: 1800000});
-      collector.on('collect', userReply => {
+      collector.on('collect', async userReply => {
         if (userReply.user.id != user.id) {return;}
-        userReply.deferUpdate();
+        await userReply.deferUpdate();
 
         var btn = (parseInt(userReply.customId) || userReply.customId);
         switch (btn) {

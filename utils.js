@@ -18,7 +18,7 @@ nearestColor.find = nearestColor.from(colorObjects);
 EMBD.colorChip = function(color, emoji) {
   var match = nearestColor.find(color)
   const embed = new EMBD()
-  .setTitle(emoji + '     ' + color)
+  .setTitle(emoji + '   ' + color)
   .setColor(color)
   .setDescription('This Color looks like... [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!')
   .setURL('https://encycolorpedia.com/' + color.substring(1))

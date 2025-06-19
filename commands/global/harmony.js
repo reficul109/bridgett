@@ -29,6 +29,7 @@ module.exports = {
 
   async execute(cmd, roles) {
     var color = (cmd.args ?? cmd.options.getString('color'));
-    const colors = colorEdit(color).harmonies("analogous").map((c) => c.toHex());
-    SLAB.smartReply(cmd, {content: '!!!', embeds: EMBD.paletteEmbeds(colors, 0, 2)})
+    if (!color.startsWith('#')) {color = '#' + color;}
+    var harmony = colorEdit(color).harmonies("complementary").map((c) => c.toHex());
+    SLAB.smartReply(cmd, {content: '!!!', embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})
 }}

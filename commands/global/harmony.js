@@ -49,7 +49,7 @@ module.exports = {
           embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})
 
         } else {
-          harmony = colorEdit(color).harmonies(userReply.customId).map((c) => c.toHex());
+          harmony = colorEdit(color).harmonies(userReply.customId.toLowerCase()).map((c) => c.toHex());
           botReply.edit({content: 'Displaying ' + userReply.customId + ' Colors!',
           embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})}
       })

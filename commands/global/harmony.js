@@ -33,7 +33,7 @@ module.exports = {
     var harmony = colorEdit(color).harmonies("complementary").map((c) => c.toHex());
 
     SLAB.smartReply(cmd, {content: 'Displaying Complementary Colors!', 
-    embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length, 
+    embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
     components: ROWS.harmonyUI)}).then(function (botReply) {
   
       const collector = channel.createMessageComponentCollector({time: 1800000});
@@ -41,7 +41,7 @@ module.exports = {
         if (userReply.user.id != user.id) {return;}
         await userReply.deferUpdate();
 
-        if (userReply.customId === 'halfRectangle') {
+        if (userReply.customId === 'HalfRectangle') {
           harmony = colorEdit(color).harmonies('rectangle').map((c) => c.toHex());
           harmony.splice(1, 2);
           botReply.edit({content: 'Displaying Complementary Colors!', 

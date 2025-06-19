@@ -26,10 +26,10 @@ return embed;}
 
 //Palette Embeds
 const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
-EMBD.paletteEmbeds = function(colors, page) {
+EMBD.paletteEmbeds = function(colors, page, size) {
   var paletteEmbeds = []
-  for (var i = 0; i < 5; i++) {
-    var color = colors[i + (page * 5)].toString()
+  for (var i = 0; i < size; i++) {
+    var color = colors[i + (page * size)].toString()
     embed = EMBD.colorChip(color, emoji[i])
     paletteEmbeds.push(embed)}
 return paletteEmbeds;}

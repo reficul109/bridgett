@@ -39,7 +39,7 @@ module.exports = {
   
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
-        if (userReply.user.id != user.id) {return;}
+        if (userReply.user.id != cmd.member.user.id) {return;}
         await userReply.deferUpdate();
 
         if (userReply.customId === 'HalfRectangle') {

@@ -24,7 +24,7 @@ module.exports = {
 
   data: new SLAB()
   .setName('harmony')
-  .setDescription('Form your palette!')
+  .setDescription('Form your Palette!')
   .addStringOption(option => option.setName('color').setRequired(true).setDescription('Color to Harmonize').setMinLength(6).setMaxLength(7))
   .setDMPermission(false),
 
@@ -42,16 +42,11 @@ module.exports = {
         if (userReply.user.id != cmd.member.user.id) {return;}
         await userReply.deferUpdate();
 
-        if (userReply.customId === 'HalfRectangle') {
-          harmony = colorEdit(color).harmonies('rectangle').map((c) => c.toHex());
-          harmony.splice(1, 2);
-          botReply.edit({content: 'Displaying Complementary Colors!', 
-          embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})
+        if (userReply.customId === 'Side-Complementary') {harmony = colorEdit(color).harmonies('rectangle').map((c) => c.toHex()).splice(1, 2);} 
+        else {harmony = colorEdit(color).harmonies(userReply.customId.toLowerCase()).map((c) => c.toHex());}
 
-        } else {
-          harmony = colorEdit(color).harmonies(userReply.customId.toLowerCase()).map((c) => c.toHex());
-          botReply.edit({content: 'Displaying ' + userReply.customId + ' Colors!',
-          embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})}
+        botReply.edit({content: 'Displaying ' + userReply.customId + ' Colors!',
+        embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})
       })
     })
 }}

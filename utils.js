@@ -49,15 +49,15 @@ ROWS.paletteUI = [colorsRow, selectRow];
 
 //Harmony UI
 const cmplt = new BTNS().setCustomId('Complementary').setEmoji('📓').setStyle(BSTY.Primary);
-const sidec = new BTNS().setCustomId('HalfRectangle').setEmoji('💈').setStyle(BSTY.Primary);
+const sidec = new BTNS().setCustomId('Side-Complementary').setEmoji('💈').setStyle(BSTY.Primary);
 const triad = new BTNS().setCustomId('Triadic').setEmoji('📚').setStyle(BSTY.Primary);
 const anlog = new BTNS().setCustomId('Analogous').setEmoji('🚦').setStyle(BSTY.Primary);
+const squre = new BTNS().setCustomId('Tetradic').setEmoji('🧮').setStyle(BSTY.Primary);
 const recta = new BTNS().setCustomId('Rectangle').setEmoji('🧬').setStyle(BSTY.Primary);
 const split = new BTNS().setCustomId('Split-Complementary').setEmoji('🍡').setStyle(BSTY.Primary);
-const squre = new BTNS().setCustomId('Tetradic').setEmoji('🧮').setStyle(BSTY.Primary);
 const penta = new BTNS().setCustomId('Double-Split-Complementary').setEmoji('🌈').setStyle(BSTY.Primary);
 const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);
-const complxHarm = new ROWS().addComponents(recta, split, squre, penta);
+const complxHarm = new ROWS().addComponents(squre, recta, split, penta);
 ROWS.harmonyUI = [simpleHarm, complxHarm];
 
 //Warning Embed

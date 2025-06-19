@@ -33,7 +33,7 @@ module.exports = {
     if (!color.startsWith('#')) {color = '#' + color;}
     var harmony = colorEdit(color).harmonies("complementary").map((c) => c.toHex());
 
-    SLAB.smartReply(cmd, {content: 'Displaying Complementary Colors!', 
+    await SLAB.smartReply(cmd, {content: 'Displaying Complementary Colors!', 
     embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
     components: ROWS.harmonyUI}).then(function (botReply) {
   

@@ -159,7 +159,6 @@ client.on(Events.InteractionCreate, async iCom => {
   if (!command) {return;}
 
   handleCommand(iCom, command);
-
 });
 
 //Auto-Palette
@@ -169,7 +168,6 @@ client.on('userUpdate', async (oldUser, newUser) => {
   newUser.args = 'No Args';
   
   await autoPalette.execute(newUser, null)
- 
 });
 
 //Britt Stuff
@@ -212,7 +210,6 @@ client.on(Events.MessageCreate, async mCom => {
   mCom.args = argresult;
 
   handleCommand(mCom, command);
-
 });
 
 //Token

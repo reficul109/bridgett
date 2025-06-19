@@ -47,6 +47,19 @@ const colorsRow = new ROWS().addComponents(color1, color2, color3, color4, color
 const selectRow = new ROWS().addComponents(more, less, none);
 ROWS.paletteUI = [colorsRow, selectRow];
 
+//Harmony UI
+const cmplt = new BTNS().setCustomId('complementary').setEmoji('📓').setStyle(BSTY.Primary);
+const sidec = new BTNS().setCustomId('halfRectangle').setEmoji('💈').setStyle(BSTY.Primary);
+const triad = new BTNS().setCustomId('triadic').setEmoji('📚').setStyle(BSTY.Primary);
+const anlog = new BTNS().setCustomId('analogous').setEmoji('🚦').setStyle(BSTY.Primary);
+const recta = new BTNS().setCustomId('rectangle').setEmoji('🧬').setStyle(BSTY.Primary);
+const split = new BTNS().setCustomId('split-complementary').setEmoji('🍡').setStyle(BSTY.Primary);
+const squre = new BTNS().setCustomId('tetradic').setEmoji('🧮').setStyle(BSTY.Primary);
+const penta = new BTNS().setCustomId('double-split-complementary').setEmoji('🌈').setStyle(BSTY.Primary);
+const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);
+const complxHarm = new ROWS().addComponents(recta, split, squre, penta);
+ROWS.harmonyUI = [simpleHarm, complxHarm];
+
 //Warning Embed
 EMBD.warningEmbed = function(roles) {
   const warningEmbed = new EMBD()

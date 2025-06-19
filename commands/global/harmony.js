@@ -34,7 +34,7 @@ module.exports = {
 
     SLAB.smartReply(cmd, {content: 'Displaying Complementary Colors!', 
     embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
-    components: ROWS.harmonyUI)}).then(function (botReply) {
+    components: ROWS.harmonyUI}).then(function (botReply) {
   
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {

@@ -1,4 +1,5 @@
 const {
+  ActionRowBuilder: ROWS,
   EmbedBuilder: EMBD,
   SlashCommandBuilder: SLAB
 } = require('discord.js');

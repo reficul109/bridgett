@@ -37,7 +37,7 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
     components: ROWS.harmonyUI}).then(function (botReply) {
   
-      const collector = channel.createMessageComponentCollector({time: 1800000});
+      const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
         if (userReply.user.id != user.id) {return;}
         await userReply.deferUpdate();

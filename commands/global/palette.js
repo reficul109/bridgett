@@ -50,9 +50,10 @@ module.exports = {
 
       if (typeof cmd.commandName === 'string') {filterMessage = cmd.fetchReply();}
       else {filterMessage = botReply;}
-      
-      const collector = channel.createMessageComponentCollector({time: 1800000, message: filterMessage});
+
+      const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
+        if (!userReply.message.id != filterMessage.id) {return;}
         await userReply.deferUpdate();
         if (userReply.user.id != user.id) {return;}
 

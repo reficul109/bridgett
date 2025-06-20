@@ -48,13 +48,13 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.paletteUI}).then(function (botReply) {
 
-      if (typeof cmd.commandName === 'string') {filterMessage = cmd.fetchReply();}
+      if (typeof cmd.commandName === 'string') {filterMessage = cmd.fetchReply().id;}
       else {filterMessage = botReply;}
 
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
-        console.log(userReply.message + ' ' + filterMessage.id)
-        if (userReply.message != filterMessage.id) {return;}
+        console.log(userReply.message + ' ' + filterMessage)
+        if (userReply.message != filterMessage) {return;}
         await userReply.deferUpdate();
         if (userReply.user.id != user.id) {return;}
 

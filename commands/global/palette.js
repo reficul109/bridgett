@@ -48,7 +48,7 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.paletteUI}).then(function (botReply) {
 
-      if (cmd.isCommand()) {botReply = cmd.fetchReply()}
+      if (typeof cmd.commandName === 'string') {botReply = cmd.fetchReply()}
       const collector = channel.createMessageComponentCollector({time: 1800000, message: botReply});
       collector.on('collect', async userReply => {
         await userReply.deferUpdate();

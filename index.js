@@ -133,7 +133,7 @@ handleCommand = async function(cmd, command) {
 
   //Perform with Caution
   var roles = cmd.member.roles;
-  errorResponse = await isInvalid(cmd, roles, command);
+  var errorResponse = await isInvalid(cmd, roles, command);
   if (typeof errorResponse === 'string') {
 
     //Invalid Command Response

@@ -31,7 +31,7 @@ module.exports = {
   async execute(cmd, roles) {
     var color = (cmd.args ?? cmd.options.getString('color'));
     if (!color.startsWith('#')) {color = '#' + color;}
-    var harmony = colorEdit(color).harmonies("complementary").map((c) => c.toHex());
+    var harmony = colorEdit(color).harmonies('complementary').map((c) => c.toHex());
 
     await SLAB.smartReply(cmd, {content: 'Displaying Complementary Colors!', 
     embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
@@ -39,7 +39,7 @@ module.exports = {
   
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
-        if (userReply.user.id != cmd.member.user.id) {return;}
+        if (userReply.user.id != cmd.member.id) {return;}
         await userReply.deferUpdate();
 
         if (userReply.customId === 'Side-Complementary') {

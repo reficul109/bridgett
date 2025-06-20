@@ -30,7 +30,7 @@ EMBD.paletteEmbeds = function(colors, page, size) {
   var paletteEmbeds = []
   for (var i = 0; i < size; i++) {
     var color = colors[i + (page * size)].toString()
-    embed = EMBD.colorChip(color, emoji[i])
+    var embed = EMBD.colorChip(color, emoji[i])
     paletteEmbeds.push(embed)}
 return paletteEmbeds;}
 
@@ -48,12 +48,12 @@ const selectRow = new ROWS().addComponents(more, less, none);
 ROWS.paletteUI = [colorsRow, selectRow];
 
 //Harmony UI
+const triad = new BTNS().setCustomId('Triadic').setEmoji('📚').setStyle(BSTY.Primary);
+const squre = new BTNS().setCustomId('Tetradic').setEmoji('🧮').setStyle(BSTY.Primary);
+const anlog = new BTNS().setCustomId('Analogous').setEmoji('🚦').setStyle(BSTY.Primary);
+const recta = new BTNS().setCustomId('Rectangle').setEmoji('🧬').setStyle(BSTY.Primary);
 const cmplt = new BTNS().setCustomId('Complementary').setEmoji('📓').setStyle(BSTY.Primary);
 const sidec = new BTNS().setCustomId('Side-Complementary').setEmoji('💈').setStyle(BSTY.Primary);
-const triad = new BTNS().setCustomId('Triadic').setEmoji('📚').setStyle(BSTY.Primary);
-const anlog = new BTNS().setCustomId('Analogous').setEmoji('🚦').setStyle(BSTY.Primary);
-const squre = new BTNS().setCustomId('Tetradic').setEmoji('🧮').setStyle(BSTY.Primary);
-const recta = new BTNS().setCustomId('Rectangle').setEmoji('🧬').setStyle(BSTY.Primary);
 const split = new BTNS().setCustomId('Split-Complementary').setEmoji('🍡').setStyle(BSTY.Primary);
 const penta = new BTNS().setCustomId('Double-Split-Complementary').setEmoji('🌈').setStyle(BSTY.Primary);
 const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);

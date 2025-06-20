@@ -52,7 +52,7 @@ module.exports = {
       collector.on('collect', async userReply => {
         await userReply.deferUpdate();
         if (userReply.user.id != user.id) {return;}
-        if (botReply.id != userReply.message.id) {return;}
+        if (!userReply.messageId || userReply.messageId != botReply.id) {return;}
 
         var btn = (parseInt(userReply.customId) || userReply.customId);
         switch (btn) {

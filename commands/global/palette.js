@@ -50,7 +50,7 @@ module.exports = {
 
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
-        console.log(userReply)
+        console.log(userReply.message)
         if (!userReply.message || userReply.message.id != botReply.id) {return;}
         await userReply.deferUpdate();
         if (userReply.user.id != user.id) {return;}

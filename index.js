@@ -20,7 +20,7 @@ const rest = new REST().setToken(token);
 //Variables and Utils
 SLAB.prefix = 'br!';
 SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
-const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
+const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'Balatro ajsajdjas', 'zzz...'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
 const utils = require('./resources/utils.js');
 
@@ -171,7 +171,7 @@ client.on(Events.InteractionCreate, async iCom => {
   if (!command) {return;}
 
   checkData(iCom);
-  
+
   handleCommand(iCom, command);
 });
 

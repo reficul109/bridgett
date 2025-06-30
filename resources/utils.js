@@ -6,10 +6,14 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 
+//Database Stuff
+const db = require('better-sqlite3')('./resources/BrittData.db');
+db.guildConfig = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
+
 //Color Stuff
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30};
-const colorList = require('./colornames.json');
+const colorList = require('./resources/colornames.json');
 const nearestColor = require('nearest-color');
 const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
 nearestColor.find = nearestColor.from(colorObjects);

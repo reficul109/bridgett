@@ -22,7 +22,7 @@ SLAB.prefix = 'br!';
 SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
 const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'cartitas pedorras', 'slay the spi-...', 'zzz...'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
-const utils = require('./utils.js');
+const utils = require('./resources/utils.js');
 
 //Slash Command Gather
 const globalCommands = [];
@@ -59,6 +59,14 @@ SLAB.smartReply = function(cmd, ...args) {
   if (typeof cmd.discriminator === 'string') {return cmd.send(...args).catch(() => {return;})}
   else if (cmd.replied) {return cmd.followUp(...args);}
   else {return cmd.reply(...args);}
+}
+
+//Database Check
+checkData = async function(cmd) {
+  if (!db.guildConfig.get(cmd.guild.id)) {
+    const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
+    newRow.run(cmd.guild.id, 'N', 'N', 'Y')}
+  cmd.guild.config = db.guildConfig.get(cmd.guild.id)
 }
 
 /* Validity
@@ -106,7 +114,7 @@ isInvalid = async function(cmd, roles, command) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
         
         var filterMessage = botReply;
-        if (typeof cmd.commandName === 'string') {cmd.fetchReply().then(reply => {filterMessage = reply});}
+        if (typeof cmd.commandName === 'string') {cmd.fetchReply().then(reply => {filterMessage = reply;})}
 
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
@@ -162,6 +170,8 @@ client.on(Events.InteractionCreate, async iCom => {
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
 
+  checkData(iCom);
+  
   handleCommand(iCom, command);
 });
 
@@ -179,14 +189,17 @@ client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
 
-  //Boxie
-  if (wBox.some(word => msgCon.includes(word))) {
-    mCom.react('📦');
-    mCom.channel.send('Boxie!')}
+  checkData(mCom);
 
-  //Britt
-  else if (wBritt.some(word => msgCon.includes(word))) {
-    mCom.channel.send('Me!')}
+  if (mCom.guild.config.funAllowed === 'Y') {
+    //Boxie
+    if (wBox.some(word => msgCon.includes(word))) {
+      mCom.react('📦');
+      mCom.channel.send('Boxie!')}
+
+    //Britt
+    else if (wBritt.some(word => msgCon.includes(word))) {
+      mCom.channel.send('Me!')}}
 
   //Non-Prefix
   if (!msgCon.startsWith(SLAB.prefix)) {return;}

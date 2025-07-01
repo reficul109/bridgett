@@ -81,7 +81,7 @@ isInvalid = async function(cmd, roles, command) {
     else {cmd.args = 'No Args';}}
 
   //Check if Server is Set-Up Correctly
-  cmd.paletteRole = cmd.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
+  cmd.paletteRole = cmd.guild.roles.cache.get(cmd.guildConfig.roleID);
   if (command.checkPaletteRole && !cmd.paletteRole) {
     return 'Your Server is not Set-Up! (/setup)';}
 
@@ -161,7 +161,8 @@ client.on(Events.InteractionCreate, async iCom => {
   if (!iCom.isChatInputCommand()) {return;}
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
-  var guildConfig = await SLAB.guildData(iCom);
+
+  iCom.guildConfig = await SLAB.guildData(iCom);
 
   handleCommand(iCom, command)
 });
@@ -172,17 +173,18 @@ client.on('userUpdate', async (oldUser, newUser) => {
   const autoPalette = client.commands.get('palette');
   newUser.args = 'No Args';
   
-  await autoPalette.execute(newUser, null)
+  autoPalette.execute(newUser, null)
 });
 
 //Britt Stuff
 client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
+
+  mCom.guildConfig = await SLAB.guildData(mCom);
   var msgCon = mCom.content.toLowerCase();
-  var guildConfig = await SLAB.guildData(mCom);
 
   //Message Reactions
-  if (guildConfig.funAllowed === 'Y') {
+  if (mCom.guildConfig.funAllowed === 'Y') {
     if (wBox.some(word => msgCon.includes(word))) {
       mCom.react('📦')
       mCom.channel.send('Boxie!')

@@ -23,13 +23,14 @@ module.exports = {
       var color = '#ffffff';
       var position = (cmd.paletteRole.position + 1);
 
-      var newRole = {name: name, color: color, position: position, permissions: []}
-      await cmd.guild.roles.create(newRole);
+      var newRole = {name: name, color: color, position: position, permissions: []};
+      await cmd.guild.roles.create(newRole)
 
-      roles.add(cmd.guild.roles.cache.find(role => role.position === position));
-      SLAB.smartReply(cmd, 'Role Created!');
+      roles.add(cmd.guild.roles.cache.find(role => role.position === position))
+      SLAB.smartReply(cmd, 'Role Created!')
 
     } else {
-      roles.color.setName(name);
-      SLAB.smartReply(cmd, 'Role Updated!')}
+      roles.color.setName(name)
+      SLAB.smartReply(cmd, 'Role Updated!')
+    }
 }}

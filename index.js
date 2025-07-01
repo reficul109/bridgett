@@ -33,7 +33,7 @@ client.commands = new Collection();
 	  const filePath = path.join(commandsPath, file);
 	  const command = require(filePath);
 	  if ('data' in command && 'execute' in command) {
-      client.commands.set(command.data.name, command);
+      client.commands.set(command.data.name, command)
 	    globalCommands.push(command.data.toJSON())}
     else {console.log('Error en ' + filePath + '...')}
   }
@@ -41,8 +41,8 @@ client.commands = new Collection();
 //Slash Command Loader
 (async () => {
   try {
-    console.log('Cargando ' + globalCommands.length + ' Comandos...');
-    await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands});
+    console.log('Cargando ' + globalCommands.length + ' Comandos...')
+    await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands})
     console.log('Comandos Cargados con Exito!')} 
   catch (error) {
     console.error(error)}
@@ -50,8 +50,8 @@ client.commands = new Collection();
 
 //Ready
 client.once(Events.ClientReady, () => {
-  client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'});
-  console.log('🐙');
+  client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'})
+  console.log('🐙')
 });
 
 //Flexible Response
@@ -78,7 +78,7 @@ isInvalid = async function(cmd, roles, command) {
     if (command.correctMessageCommand) {
       return command.correctMessageCommand;}
 
-    else {cmd.args = 'No Args'}}
+    else {cmd.args = 'No Args';}}
 
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨"));
@@ -111,21 +111,21 @@ isInvalid = async function(cmd, roles, command) {
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
           if (userReply.message != filterMessage.id) {return;}
-          await userReply.deferUpdate();
+          await userReply.deferUpdate()
           if (userReply.user.id != cmd.member.id) {return;}
-          collector.stop();
+          collector.stop()
 
           if (userReply.customId === 'y') {
             botReply.edit({content: ('Proceeding...'), embeds: [], components: []})
-            try {await command.execute(cmd, roles);}
+            try {await command.execute(cmd, roles)}
 
             catch (error) {
-              console.error(error);
+              console.error(error)
               SLAB.smartReply(cmd, {content: 'Error...', ephemeral: true})}}
             
           else {botReply.edit({content: ('Cancelled!'), embeds: [], components: []})}
         })
-      });
+      })
 
       return 'Executing Remotely...';
     }
@@ -161,10 +161,9 @@ client.on(Events.InteractionCreate, async iCom => {
   if (!iCom.isChatInputCommand()) {return;}
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
+  var guildConfig = SLAB.guildData(iCom);
 
-  iCom.guildConfig = SLAB.guildData(iCom);
-
-  handleCommand(iCom, command);
+  handleCommand(iCom, command)
 });
 
 //Auto-Palette
@@ -180,17 +179,15 @@ client.on('userUpdate', async (oldUser, newUser) => {
 client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
+  var guildConfig = SLAB.guildData(mCom);
 
-  mCom.guildConfig = SLAB.guildData(mCom);
-
-  if (mCom.guildConfig.funAllowed === 'Y') {
-    //Boxie
+  //Message Reactions
+  if (guildConfig.funAllowed === 'Y') {
     if (wBox.some(word => msgCon.includes(word))) {
-      mCom.react('📦');
-      mCom.channel.send('Boxie!')}
+      mCom.react('📦')
+      mCom.channel.send('Boxie!')
 
-    //Britt
-    else if (wBritt.some(word => msgCon.includes(word))) {
+    } else if (wBritt.some(word => msgCon.includes(word))) {
       mCom.channel.send('Me!')}}
 
   //Non-Prefix
@@ -202,15 +199,15 @@ client.on(Events.MessageCreate, async mCom => {
   //Say
   if (msgCon.startsWith(SLAB.prefix + 'say') && (argresult || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
-      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
-      mCom.reply('Done!');
+      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt})
+      mCom.reply('Done!')
 
     } else if (client.users.cache.get(args[1])) {
-      client.users.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt});
-      mCom.reply('Done!');
+      client.users.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt})
+      mCom.reply('Done!')
 
     } else {
-      mCom.channel.send({content: argresult, files: msgAtt});
+      mCom.channel.send({content: argresult, files: msgAtt})
       mCom.delete()}}
 
   //Text Command Answer
@@ -218,8 +215,8 @@ client.on(Events.MessageCreate, async mCom => {
   if (!command) {return;}
   mCom.args = argresult;
 
-  handleCommand(mCom, command);
+  handleCommand(mCom, command)
 });
 
 //Token
-client.login(token);
+client.login(token)

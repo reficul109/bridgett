@@ -54,7 +54,7 @@ module.exports = {
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
         if (userReply.message != filterMessage.id) {return;}
-        await userReply.deferUpdate();
+        await userReply.deferUpdate()
         if (userReply.user.id != user.id) {return;}
 
         var btn = (parseInt(userReply.customId) || userReply.customId);
@@ -72,15 +72,15 @@ module.exports = {
           break;
 
           case 'x':
-            collector.stop();
+            collector.stop()
             botReply.edit({content: ('Cancelled!'), embeds: [], components: []})
           break;
 
           default:
-            collector.stop();
+            collector.stop()
             var choice = colors[(btn + (page * 5) - 1)].toString();
-            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice));
-            botReply.edit({content: 'Done!', embeds: [EMBD.colorChip(choice, "🎨")], components: []});
+            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice))
+            botReply.edit({content: 'Done!', embeds: [EMBD.colorChip(choice, "🎨")], components: []})
           break;}
         })
     })})

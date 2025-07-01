@@ -43,12 +43,12 @@ module.exports = {
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
         if (userReply.message != filterMessage.id) {return;}
-        await userReply.deferUpdate();
+        await userReply.deferUpdate()
         if (userReply.user.id != cmd.member.id) {return;}
         
         if (userReply.customId === 'Side-Complementary') {
-          harmony = colorEdit(color).harmonies('rectangle').map((c) => c.toHex())
-          harmony.splice(1, 2);
+          harmony = colorEdit(color).harmonies('rectangle').map((c) => c.toHex());
+          harmony.splice(1, 2)
         } else {
           harmony = colorEdit(color).harmonies(userReply.customId.toLowerCase()).map((c) => c.toHex());}
 

@@ -8,11 +8,16 @@ const {
 
 //Database Stuff
 const db = require('better-sqlite3')('./resources/BrittData.db');
-db.guildConfig = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
+const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
+
+//Database Check
+SLAB.guildData = async function(cmd) {
+  if (!guildConfigs.get(cmd.guild.id)) {
+    const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
+    newRow.run(cmd.guild.id, 'N', 'N', 'Y')}
+  return guildConfigs.get(cmd.guild.id);}
 
 //Color Stuff
-const getColors = require('get-image-colors');
-getColors.paletteCount = {count: 30};
 const colorList = require('./colornames.json');
 const nearestColor = require('nearest-color');
 const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
@@ -77,7 +82,7 @@ const nope = new BTNS().setCustomId('n').setEmoji('✖️').setStyle(BSTY.Danger
 const proceedRow = new ROWS().addComponents(yeah, nope);
 ROWS.proceedUi = [proceedRow];
 
-//Images
+//Image (URLs)
 SLAB.imgNames = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/AutoPaletteNames.png';
 SLAB.imgMatch = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/MatchYourColors.png';
 SLAB.imgProtect = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/ProtectedRoleList.png';

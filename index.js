@@ -61,15 +61,6 @@ SLAB.smartReply = function(cmd, ...args) {
   else {return cmd.reply(...args);}
 }
 
-//Database Check
-checkData = async function(cmd) {
-  if (!db.guildConfig.get(cmd.guild.id)) {
-    const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
-    newRow.run(cmd.guild.id, 'N', 'N', 'Y')}
-
-  return db.guildConfig.get(cmd.guild.id);
-}
-
 /* Validity
 Returns an Error Message String if the Command Cannot Continue
 Returns Nothing if the Command Can Continue
@@ -190,7 +181,7 @@ client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
 
-  mCom.guildConfig = checkData(mCom);
+  mCom.guildConfig = SLAB.guildData(mCom);
 
   if (mCom.guildConfig.funAllowed === 'Y') {
     //Boxie

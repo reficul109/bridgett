@@ -7,7 +7,7 @@ const {
 } = require('discord.js');
 
 //Database Stuff
-const db = require('better-sqlite3')('./BrittData.db');
+const db = require('better-sqlite3')('./resources/BrittData.db');
 db.guildConfig = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 
 //Color Stuff

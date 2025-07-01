@@ -66,7 +66,8 @@ checkData = async function(cmd) {
   if (!db.guildConfig.get(cmd.guild.id)) {
     const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
     newRow.run(cmd.guild.id, 'N', 'N', 'Y')}
-  cmd.guild.config = db.guildConfig.get(cmd.guild.id)
+
+  return db.guildConfig.get(cmd.guild.id);
 }
 
 /* Validity
@@ -189,9 +190,9 @@ client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
 
-  checkData(mCom);
+  mCom.guildConfig = checkData(mCom);
 
-  if (mCom.guild.config.funAllowed === 'Y') {
+  if (mCom.guildConfig.funAllowed === 'Y') {
     //Boxie
     if (wBox.some(word => msgCon.includes(word))) {
       mCom.react('📦');

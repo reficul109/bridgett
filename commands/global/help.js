@@ -24,7 +24,7 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(cmd, roles) {
-    var section = (cmd.args ?? cmd.options.getString('section')).toLowerCase();
+    var section = (cmd.args ?? cmd.options.getString('section') ?? 'Users').toLowerCase();
 
     const helpEmbed = new EMBD()
     .setColor("#f2003c")

@@ -162,7 +162,7 @@ client.on(Events.InteractionCreate, async iCom => {
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
 
-  checkData(iCom);
+  iCom.guildConfig = SLAB.guildData(iCom);
 
   handleCommand(iCom, command);
 });

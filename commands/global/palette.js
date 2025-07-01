@@ -38,7 +38,7 @@ module.exports = {
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
     if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
-    else {paletteGuilds = paletteGuilds.filter(guild => {SLAB.findPalette(guild, user.id)});}
+    else {paletteGuilds = paletteGuilds.filter(async guild => await SLAB.findPalette(guild, user.id));}
     
     if (!paletteGuilds.size) {return;}
 

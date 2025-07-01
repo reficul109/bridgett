@@ -161,7 +161,7 @@ client.on(Events.InteractionCreate, async iCom => {
   if (!iCom.isChatInputCommand()) {return;}
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
-  var guildConfig = SLAB.guildData(iCom);
+  var guildConfig = await SLAB.guildData(iCom);
 
   handleCommand(iCom, command)
 });
@@ -179,7 +179,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
-  var guildConfig = SLAB.guildData(mCom);
+  var guildConfig = await SLAB.guildData(mCom);
 
   //Message Reactions
   if (guildConfig.funAllowed === 'Y') {

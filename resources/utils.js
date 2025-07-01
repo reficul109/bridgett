@@ -8,7 +8,7 @@ const {
 
 //Database Stuff
 const db = require('better-sqlite3')('./BrittData.db');
-db.guildConfig = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
+db.guildConfig = db.prepare("SELECT * FROM paletteroles WHERE guildID = ?")
 
 //Color Stuff
 const getColors = require('get-image-colors');

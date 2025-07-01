@@ -15,6 +15,7 @@ SLAB.guildData = async function(cmd) {
   if (!guildConfigs.get(cmd.guild.id)) {
     const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
     newRow.run(cmd.guild.id, 'N', 'N', 'Y')}
+    console.log(guildConfigs.get(cmd.guild.id))
   return guildConfigs.get(cmd.guild.id);}
 
 //Color Stuff

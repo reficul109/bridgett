@@ -181,9 +181,7 @@ client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
   var msgCon = mCom.content.toLowerCase();
 
-  console.log(SLAB.guildData(mCom))
   mCom.guildConfig = SLAB.guildData(mCom);
-  console.log(mCom.guildConfig)
 
   if (mCom.guildConfig.funAllowed === 'Y') {
     //Boxie

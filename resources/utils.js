@@ -11,11 +11,16 @@ const db = require('better-sqlite3')('./resources/BrittData.db');
 const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 
 //Database Check
-SLAB.guildData = async function(cmd) {
+SLAB.findGuild = async function(cmd) {
   if (!guildConfigs.get(cmd.guild.id)) {
     const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
     newRow.run(cmd.guild.id, 'N', 'Y', 'Y')}
   return guildConfigs.get(cmd.guild.id);}
+
+//Palette Check
+SLAB.findPalette = async function(guild, user) {
+  member = guild.members.cache.get(user);
+  if (member) {return member.roles.cache.get(guildConfigs.get(guild.id).roleID);}}
 
 //Color Stuff
 const colorList = require('./colornames.json');

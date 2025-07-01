@@ -5,6 +5,7 @@ const {
 } = require('discord.js');
 
 const getColors = require('get-image-colors');
+const db = require('better-sqlite3')('./resources/BrittData.db');
 
 module.exports = {
 
@@ -25,20 +26,19 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(cmd, roles) {
-
     //Align Behavior for Automatic Executions
     if (typeof cmd.discriminator === 'string') {
       user = cmd;
-      channel = await user.createDM().catch(() => {return;})} 
+      channel = await user.createDM().catch(() => {return;})}
+     
     else {
       user = cmd.member.user;
       channel = cmd.channel;}
 
     //Area of Effect
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
-    var paletteGuilds = cmd.client.guilds.cache;
     if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
-    else {paletteGuilds = paletteGuilds.filter(guild => guild.members.cache.get(user.id) && guild.members.cache.get(user.id).roles.cache.find(role => role.name.startsWith("🎨") && role.name.endsWith("🎨")));}
+    else {paletteGuilds = paletteGuilds.filter(guild => {SLAB.findPalette(guild, user.id)});}
     
     if (!paletteGuilds.size) {return;}
 

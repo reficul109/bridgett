@@ -162,7 +162,7 @@ client.on(Events.InteractionCreate, async iCom => {
   const command = client.commands.get(iCom.commandName);
   if (!command) {return;}
 
-  iCom.guildConfig = await SLAB.guildData(iCom);
+  iCom.guildConfig = await SLAB.findGuild(iCom);
 
   handleCommand(iCom, command)
 });
@@ -180,7 +180,7 @@ client.on('userUpdate', async (oldUser, newUser) => {
 client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
 
-  mCom.guildConfig = await SLAB.guildData(mCom);
+  mCom.guildConfig = await SLAB.findGuild(mCom);
   var msgCon = mCom.content.toLowerCase();
 
   //Message Reactions

@@ -7,13 +7,13 @@ const {
 } = require('discord.js');
 
 //Database Stuff
-const db = require('better-sqlite3')('./BrittData.db');
-var guildConfig = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
+const db = require('better-sqlite3')('BrittData.db')
+db.guildConfig = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 
 //Color Stuff
 const getColors = require('get-image-colors');
 getColors.paletteCount = {count: 30};
-const colorList = require('./colornames.json');
+const colorList = require('colornames.json');
 const nearestColor = require('nearest-color');
 const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
 nearestColor.find = nearestColor.from(colorObjects);

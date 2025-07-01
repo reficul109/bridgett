@@ -14,7 +14,7 @@ const {
 //Client Stuff
 const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
-const {token} = require('./token.json');
+const {token} = require('token.json');
 const rest = new REST().setToken(token);
 
 //Variables and Utils
@@ -22,7 +22,7 @@ SLAB.prefix = 'br!';
 SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
 const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'Balatro ajsajdjas', 'zzz...'];
 const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
-const utils = require('./resources/utils.js');
+const utils = require('resources/utils.js');
 
 //Slash Command Gather
 const globalCommands = [];

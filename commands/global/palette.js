@@ -26,7 +26,7 @@ module.exports = {
 
   async execute(cmd, roles) {
     //Align Behavior for Automatic Executions
-    if (typeof cmd.discriminator === 'string') {user = cmd, channel = user.createDM();}
+    if (typeof cmd.discriminator === 'string') {user = cmd, channel = await user.createDM();}
     else {user = cmd.member.user, channel = cmd.channel;}
 
     //Area of Effect

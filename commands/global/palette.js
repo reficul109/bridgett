@@ -45,7 +45,7 @@ module.exports = {
 
       var filterMessage = botReply;
       if (cmd.commandName) {cmd.fetchReply().then(reply => {filterMessage = reply;})
-        if (filterMessage.replied) {console.log('bonus')}}
+        if (filterMessage.replied) {console.log('bonus')}
       }
 
       const collector = channel.createMessageComponentCollector({time: 1800000});

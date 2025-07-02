@@ -28,7 +28,7 @@ module.exports = {
     //Align Behavior for Automatic Executions
     if (typeof cmd.discriminator === 'string') {
       user = cmd;
-      try {channel = user.createDM();} catch {return;}}
+      channel = user.createDM();}
     else {
       user = cmd.member.user;
       channel = cmd.channel;}
@@ -43,7 +43,7 @@ module.exports = {
 
     var page = 0;
     await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), {count: 30}).then(async colors => {
-    await SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!', 
+    try {await SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!', 
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.paletteUI}).then(function (botReply) {
 
@@ -82,5 +82,6 @@ module.exports = {
             botReply.edit({content: 'Done!', embeds: [EMBD.colorChip(choice, "🎨")], components: []})
           break;}
         })
-    })})
-  }}
+    })
+  } catch {return;}})
+}}

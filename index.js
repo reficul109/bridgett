@@ -98,7 +98,7 @@ isInvalid = async function(cmd, roles, command) {
       return 'Not Enough Permissions to Update your Color Role...';}
 
     //Check if Role Protection Should Stop this Command
-    if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color)) {
+    if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color.id)) {
       return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)';}
 
     //Warn Users if this Command Will Affect Multiple Users 

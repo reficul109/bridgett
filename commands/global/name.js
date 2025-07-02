@@ -19,7 +19,7 @@ module.exports = {
   async execute(cmd, roles) {
     var name = (cmd.args ?? cmd.options.getString('name'));
 
-    if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color)) {
+    if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color.id)) {
       var color = '#ffffff';
       var position = (cmd.paletteRole.position + 1);
 

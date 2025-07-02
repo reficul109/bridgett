@@ -23,7 +23,7 @@ module.exports = {
     var color = (cmd.args ?? cmd.options.getString('color'));
     if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.smartReply(cmd, "Discord does not like this Color...");}
 
-    if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color)) {
+    if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color.id)) {
       var name = 'My Color Role';
       var position = (cmd.paletteRole.position + 1);
       

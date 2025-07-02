@@ -16,7 +16,7 @@ module.exports = {
   .setDMPermission(false),
 
   async execute(cmd, roles) {
-    if (!roles.cache.find(role => role.id === cmd.paletteRole.id)) {
+    if (!roles.cache.get(cmd.paletteRole.id)) {
       roles.add(cmd.paletteRole)
       SLAB.smartReply(cmd, 'Role Set!')
 

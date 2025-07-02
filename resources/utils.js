@@ -18,9 +18,13 @@ SLAB.findGuild = async function(cmd) {
   return guildConfigs.get(cmd.guild.id);}
 
 //Palette Check
-SLAB.findPalette = async function(guild, user) {
+SLAB.findPalette = async function(cmd, guild, user) {
   member = guild.members.cache.get(user);
-  if (member) {return member.roles.cache.get(guildConfigs.get(guild.id).roleID);}}
+  if (member) {
+    holdingCheck = member.roles.cache.get(guildConfigs.get(guild.id).roleID)
+    if (!holdingCheck && cmd.guild === guild) {return cmd.paletteRole;}
+    else {return holdingCheck;}}}
+  
 
 //Color Stuff
 const colorList = require('./colornames.json');

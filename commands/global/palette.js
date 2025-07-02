@@ -29,7 +29,7 @@ module.exports = {
     if (typeof cmd.discriminator === 'string') {
       user = cmd;
       channel = await user.createDM().catch(() => {return;})}
-     
+
     else {
       user = cmd.member.user;
       channel = cmd.channel;}

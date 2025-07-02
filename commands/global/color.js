@@ -28,13 +28,13 @@ module.exports = {
       var position = (cmd.paletteRole.position + 1);
       
       var newRole = {name: name, color: color, position: position, permissions: []};
-      await cmd.guild.roles.create(newRole).catch(() => {return SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal...)');})
+      try {await cmd.guild.roles.create(newRole)} catch {return SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal...)');}
 
       roles.add(cmd.guild.roles.cache.find(role => role.position === position))
       SLAB.smartReply(cmd, {content: 'Role Created!', embeds: [EMBD.colorChip(color, "🎨")]})
 
     } else {
-      await roles.color.setColor(color).catch(() => {return SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal...)');})
+      try {await roles.color.setColor(color)} catch {return SLAB.smartReply(cmd, 'Invalid Color (Must be Hexadecimal...)');}
       SLAB.smartReply(cmd, {content: 'Role Updated!', embeds: [EMBD.colorChip(color, "🎨")]})
     }
 }}

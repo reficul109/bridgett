@@ -26,8 +26,8 @@ module.exports = {
 
   async execute(cmd, roles) {
     //Align Behavior for Automatic Executions
-    if (typeof cmd.discriminator === 'string') {user = cmd, channel = await user.createDM();}
-    else {user = cmd.member.user, channel = cmd.channel;}
+    if (cmd.guild) {user = cmd.member.user, channel = cmd.channel;}
+    else {user = cmd, channel = await user.createDM();}
 
     //Area of Effect
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();

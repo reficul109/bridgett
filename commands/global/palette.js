@@ -44,7 +44,7 @@ module.exports = {
     components: ROWS.paletteUI}).then(function (botReply) {
 
       var filterMessage = botReply;
-      if (typeof cmd.commandName === 'string') {cmd.fetchReply().then(reply => {filterMessage = reply;})}
+      if (cmd.command) {cmd.fetchReply().then(reply => {filterMessage = reply;})}
 
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {

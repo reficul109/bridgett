@@ -106,7 +106,7 @@ isInvalid = async function(cmd, roles, command) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
         
         var filterMessage = botReply;
-        if (typeof cmd.commandName === 'string') {cmd.fetchReply().then(reply => {filterMessage = reply;})}
+        if (cmd.command) {cmd.fetchReply().then(reply => {filterMessage = reply;})}
 
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
@@ -137,7 +137,7 @@ handleCommand = async function(cmd, command) {
   //Perform with Caution
   var roles = cmd.member.roles;
   var errorResponse = await isInvalid(cmd, roles, command);
-  if (typeof errorResponse === 'string') {
+  if (errorResponse) {
 
     //Invalid Command Response
     if (errorResponse !== 'Executing Remotely...') {

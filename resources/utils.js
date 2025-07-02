@@ -19,7 +19,7 @@ SLAB.findGuild = async function(cmd) {
 
 //Palette Check
 SLAB.findPalette = async function(cmd, guild, user) {
-  member = guild.members.cache.get(user);
+  member = guild.members.cache.get(user.id);
   if (member) {
     holdingCheck = member.roles.cache.get(guildConfigs.get(guild.id).roleID)
     if (!holdingCheck && cmd.guild === guild) {return cmd.paletteRole;}

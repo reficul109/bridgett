@@ -28,8 +28,7 @@ module.exports = {
     //Align Behavior for Automatic Executions
     if (typeof cmd.discriminator === 'string') {
       user = cmd;
-      channel = await user.createDM().catch(() => {return;})}
-
+      try {await channel = user.createDM();} catch {return;}}
     else {
       user = cmd.member.user;
       channel = cmd.channel;}

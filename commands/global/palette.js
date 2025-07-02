@@ -39,7 +39,7 @@ module.exports = {
 
     var page = 0;
     await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), {count: 30}).then(async colors => {
-    await SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!', 
+    try {await SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!',     
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.paletteUI}).then(function (botReply) {
 
@@ -80,5 +80,5 @@ module.exports = {
         }
       })
     })
-  })
+  } catch {return;}})
 }}

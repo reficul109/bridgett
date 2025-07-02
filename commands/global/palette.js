@@ -26,12 +26,8 @@ module.exports = {
 
   async execute(cmd, roles) {
     //Align Behavior for Automatic Executions
-    if (typeof cmd.discriminator === 'string') {
-      user = cmd;
-      channel = user.createDM();}
-    else {
-      user = cmd.member.user;
-      channel = cmd.channel;}
+    if (typeof cmd.discriminator === 'string') {user = cmd, channel = user.createDM();}
+    else {user = cmd.member.user, channel = cmd.channel;}
 
     //Area of Effect
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
@@ -80,8 +76,9 @@ module.exports = {
             var choice = colors[(btn + (page * 5) - 1)].toString();
             paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice))
             botReply.edit({content: 'Done!', embeds: [EMBD.colorChip(choice, "🎨")], components: []})
-          break;}
-        })
+          break;
+        }
+      })
     })
-  } catch {return;}})
+  } catch(err) {return console.log(err);}})
 }}

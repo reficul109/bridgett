@@ -126,7 +126,6 @@ isInvalid = async function(cmd, roles, command) {
           else {botReply.edit({content: ('Cancelled!'), embeds: [], components: []})}
         })
       })
-
       return 'Executing Remotely...';
     }
   }

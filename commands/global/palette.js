@@ -33,7 +33,7 @@ module.exports = {
     var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
     if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
-    else {paletteGuilds = paletteGuilds.filter(async guild => console.log(await SLAB.findPalette(cmd, guild, user.id)));}
+    else {paletteGuilds = paletteGuilds.filter(async guild => await SLAB.findPalette(cmd, guild, user.id).id);}
     
     if (!paletteGuilds.size) {return;}
 
@@ -44,7 +44,7 @@ module.exports = {
     components: ROWS.paletteUI}).then(function (botReply) {
 
       var filterMessage = botReply;
-      if (cmd.commandName) {cmd.fetchReply().then(reply => {filterMessage = reply;})}
+      if (cmd.commandName) {cmd.fetchReply().then(reply => filterMessage = reply;)}
 
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {

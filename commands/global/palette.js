@@ -43,12 +43,8 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.paletteUI}).then(function (botReply) {
 
-      console.log('cmd:' + cmd.id)
-      console.log('botrep:' + botReply.id)
-      if (cmd.commandName) {cmd.fetchReply().then(reply => {console.log('nextreply:' + reply.id)})}
-
-      var filterMessage = botReply;
-      if (cmd.commandName) {cmd.fetchReply().then(reply => {filterMessage = reply;})}
+      if (cmd.id !== botReply.id) {filterMessage = botReply;}
+      else {cmd.fetchReply().then(reply => {filterMessage = reply;})}
 
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {

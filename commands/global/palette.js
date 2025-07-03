@@ -45,7 +45,7 @@ module.exports = {
 
       console.log('cmd:' + cmd.id)
       console.log('botrep:' + botReply.id)
-      if (cmd.commandName) {cmd.fetchReply().then(reply => {console.log('userrep:' + reply.id)})}
+      if (cmd.commandName) {cmd.fetchReply().then(reply => {console.log('nextreply:' + reply.id)})}
 
       var filterMessage = botReply;
       if (cmd.commandName) {cmd.fetchReply().then(reply => {filterMessage = reply;})}
@@ -53,6 +53,7 @@ module.exports = {
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
         console.log('userReply:' + userReply.message)
+        console.log(' ')
         if (userReply.message != filterMessage.id) {return;}
         await userReply.deferUpdate()
         if (userReply.user.id != user.id) {return;}

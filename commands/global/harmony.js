@@ -38,13 +38,13 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
     components: ROWS.harmonyUI}).then(function (botReply) {
   
-      if (cmd.id !== botReply.id) {filterMessage = botReply;}
-      else {cmd.fetchReply().then(reply => {filterMessage = reply;})}
+      if (cmd.id !== botReply.id) {filterMessage = botReply.id;}
+      else {cmd.fetchReply().then(reply => {filterMessage = reply.id;})}
 
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
-        console.log(userReply.message +' , '+ filterMessage.id)
-        if (userReply.message != filterMessage.id) {return;}
+        console.log(userReply.message +' , '+ filterMessage)
+        if (userReply.message != filterMessage) {return;}
         await userReply.deferUpdate()
         if (userReply.user.id != cmd.member.id) {return;}
         

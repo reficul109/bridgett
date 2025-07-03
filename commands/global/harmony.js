@@ -43,6 +43,7 @@ module.exports = {
 
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
+        console.log(userReply.message +' , '+ filterMessage.id)
         if (userReply.message != filterMessage.id) {return;}
         await userReply.deferUpdate()
         if (userReply.user.id != cmd.member.id) {return;}

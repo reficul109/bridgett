@@ -134,7 +134,6 @@ isInvalid = async function(cmd, roles, command) {
 
 //Command Handler
 handleCommand = async function(cmd, command) {
-
   var roles = cmd.member.roles;
   cmd.me = cmd.guild.members.me;
 

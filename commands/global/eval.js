@@ -14,8 +14,8 @@ module.exports = {
   .setName('eval')
   .setDMPermission(false)
   .setDescription('Pain.')
-  .addStringOption(option => {option.setName('code').setRequired(true)
-  .setDescription('Remeber to use "cmd"!')}),
+  .addStringOption(option => option.setName('code').setRequired(true)
+  .setDescription('Remeber to use "cmd"!')),
 
   async execute(cmd, roles) {
     var code = (cmd.args ?? cmd.options.getString('code'));

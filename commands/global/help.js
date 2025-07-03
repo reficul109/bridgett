@@ -15,13 +15,14 @@ module.exports = {
   
   data: new SLAB()
 	.setName('help')
+  .setDMPermission(false)
 	.setDescription('Discover how to Start!')
-  .addStringOption(option => option.setName('section').setDescription('Area of Interest').addChoices(
+  .addStringOption(option => option.setName('section')
+  .setDescription('Area of Interest').addChoices(
     {name: 'For Users', value: 'Users'},
     {name: 'For Admins', value: 'Admin'},
     {name: 'Set-Up', value: 'Setup'},
-    {name: 'Role Protection', value: 'Protection'}))
-  .setDMPermission(false),
+    {name: 'Role Protection', value: 'Protection'})),
 
   async execute(cmd, roles) {
     var section = (cmd.args ?? cmd.options.getString('section') ?? 'Users').toLowerCase();

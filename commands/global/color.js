@@ -15,15 +15,16 @@ module.exports = {
 
   data: new SLAB()
 	.setName('color')
+  .setDMPermission(false)
 	.setDescription('Color your Custom Role!')
-  .addStringOption(option => option.setName('color').setRequired(true).setDescription('Color to Assign to the Role').setMinLength(6).setMaxLength(7))
-  .setDMPermission(false),
+  .addStringOption(option => {option.setName('color').setRequired(true)
+  .setDescription('Color to Assign to the Role').setMinLength(6).setMaxLength(7)}),
 
   async execute(cmd, roles) {
     var color = (cmd.args ?? cmd.options.getString('color'));
     if (parseInt(color.toString()) === 0 || color === '#000000') {return SLAB.smartReply(cmd, "Discord does not like this Color...");}
 
-    if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color.id)) {
+    if (!roles.color || cmd.me.roles.cache.get(roles.color.id)) {
       var name = 'My Color Role';
       var position = (cmd.paletteRole.position + 1);
       

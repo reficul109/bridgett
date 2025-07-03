@@ -12,14 +12,15 @@ module.exports = {
 
   data: new SLAB()
 	.setName('name')
+  .setDMPermission(false)
 	.setDescription('Name your Custom Role!')
-  .addStringOption(option => option.setName('name').setRequired(true).setDescription('Name to Display in the Role').setMaxLength(88))
-  .setDMPermission(false),
+  .addStringOption(option => option.setName('name').setRequired(true)
+  .setDescription('Name to Display in the Role').setMaxLength(88)),
 
   async execute(cmd, roles) {
     var name = (cmd.args ?? cmd.options.getString('name'));
 
-    if (!roles.color || cmd.guild.members.me.roles.cache.get(roles.color.id)) {
+    if (!roles.color || cmd.me.roles.cache.get(roles.color.id)) {
       var color = '#ffffff';
       var position = (cmd.paletteRole.position + 1);
 

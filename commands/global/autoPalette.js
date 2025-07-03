@@ -12,8 +12,8 @@ module.exports = {
 
   data: new SLAB()
 	.setName('autopalette')
-	.setDescription('Enable Automatic Color Recomendations!')
-  .setDMPermission(false),
+  .setDMPermission(false)
+	.setDescription('Enable Automatic Color Recomendations!'),
 
   async execute(cmd, roles) {
     if (!roles.cache.get(cmd.paletteRole.id)) {

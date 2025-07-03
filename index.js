@@ -98,7 +98,7 @@ isInvalid = async function(cmd, roles, command) {
       return 'Not Enough Permissions to Update your Color Role...';}
 
     //Check if Role Protection Should Stop this Command
-    if (command.protectColorRole && cmd.guild.members.me.roles.cache.get(roles.color.id)) {
+    if (command.protectColorRole && cmd.me.roles.cache.get(roles.color.id)) {
       return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)';}
 
     //Warn Users if this Command Will Affect Multiple Users 
@@ -135,8 +135,10 @@ isInvalid = async function(cmd, roles, command) {
 //Command Handler
 handleCommand = async function(cmd, command) {
 
-  //Perform with Caution
   var roles = cmd.member.roles;
+  cmd.me = cmd.guild.members.me;
+
+  //Perform with Caution
   var errorResponse = await isInvalid(cmd, roles, command);
   if (errorResponse) {
 
@@ -197,7 +199,7 @@ client.on(Events.MessageCreate, async mCom => {
   if (!msgCon.startsWith(SLAB.prefix)) {return;}
   var args = mCom.content.split(' ');
   var argresult = args.slice(1).join(' ');
-  if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
+  if (mCom.attachments.size) {msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
 
   //Say
   if (msgCon.startsWith(SLAB.prefix + 'say') && (argresult || msgAtt)) {

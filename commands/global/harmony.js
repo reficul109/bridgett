@@ -24,9 +24,10 @@ module.exports = {
 
   data: new SLAB()
   .setName('harmony')
+  .setDMPermission(false)
   .setDescription('Form your Palette!')
-  .addStringOption(option => option.setName('color').setRequired(true).setDescription('Color to Harmonize').setMinLength(6).setMaxLength(7))
-  .setDMPermission(false),
+  .addStringOption(option => option.setName('color').setRequired(true)
+  .setDescription('Color to Harmonize').setMinLength(6).setMaxLength(7)),
 
   async execute(cmd, roles) {
     var color = (cmd.args ?? cmd.options.getString('color'));

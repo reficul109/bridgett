@@ -18,11 +18,12 @@ module.exports = {
 
   data: new SLAB()
 	.setName('palette')
+  .setDMPermission(false)
 	.setDescription('Match your Color and Profile Picture!')
-  .addStringOption(option => option.setName('scope').setDescription('Amount of Server Roles to Update').addChoices(
+  .addStringOption(option => option.setName('scope')
+  .setDescription('Amount of Server Roles to Update').addChoices(
     {name: 'For all Servers', value: 'All'}, 
-    {name: 'For this Server', value: 'One'}))
-  .setDMPermission(false),
+    {name: 'For this Server', value: 'One'})),
 
   async execute(cmd, roles) {
     //Align Behavior for Automatic Executions

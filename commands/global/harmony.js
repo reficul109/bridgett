@@ -37,8 +37,8 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
     components: ROWS.harmonyUI}).then(function (botReply) {
   
-      var filterMessage = botReply;
-      if (cmd.commandName) {cmd.fetchReply().then(reply => {filterMessage = reply;})}
+      if (cmd.id !== botReply.id) {filterMessage = botReply;}
+      else {cmd.fetchReply().then(reply => {filterMessage = reply;})}
 
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {

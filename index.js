@@ -103,10 +103,11 @@ isInvalid = async function(cmd, roles, command) {
 
     //Warn Users if this Command Will Affect Multiple Users 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
-      await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), components: ROWS.proceedUi}).then(function (botReply) {
+      await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), 
+      components: ROWS.proceedUi}).then(function (botReply) {
         
-        var filterMessage = botReply;
-        if (cmd.commandName) {cmd.fetchReply().then(reply => {filterMessage = reply;})}
+        if (cmd.id !== botReply.id) {filterMessage = botReply;}
+        else {cmd.fetchReply().then(reply => {filterMessage = reply;})}
 
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {

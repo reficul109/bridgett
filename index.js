@@ -106,12 +106,12 @@ isInvalid = async function(cmd, roles, command) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), 
       components: ROWS.proceedUi}).then(function (botReply) {
         
-        if (cmd.id !== botReply.id) {cmd.filterMessage = botReply.id;}
-        else {cmd.fetchReply().then(reply => {cmd.filterMessage = reply.id;})}
+        if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
+        else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
 
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
-          if (userReply.message.id !== cmd.filterMessage) {return;}
+          if (userReply.message.id !== botReply.filterMessage) {return;}
           await userReply.deferUpdate()
           if (userReply.user.id !== cmd.member.id) {return;}
           collector.stop()

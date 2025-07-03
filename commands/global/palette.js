@@ -45,7 +45,6 @@ module.exports = {
 
       console.log('cmd:' + cmd.id)
       console.log('botrep:' + botReply.id)
-      botReply.fetchReference().then(reply => {console.log('botref:' + reply.id)})
       if (cmd.commandName) {cmd.fetchReply().then(reply => {console.log('userrep:' + reply.id)})}
 
       var filterMessage = botReply;

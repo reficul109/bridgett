@@ -44,7 +44,7 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(colors, page, 5),
     components: ROWS.paletteUI}).then(function (botReply) {
 
-      if (cmd.id !== botReply.id) {cmd.filterMessage = botReply.id;}
+      if (cmd.id !== botReply.id || !cmd.guild) {cmd.filterMessage = botReply.id;}
       else {cmd.fetchReply().then(reply => {cmd.filterMessage = reply.id;})}
 
       const collector = channel.createMessageComponentCollector({time: 1800000});

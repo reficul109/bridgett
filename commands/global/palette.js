@@ -44,13 +44,12 @@ module.exports = {
     embeds: EMBD.paletteEmbeds(colors, page, 5),
     components: ROWS.paletteUI}).then(function (botReply) {
 
-      if (cmd.id !== botReply.id || !cmd.guild) {botReply.filterMessage = botReply.id;}
+      if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
       else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
 
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
         if (userReply.message.id !== botReply.filterMessage) {return;}
-        console.log(cmd.id + ', ' + botReply.id)
         await userReply.deferUpdate()
         if (userReply.user.id !== user.id) {return;}
 

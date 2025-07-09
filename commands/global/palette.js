@@ -40,13 +40,15 @@ module.exports = {
 
     var page = 0;
     await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), {count: 30}).then(async colors => {
-    try {await SLAB.smartReply(cmd, {content: '<@' + user.id + '>, Pick a New Color!',     
-    embeds: EMBD.paletteEmbeds(colors, page, 5),
+    try {await SLAB.smartReply(cmd, {content: "<@" + user.id + ">, Pick a New Color!",     
+    embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.paletteUI}).then(function (botReply) {
 
+      //Filter Message
       if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
       else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
 
+      //Filtered Collector
       const collector = channel.createMessageComponentCollector({time: 1800000});
       collector.on('collect', async userReply => {
         if (userReply.message.id !== botReply.filterMessage) {return;}
@@ -69,14 +71,14 @@ module.exports = {
 
           case 'x':
             collector.stop()
-            botReply.edit({content: ('Cancelled!'), embeds: [], components: []})
+            botReply.edit({content: "Cancelled!", embeds: [], components: []})
           break;
 
           default:
             collector.stop()
             var choice = colors[(btn + (page * 5) - 1)].toString();
             paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice))
-            botReply.edit({content: 'Done!', embeds: [EMBD.colorChip(choice, "🎨")], components: []})
+            botReply.edit({content: "Done!", embeds: [EMBD.colorChip(choice, "🎨")], components: []})
           break;
         }
       })

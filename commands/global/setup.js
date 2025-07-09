@@ -1,7 +1,12 @@
 const {
-  SlashCommandBuilder: SLAB, 
-  PermissionsBitField: PBIT
+  ActionRowBuilder: ROWS, 
+  EmbedBuilder: EMBD,
+  PermissionsBitField: PBIT,
+  SlashCommandBuilder: SLAB
 } = require('discord.js');
+
+const db = require('better-sqlite3')('./resources/BrittData.db');
+const editRow = db.prepare("UPDATE paletteRoles SET roleID = ?, pauseFunc = ?, funAllowed = ? WHERE guildID = ?")
 
 module.exports = {
 
@@ -21,17 +26,51 @@ module.exports = {
   async execute(cmd, roles) {
     if (!cmd.member.permissions.has(PBIT.Flags.ManageRoles)) {return SLAB.smartReply(cmd, '**You** do not have Permission to Create New Roles...');}
 
-    if (cmd.paletteRole) {
-      SLAB.smartReply(cmd, "Your Server Seems to be Set-Up!")
+    var rowVal = cmd.guildConfig;
+    await SLAB.smartReply(cmd, {content: 'Editing your Server Settings...', 
+    embeds: EMBD.setupEmbed, components: ROWS.setupUI}).then(function (botReply) {
+
+      //Filter Message
+      if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
+      else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
+
+      //Filtered Collector
+      const collector = cmd.channel.createMessageComponentCollector({time: 600000});
+      collector.on('collect', async userReply => {
+        if (userReply.message.id !== botReply.filterMessage) {return;}
+        await userReply.deferUpdate()
+        if (userReply.user.id !== cmd.member.id) {return;}
+        collector.stop()
+
+        if (userReply.customId === 'Pause') {
+          if (rowVal.pauseFunc === 'Y') {rowVal.pauseFunc = 'N';}
+          else {rowVal.pauseFunc = 'Y';}
+
+          editRow.execute(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
+          botReply.edit({content: "Pause Setting Updated!", embeds: [], components: []})}
+
+        else if (userReply.customId === 'Fun') {
+          if (rowVal.funAllowed === 'Fun') {rowVal.funAllowed = 'N';}
+          else {rowVal.funAllowed = 'Y';}
+
+          editRow.execute(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
+          botReply.edit({content: "Reactions Setting Updated!", embeds: [], components: []})}
+
+        else {
+          if (cmd.paletteRole) {
+            botReply.edit({content: "...Your Server Was Already Set-Up!", embeds: [], components: []})
     
-    } else {
-      var newRole = {name: "🎨 Auto-Palette 🎨", permissions: []};
-      try {await cmd.guild.roles.create(newRole)} catch {return SLAB.smartReply(cmd, 'I Need Permission to Create New Roles...');}
-      var paletteRole = cmd.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨");
-      cmd.me.roles.add(paletteRole)
+          } else {
+            var newRole = {name: "🎨 Auto-Palette 🎨", permissions: []};
+            try {await cmd.guild.roles.create(newRole)} catch {return SLAB.smartReply(cmd, "I Need Permission to Create New Roles...");}
+            var paletteRole = cmd.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨");
+      
+            editRow.execute(paletteRole.id, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
 
-      //FALTAAAAAAAAAA
-
-      SLAB.smartReply(cmd, {content: 'Your Server is Set-Up!\nI Created a New Role: <@&' + paletteRole.id + '>\nPosition it Wisely, If I Create More Roles, they Will be Above This One!', files: ['images/ScreenNewRoles.png']})
-    }
+            cmd.me.roles.add(paletteRole)
+            botReply.edit({content: "Done!", embeds: EMBD.setupSuccess(paletteRole.id), components: []})
+          }
+        }
+      })
+    })
 }}

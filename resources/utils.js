@@ -6,7 +6,10 @@ const {
   SlashCommandBuilder: SLAB
 } = require('discord.js');
 
-//Database Stuff
+//Image (URLs)
+SLAB.imagePath = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/'
+
+// --- Database Stuff ---
 const db = require('better-sqlite3')('./resources/BrittData.db');
 const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
@@ -25,7 +28,7 @@ SLAB.findPalette = function(cmd, guild, user) {
     if (!holdingCheck && guild === cmd.guild) {return cmd.paletteRole;}
     else {return holdingCheck;}}}
 
-//Color Stuff
+// --- Color Stuff ---
 const colorList = require('./colornames.json');
 const nearestColor = require('nearest-color');
 const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
@@ -77,11 +80,37 @@ const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);
 const complxHarm = new ROWS().addComponents(squre, recta, split, penta);
 ROWS.harmonyUI = [simpleHarm, complxHarm];
 
-//Warning Embed
+// --- Setup Embed ---
+const setupEmbed = new EMBD()
+.setColor("#f2003c")
+.addFields(
+  {name: "🎨", value: 'Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands'},
+  {name: "⏯️", value: 'Stop Users from Using Color Customization Commands'},
+  {name: "📦", value: 'Stop Bridgett from Reacting to Certain Words'})
+EMBD.setupEmbed = [setupEmbed];
+
+//Success Setup Embed 
+EMBD.setupSuccess = function(roleID) {
+  const setupSuccess = new EMBD()
+  .setColor("#f2003c")
+  .addFields(
+    {name: "Your Server is Set-Up!", value: 'I Created a New Role: <@&' + roleID + '>\n '},
+    {name: "Position it Wisely!", value: 'When I Create More Roles, they Will be Above This One!'})
+  .addImage(SLAB.imagePath + 'ScreenNewRoles.png')
+return [setupSuccess];}
+
+//Setup UI
+const setup = new BTNS().setCustomId('Setup').setEmoji('🎨').setStyle(BSTY.Success);
+const pause = new BTNS().setCustomId('Pause').setEmoji('⏯️').setStyle(BSTY.Success);
+const fun = new BTNS().setCustomId('Fun').setEmoji('📦').setStyle(BSTY.Success);
+const setupRow = new ROWS().addComponents(setup, pause, fun);
+ROWS.setupUI = [setupRow];
+
+// --- Warning Embed ---
 EMBD.warningEmbed = function(roles) {
   const warningEmbed = new EMBD()
   .setColor("#f2003c")
-  .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for all of them, Proceed?'})
+  .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for All of Them, Proceed?'})
 return [warningEmbed];}
 
 //Warning UI
@@ -89,9 +118,3 @@ const yeah = new BTNS().setCustomId('y').setEmoji('✔️').setStyle(BSTY.Succes
 const nope = new BTNS().setCustomId('n').setEmoji('✖️').setStyle(BSTY.Danger);
 const proceedRow = new ROWS().addComponents(yeah, nope);
 ROWS.proceedUi = [proceedRow];
-
-//Image (URLs)
-SLAB.imgNames = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/AutoPaletteNames.png';
-SLAB.imgMatch = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/MatchYourColors.png';
-SLAB.imgProtect = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/ProtectedRoleList.png';
-SLAB.imgNew = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/ScreenNewRoles.png';

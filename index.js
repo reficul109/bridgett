@@ -105,10 +105,12 @@ isInvalid = async function(cmd, roles, command) {
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), 
       components: ROWS.proceedUi}).then(function (botReply) {
-        
+
+        //Filter Message
         if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
         else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
 
+        //Filtered Collector
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
         collector.on('collect', async userReply => {
           if (userReply.message.id !== botReply.filterMessage) {return;}
@@ -117,14 +119,14 @@ isInvalid = async function(cmd, roles, command) {
           collector.stop()
 
           if (userReply.customId === 'y') {
-            botReply.edit({content: ('Proceeding...'), embeds: [], components: []})
+            botReply.edit({content: "Proceeding...", embeds: [], components: []})
             try {await command.execute(cmd, roles)}
 
             catch (error) {
               console.error(error)
               SLAB.smartReply(cmd, {content: 'Error...', ephemeral: true})}}
             
-          else {botReply.edit({content: ('Cancelled!'), embeds: [], components: []})}
+          else {botReply.edit({content: 'Cancelled!', embeds: [], components: []})}
         })
       })
       return 'Executing Remotely...';

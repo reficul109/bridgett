@@ -90,11 +90,9 @@ ROWS.harmonyUI = [simpleHarm, complxHarm];
 const setupEmbed = new EMBD()
 .setColor("#f2003c")
 .addFields(
-  {name: "🎨", value: "Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands"},
-  {name: "\u200B", value: "\u200B"},
-  {name: "⏯️", value: "Stop Users from Using Color Customization Commands"},
-  {name: "\u200B", value: "\u200B"},
-  {name: "📦", value: "Stop Bridgett from Reacting to Certain Words"})
+  {name: "`🎨`", value: "Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands"},
+  {name: "``⏯️``", value: "Stop Users from Using Color Customization Commands"},
+  {name: "```📦```", value: "Stop Bridgett from Reacting to Certain Words"})
 EMBD.setupEmbed = [setupEmbed];
 
 //Success Setup Embed 
@@ -102,10 +100,7 @@ EMBD.setupSuccess = function(roleID) {
   const setupSuccess = new EMBD()
   .setColor("#f2003c")
   .setImage(SLAB.imagePath + "ScreenNewRoles.png")
-  .addFields(
-    {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">"},
-    {name: "\u200B", value: "\u200B"},
-    {name: "Position it Wisely!", value: "When I Create More Roles, they Will be Above This One!"})
+  .addFields({name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">\nPosition it Wisely! When I Create More Roles, they Will be Above This One!"})
 return [setupSuccess];}
 
 //Setup UI

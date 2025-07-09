@@ -40,8 +40,8 @@ EMBD.colorChip = function(color, emoji) {
   const embed = new EMBD()
   .setTitle(emoji + '   ' + color)
   .setColor(color)
-  .setDescription('This Color looks like... [' + match.name + '](https://encycolorpedia.com/' + match.value.substring(1) + ')!')
-  .setURL('https://encycolorpedia.com/' + color.substring(1))
+  .setDescription("This Color looks like... [" + match.name + "](https://encycolorpedia.com/" + match.value.substring(1) + ")!")
+  .setURL("https://encycolorpedia.com/" + color.substring(1))
 return embed;}
 
 //Palette Embeds
@@ -84,9 +84,9 @@ ROWS.harmonyUI = [simpleHarm, complxHarm];
 const setupEmbed = new EMBD()
 .setColor("#f2003c")
 .addFields(
-  {name: "🎨", value: 'Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands'},
-  {name: "⏯️", value: 'Stop Users from Using Color Customization Commands'},
-  {name: "📦", value: 'Stop Bridgett from Reacting to Certain Words'})
+  {name: "🎨", value: "Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands\n "},
+  {name: "⏯️", value: "Stop Users from Using Color Customization Commands\n "},
+  {name: "📦", value: "Stop Bridgett from Reacting to Certain Words"})
 EMBD.setupEmbed = [setupEmbed];
 
 //Success Setup Embed 
@@ -94,9 +94,9 @@ EMBD.setupSuccess = function(roleID) {
   const setupSuccess = new EMBD()
   .setColor("#f2003c")
   .addFields(
-    {name: "Your Server is Set-Up!", value: 'I Created a New Role: <@&' + roleID + '>\n '},
-    {name: "Position it Wisely!", value: 'When I Create More Roles, they Will be Above This One!'})
-  .addImage(SLAB.imagePath + 'ScreenNewRoles.png')
+    {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">\n "},
+    {name: "Position it Wisely!", value: "When I Create More Roles, they Will be Above This One!"})
+  .addImage(SLAB.imagePath + "ScreenNewRoles.png")
 return [setupSuccess];}
 
 //Setup UI
@@ -110,7 +110,7 @@ ROWS.setupUI = [setupRow];
 EMBD.warningEmbed = function(roles) {
   const warningEmbed = new EMBD()
   .setColor("#f2003c")
-  .addFields({name: "Caution!", value: roles.color.members.size + ' Users have the <@&' + roles.color.id + '> Role...\nYour Command could change the Display Color for All of Them, Proceed?'})
+  .addFields({name: "Caution!", value: roles.color.members.size + " Users have the <@&" + roles.color.id + "> Role...\nYour Command could change the Display Color for All of Them, Proceed?"})
 return [warningEmbed];}
 
 //Warning UI

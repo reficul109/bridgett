@@ -46,14 +46,14 @@ module.exports = {
           if (rowVal.pauseFunc === 'Y') {rowVal.pauseFunc = 'N';}
           else {rowVal.pauseFunc = 'Y';}
 
-          editRow.execute(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
+          editRow.run(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
           botReply.edit({content: "Pause Setting Updated!", embeds: [], components: []})}
 
         else if (userReply.customId === 'Fun') {
           if (rowVal.funAllowed === 'Fun') {rowVal.funAllowed = 'N';}
           else {rowVal.funAllowed = 'Y';}
 
-          editRow.execute(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
+          editRow.run(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
           botReply.edit({content: "Reactions Setting Updated!", embeds: [], components: []})}
 
         else {
@@ -65,7 +65,7 @@ module.exports = {
             try {await cmd.guild.roles.create(newRole)} catch {return SLAB.smartReply(cmd, "I Need Permission to Create New Roles...");}
             var paletteRole = cmd.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨");
       
-            editRow.execute(paletteRole.id, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
+            editRow.run(paletteRole.id, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
 
             cmd.me.roles.add(paletteRole)
             botReply.edit({content: "Done!", embeds: EMBD.setupSuccess(paletteRole.id), components: []})

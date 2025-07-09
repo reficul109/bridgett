@@ -58,7 +58,7 @@ module.exports = {
 
         else {
           if (cmd.paletteRole) {
-            botReply.edit({content: "...Your Server Was Already Set-Up!", embeds: [], components: []})
+            botReply.edit({content: "...Your Server was Already Set-Up!", embeds: [], components: []})
     
           } else {
             var newRole = {name: "🎨 Auto-Palette 🎨", permissions: []};

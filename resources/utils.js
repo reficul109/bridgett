@@ -1,5 +1,6 @@
 const {
   ActionRowBuilder: ROWS, 
+  AttachmentBuilder: ATTB,
   ButtonBuilder: BTNS, 
   ButtonStyle: BSTY, 
   EmbedBuilder: EMBD, 
@@ -7,7 +8,8 @@ const {
 } = require('discord.js');
 
 //Image (URLs)
-SLAB.imagePath = 'https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/'
+SLAB.imagePath = "https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/"
+const imgScreen = new AttachmentBuilder("images/ScreenNewRoles.png");
 
 // --- Database Stuff ---
 const db = require('better-sqlite3')('./resources/BrittData.db');
@@ -96,7 +98,7 @@ EMBD.setupSuccess = function(roleID) {
   .addFields(
     {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">\n "},
     {name: "Position it Wisely!", value: "When I Create More Roles, they Will be Above This One!"})
-  .addImage(SLAB.imagePath + "ScreenNewRoles.png")
+  .addImage("attachment://ScreenNewRoles.png")
 return [setupSuccess];}
 
 //Setup UI

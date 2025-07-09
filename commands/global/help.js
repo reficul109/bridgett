@@ -29,7 +29,7 @@ module.exports = {
 
     const helpEmbed = new EMBD()
     .setColor("#f2003c")
-    .setAuthor({name: 'How to Start', iconURL: 'https://discord.com/assets/8b73ea3af2ce6fdf5622.svg'})
+    .setAuthor({name: 'How to Start', iconURL: SLAB.imagePath + "Palette.png"})
 
     if (section.includes('admin')) {
       helpEmbed.addFields(

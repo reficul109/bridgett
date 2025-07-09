@@ -1,6 +1,5 @@
 const {
   ActionRowBuilder: ROWS, 
-  AttachmentBuilder: ATTB,
   ButtonBuilder: BTNS, 
   ButtonStyle: BSTY, 
   EmbedBuilder: EMBD, 
@@ -9,7 +8,6 @@ const {
 
 //Image (URLs)
 SLAB.imagePath = "https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/"
-const imgScreen = new ATTB("images/ScreenNewRoles.png");
 
 //
 // --- Database Stuff ---
@@ -103,7 +101,7 @@ EMBD.setupEmbed = [setupEmbed];
 EMBD.setupSuccess = function(roleID) {
   const setupSuccess = new EMBD()
   .setColor("#f2003c")
-  .setImage("attachment://ScreenNewRoles.png")
+  .setImage(SLAB.imagePath + "ScreenNewRoles.png")
   .addFields(
     {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">"},
     {name: "\u200B", value: "\u200B"},

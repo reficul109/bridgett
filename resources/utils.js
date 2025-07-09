@@ -9,7 +9,7 @@ const {
 
 //Image (URLs)
 SLAB.imagePath = "https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/"
-const imgScreen = new AttachmentBuilder("images/ScreenNewRoles.png");
+const imgScreen = new ATTB("images/ScreenNewRoles.png");
 
 // --- Database Stuff ---
 const db = require('better-sqlite3')('./resources/BrittData.db');
@@ -86,8 +86,8 @@ ROWS.harmonyUI = [simpleHarm, complxHarm];
 const setupEmbed = new EMBD()
 .setColor("#f2003c")
 .addFields(
-  {name: "🎨", value: "Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands\n "},
-  {name: "⏯️", value: "Stop Users from Using Color Customization Commands\n "},
+  {name: "🎨", value: "Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands\n\n"},
+  {name: "⏯️", value: "Stop Users from Using Color Customization Commands\n\n"},
   {name: "📦", value: "Stop Bridgett from Reacting to Certain Words"})
 EMBD.setupEmbed = [setupEmbed];
 
@@ -96,7 +96,7 @@ EMBD.setupSuccess = function(roleID) {
   const setupSuccess = new EMBD()
   .setColor("#f2003c")
   .addFields(
-    {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">\n "},
+    {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">\n\n"},
     {name: "Position it Wisely!", value: "When I Create More Roles, they Will be Above This One!"})
   .addImage("attachment://ScreenNewRoles.png")
 return [setupSuccess];}

@@ -11,7 +11,9 @@ const {
 SLAB.imagePath = "https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/"
 const imgScreen = new ATTB("images/ScreenNewRoles.png");
 
+//
 // --- Database Stuff ---
+//
 const db = require('better-sqlite3')('./resources/BrittData.db');
 const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
@@ -30,7 +32,9 @@ SLAB.findPalette = function(cmd, guild, user) {
     if (!holdingCheck && guild === cmd.guild) {return cmd.paletteRole;}
     else {return holdingCheck;}}}
 
+//
 // --- Color Stuff ---
+//
 const colorList = require('./colornames.json');
 const nearestColor = require('nearest-color');
 const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
@@ -82,12 +86,16 @@ const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);
 const complxHarm = new ROWS().addComponents(squre, recta, split, penta);
 ROWS.harmonyUI = [simpleHarm, complxHarm];
 
+//
 // --- Setup Embed ---
+//
 const setupEmbed = new EMBD()
 .setColor("#f2003c")
 .addFields(
-  {name: "🎨", value: "Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands\n\n"},
-  {name: "⏯️", value: "Stop Users from Using Color Customization Commands\n\n"},
+  {name: "🎨", value: "Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands"},
+  {name: "\u200B", value: "\u200B"},
+  {name: "⏯️", value: "Stop Users from Using Color Customization Commands"},
+  {name: "\u200B", value: "\u200B"},
   {name: "📦", value: "Stop Bridgett from Reacting to Certain Words"})
 EMBD.setupEmbed = [setupEmbed];
 
@@ -95,10 +103,11 @@ EMBD.setupEmbed = [setupEmbed];
 EMBD.setupSuccess = function(roleID) {
   const setupSuccess = new EMBD()
   .setColor("#f2003c")
+  .setImage("attachment://ScreenNewRoles.png")
   .addFields(
-    {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">\n\n"},
+    {name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">"},
+    {name: "\u200B", value: "\u200B"},
     {name: "Position it Wisely!", value: "When I Create More Roles, they Will be Above This One!"})
-  .addImage("attachment://ScreenNewRoles.png")
 return [setupSuccess];}
 
 //Setup UI
@@ -108,7 +117,9 @@ const fun = new BTNS().setCustomId('Fun').setEmoji('📦').setStyle(BSTY.Success
 const setupRow = new ROWS().addComponents(setup, pause, fun);
 ROWS.setupUI = [setupRow];
 
+//
 // --- Warning Embed ---
+//
 EMBD.warningEmbed = function(roles) {
   const warningEmbed = new EMBD()
   .setColor("#f2003c")

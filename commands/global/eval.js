@@ -9,7 +9,6 @@ module.exports = {
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
- 
   
   data: new SLAB()
   .setName("eval")

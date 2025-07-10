@@ -39,7 +39,7 @@ module.exports = {
     components: ROWS.harmonyUI}).then(function (botReply) {
   
       //Filter Message
-      SLAB.componentFilter(cmd, botReply)
+      SLAB.findCollectorFilter(cmd, botReply)
       
       //Filtered Collector
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});

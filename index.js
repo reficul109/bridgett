@@ -109,7 +109,7 @@ isInvalid = async function(cmd, roles, instructs) {
       components: ROWS.proceedUi}).then(function (botReply) {
 
         //Filter Message
-        SLAB.componentFilter(cmd, botReply)
+        SLAB.findCollectorFilter(cmd, botReply)
 
         //Filtered Collector
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
@@ -166,7 +166,7 @@ client.on(Events.InteractionCreate, async iCom => {
   const instructs = client.commands.get(iCom.commandName);
   if (!instructs) {return;}
 
-  await SLAB.findGuild(iCom);
+  await SLAB.findGuildConfig(iCom);
 
   handleCommand(iCom, instructs)
 });
@@ -185,7 +185,7 @@ client.on("userUpdate", async (oldUser, newUser) => {
 client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
 
-  await SLAB.findGuild(mCom);
+  await SLAB.findGuildConfig(mCom);
   var msgCon = mCom.content.toLowerCase();
 
   //Message Reactions

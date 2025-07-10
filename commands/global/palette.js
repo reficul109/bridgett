@@ -45,7 +45,7 @@ module.exports = {
     components: ROWS.paletteUI}).then(function (botReply) {
 
       //Filter Message
-      SLAB.componentFilter(cmd, botReply)
+      SLAB.findCollectorFilter(cmd, botReply)
 
       //Filtered Collector
       const collector = channel.createMessageComponentCollector({time: 1800000});

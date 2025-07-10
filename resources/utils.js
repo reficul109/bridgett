@@ -17,12 +17,12 @@ const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
 
 //Guild Check
-SLAB.findGuild = function(cmd) {
+SLAB.findGuildConfig = function(cmd) {
   if (!guildConfigs.get(cmd.guild.id)) {newRow.run(cmd.guild.id, "None", "Enabled", "Enabled")}
-  cmd.guildConfigs = guildConfigs.get(cmd.guild.id);}
+  cmd.guildConfig = guildConfigs.get(cmd.guild.id);}
 
 //Collector Filter
-SLAB.componentFilter = function(cmd, botReply) {
+SLAB.findCollectorFilter = function(cmd, botReply) {
   if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
   else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}}
 

@@ -5,13 +5,13 @@ const {
 
 module.exports = {
 
+  //adminCommand: true,
+  //correctMessageCommand: "<usage>",
   //checkPaletteRole: true,
   //colorRoleRequired: true,
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
-  //correctMessageCommand: "<usage>",
-  //adminCommand: true,
   
   data: new SLAB()
 	.setName("help")

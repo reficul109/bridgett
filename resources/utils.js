@@ -18,17 +18,21 @@ const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc,
 
 //Guild Check
 SLAB.findGuild = function(cmd) {
-  if (!guildConfigs.get(cmd.guild.id)) {
-    newRow.run(cmd.guild.id, "None", "Enabled", "Enabled")}
-  return guildConfigs.get(cmd.guild.id);}
+  if (!guildConfigs.get(cmd.guild.id)) {newRow.run(cmd.guild.id, "None", "Enabled", "Enabled")}
+  cmd.guildConfigs = guildConfigs.get(cmd.guild.id);}
 
-//Palette Check
-SLAB.findPalette = function(cmd, guild, user) {
-  var member = guild.members.cache.get(user.id);
-  if (member) {
-    var holdingCheck = member.roles.cache.get(guildConfigs.get(guild.id).roleID)
-    if (!holdingCheck && guild === cmd.guild) {return cmd.paletteRole;}
-    else {return (holdingCheck && member.roles.color.editable);}}}
+//Collector Filter
+SLAB.componentFilter = function(cmd, botReply) {
+  if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
+  else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}}
+
+//Palette Filter
+SLAB.filterPalette = function(cmd, guild, user) {
+  var member = guild.members.cache.get(user.id), settings = guildConfigs.get(guild.id);
+  if (member && settings && member.roles.color) {
+    var holdingCheck = member.roles.cache.get(settings.roleID)
+    if (holdingCheck) {return (settings.pauseFunc !== "Enabled" && member.roles.color.editable);}
+    else {return (guild === cmd.guild);}}}
 
 //
 // --- Color Stuff ---

@@ -5,13 +5,13 @@ const {
 
 module.exports = {
 
+  //adminCommand: true,
+  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "color <hexColor>"),
   checkPaletteRole: true,
   //colorRoleRequired: true,
   checkColorEditable: true,
   //protectColorRole: true,
   warnMultipleEffect: true,
-  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "color <hexColor>"),
-  //adminCommand: true,
 
   data: new SLAB()
 	.setName("color")

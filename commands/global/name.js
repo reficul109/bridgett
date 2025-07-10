@@ -2,13 +2,13 @@ const {SlashCommandBuilder: SLAB} = require("discord.js");
 
 module.exports = {
 
+  //adminCommand: true,
+  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "name <roleName>"),
   checkPaletteRole: true,
   //colorRoleRequired: true,
   checkColorEditable: true,
   //protectColorRole: true,
   warnMultipleEffect: true,
-  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "name <roleName>"),
-  //adminCommand: true,
 
   data: new SLAB()
 	.setName("name")

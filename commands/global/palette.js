@@ -8,13 +8,13 @@ const getColors = require("get-image-colors");
 
 module.exports = {
 
+  //adminCommand: true,
+  //correctMessageCommand: "<usage>",
   checkPaletteRole: true,
   colorRoleRequired: true,
   checkColorEditable: true,
   protectColorRole: true,
   warnMultipleEffect: true,
-  //correctMessageCommand: "<usage>",
-  //adminCommand: true,
 
   data: new SLAB()
 	.setName("palette")
@@ -34,7 +34,7 @@ module.exports = {
     var scope = (cmd.args ?? cmd.options.getString("scope") ?? "All").toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
     if (scope.includes("one")) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
-    else {paletteGuilds = paletteGuilds.filter(guild => SLAB.findPalette(cmd, guild, user));}
+    else {paletteGuilds = paletteGuilds.filter(guild => SLAB.filterPalette(cmd, guild, user));}
     
     if (!paletteGuilds.size) {return;}
 
@@ -45,8 +45,7 @@ module.exports = {
     components: ROWS.paletteUI}).then(function (botReply) {
 
       //Filter Message
-      if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
-      else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
+      SLAB.componentFilter(cmd, botReply)
 
       //Filtered Collector
       const collector = channel.createMessageComponentCollector({time: 1800000});

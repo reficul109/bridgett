@@ -10,13 +10,13 @@ const editRow = db.prepare("UPDATE paletteRoles SET roleID = ?, pauseFunc = ?, f
 
 module.exports = {
 
+  //adminCommand: true,
+  //correctMessageCommand: "<usage>",
   //checkPaletteRole: true,
   //colorRoleRequired: true,
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
-  //correctMessageCommand: "<usage>",
-  //adminCommand: true,
   
   data: new SLAB()
   .setName("setup")
@@ -32,8 +32,7 @@ module.exports = {
     components: ROWS.setupUI}).then(function (botReply) {
 
       //Filter Message
-      if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
-      else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
+      SLAB.componentFilter(cmd, botReply)
 
       //Filtered Collector
       const collector = cmd.channel.createMessageComponentCollector({time: 600000});

@@ -14,13 +14,13 @@ paletteFunc([harmonies])
 
 module.exports = {
 
+  //adminCommand: true,
+  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "harmony <hexColor>"),
   //checkPaletteRole: true,
   //colorRoleRequired: true,
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
-  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "harmony <hexColor>"),
-  //adminCommand: true,
 
   data: new SLAB()
   .setName("harmony")
@@ -39,8 +39,7 @@ module.exports = {
     components: ROWS.harmonyUI}).then(function (botReply) {
   
       //Filter Message
-      if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
-      else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}
+      SLAB.componentFilter(cmd, botReply)
       
       //Filtered Collector
       const collector = cmd.channel.createMessageComponentCollector({time: 1800000});

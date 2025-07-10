@@ -2,13 +2,14 @@ const {SlashCommandBuilder: SLAB} = require("discord.js");
 
 module.exports = {
 
+  adminCommand: true,
+  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "eval <code>"),
   //checkPaletteRole: true,
   //colorRoleRequired: true,
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
-  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "eval <code>"),
-  adminCommand: true,
+ 
   
   data: new SLAB()
   .setName("eval")

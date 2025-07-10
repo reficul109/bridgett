@@ -41,19 +41,19 @@ nearestColor.find = nearestColor.from(colorObjects);
 //Color Chips
 EMBD.colorChip = function(color, emoji) {
   var match = nearestColor.find(color)
-  const embed = new EMBD()
+  const colorEmbed = new EMBD()
   .setTitle(emoji + "   " + color)
   .setColor(color)
   .setDescription("This Color looks like... [" + match.name + "](https://encycolorpedia.com/" + match.value.substring(1) + ")!")
   .setURL("https://encycolorpedia.com/" + color.substring(1))
-return embed;}
+return colorEmbed;}
 
 //Palette Embeds
 const emoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
-EMBD.paletteEmbeds = function(colors, page, size) {
+EMBD.paletteEmbeds = function(colors, page, groupSize) {
   var paletteEmbeds = [];
-  for (var i = 0; i < size; i++) {
-    var color = colors[i + (page * size)].toString();
+  for (var i = 0; i < groupSize; i++) {
+    var color = colors[i + (page * groupSize)].toString();
     var embed = EMBD.colorChip(color, emoji[i]);
     paletteEmbeds.push(embed)}
 return paletteEmbeds;}
@@ -87,13 +87,13 @@ ROWS.harmonyUI = [simpleHarm, complxHarm];
 //
 // --- Setup Embed ---
 //
-EMBD.setupEmbed = function(cmd) {
+EMBD.setupEmbed = function(settings, role) {
   const setupEmbed = new EMBD()
   .setColor("#f2003c")
   .addFields(
-    {name: "🎨 Your Palette Role is: " + (cmd.paletteRole || "None Yet!"), value: "```Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands```"},
-    {name: "⏯️ Pause is: " + cmd.guildConfig.pauseFunc + "!", value: "```Stop Users from Running Color Customization Commands```"},
-    {name: "📦 Reactions are: " + cmd.guildConfig.funAllowed + "!", value: "```Stop Bridgett from Reacting to Certain Words```"})
+    {name: "🎨 Your Palette Role is: " + (role ? "<@&" + role.id + ">" : "None Yet!"), value: "```Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands```"},
+    {name: "⏯️ Pause is: " + settings.pauseFunc + "!", value: "```Stop Users from Running Color Customization Commands```"},
+    {name: "📦 Reactions are: " + settings.funAllowed + "!", value: "```Stop Bridgett from Reacting to Certain Words```"})
 return [setupEmbed];}
 
 //Success Setup Embed 

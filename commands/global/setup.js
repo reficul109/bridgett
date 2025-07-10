@@ -26,9 +26,10 @@ module.exports = {
   async execute(cmd, roles) {
     if (!cmd.member.permissions.has(PBIT.Flags.ManageRoles)) {return SLAB.smartReply(cmd, "**You** do not have Permission to Create New Roles...");}
 
-    var rowVal = cmd.guildConfig;
+    var settings = cmd.guildConfig;
     await SLAB.smartReply(cmd, {content: "Editing your Server Settings...", 
-    embeds: EMBD.setupEmbed(cmd), components: ROWS.setupUI}).then(function (botReply) {
+    embeds: EMBD.setupEmbed(settings, cmd.paletteRole), 
+    components: ROWS.setupUI}).then(function (botReply) {
 
       //Filter Message
       if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
@@ -43,18 +44,18 @@ module.exports = {
         collector.stop()
 
         if (userReply.customId === "Pause") {
-          if (rowVal.pauseFunc === "Enabled") {rowVal.pauseFunc = "Disabled";}
-          else {rowVal.pauseFunc = "Enabled";}
+          if (settings.pauseFunc === "Enabled") {settings.pauseFunc = "Disabled";}
+          else {settings.pauseFunc = "Enabled";}
 
-          editRow.run(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
-          botReply.edit({content: "Pause Setting " + rowVal.pauseFunc + "!", embeds: [], components: []})}
+          editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
+          botReply.edit({content: "Pause Setting " + settings.pauseFunc + "!", embeds: [], components: []})}
 
         else if (userReply.customId === "Fun") {
-          if (rowVal.funAllowed === "Enabled") {rowVal.funAllowed = "Disabled";}
-          else {rowVal.funAllowed = "Enabled";}
+          if (settings.funAllowed === "Enabled") {settings.funAllowed = "Disabled";}
+          else {settings.funAllowed = "Enabled";}
 
-          editRow.run(rowVal.roleID, rowVal.pauseFunc, rowVal.funAllowed, cmd.guild.id)
-          botReply.edit({content: "Reactions Setting " + rowVal.funAllowed + "!", embeds: [], components: []})}
+          editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
+          botReply.edit({content: "Reactions Setting " + settings.funAllowed + "!", embeds: [], components: []})}
 
         else {
           if (cmd.paletteRole) {
@@ -65,7 +66,7 @@ module.exports = {
             try {await cmd.guild.roles.create(newRole)} catch {return SLAB.smartReply(cmd, "I Need Permission to Create New Roles...");}
             var paletteRole = cmd.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨");
       
-            editRow.run(paletteRole.id, "Disabled", rowVal.funAllowed, cmd.guild.id)
+            editRow.run(paletteRole.id, "Disabled", settings.funAllowed, cmd.guild.id)
 
             cmd.me.roles.add(paletteRole)
             botReply.edit({content: "Done!", embeds: EMBD.setupSuccess(paletteRole.id), components: []})

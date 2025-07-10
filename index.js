@@ -200,7 +200,7 @@ client.on(Events.MessageCreate, async mCom => {
   if (!msgCon.startsWith(SLAB.prefix)) {return;}
   var args = mCom.content.split(' ');
   var argresult = args.slice(1).join(' ');
-  if (mCom.attachments.size) {msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
+  if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
 
   //Say
   if (msgCon.startsWith(SLAB.prefix + 'say') && (argresult || msgAtt)) {

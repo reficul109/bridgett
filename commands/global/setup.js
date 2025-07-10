@@ -28,7 +28,7 @@ module.exports = {
 
     var rowVal = cmd.guildConfig;
     await SLAB.smartReply(cmd, {content: "Editing your Server Settings...", 
-    embeds: EMBD.setupEmbed, components: ROWS.setupUI}).then(function (botReply) {
+    embeds: EMBD.setupEmbed(cmd), components: ROWS.setupUI}).then(function (botReply) {
 
       //Filter Message
       if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}

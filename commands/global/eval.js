@@ -1,4 +1,4 @@
-const {SlashCommandBuilder: SLAB} = require('discord.js');
+const {SlashCommandBuilder: SLAB} = require("discord.js");
 
 module.exports = {
 
@@ -7,18 +7,18 @@ module.exports = {
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
-  correctMessageCommand: ('Correct usage is: ' + SLAB.prefix + 'eval <code>'),
+  correctMessageCommand: ("Correct usage is: " + SLAB.prefix + "eval <code>"),
   adminCommand: true,
   
   data: new SLAB()
-  .setName('eval')
+  .setName("eval")
   .setDMPermission(false)
-  .setDescription('Pain.')
-  .addStringOption(option => option.setName('code').setRequired(true)
-  .setDescription('Remeber to use "cmd"!')),
+  .setDescription("Pain.")
+  .addStringOption(option => option.setName("code").setRequired(true)
+  .setDescription("Remeber to use cmd!")),
 
   async execute(cmd, roles) {
-    var code = (cmd.args ?? cmd.options.getString('code'));
+    var code = (cmd.args ?? cmd.options.getString("code"));
     await eval(code)
-    SLAB.smartReply(cmd, 'Done!')
+    SLAB.smartReply(cmd, "Done!")
 }}

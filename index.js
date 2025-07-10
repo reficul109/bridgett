@@ -1,6 +1,6 @@
 //Packages
-const fs = require('node:fs');
-const path = require('node:path');
+const fs = require("node:fs");
+const path = require("node:path");
 const {
   Client, Events, 
   GatewayIntentBits: GBIT, 
@@ -9,49 +9,49 @@ const {
   ActionRowBuilder: ROWS, 
   EmbedBuilder: EMBD,
   SlashCommandBuilder: SLAB
-} = require('discord.js');
+} = require("discord.js");
 
 //Client Stuff
 const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
-const client = new Client({intents: intents, allowedMentions: {parse: ['users', 'roles']}});
-const {token} = require('./token.json');
+const client = new Client({intents: intents, allowedMentions: {parse: ["users", "roles"]}});
+const {token} = require("./token.json");
 const rest = new REST().setToken(token);
 
 //Variables and Utils
-SLAB.prefix = 'br!';
+SLAB.prefix = "br!";
 SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
-const games = ['with boxes!', 'boxie!', 'with more boxes!', 'boxie?', 'b word', '📦', 'Sokoban', 'with Lootboxes', 'Balatro ajsajdjas', 'zzz...'];
-const wBritt = ['britt', 'bridgett', '530502122190405652'], wBox = ['box', 'caja', 'boite', 'kahon', 'kiste', 'caixa', 'scatola', '箱', 'hako', '📦'];
-const utils = require('./resources/utils.js');
+const games = ["with boxes!", "boxie!", "with more boxes!", "boxie?", "b word", "📦", "Sokoban", "with Lootboxes", "Balatro ajsajdjas", "zzz..."];
+const wBritt = ["britt", "bridgett", "530502122190405652"], wBox = ["box", "caja", "boite", "kahon", "kiste", "caixa", "scatola", "箱", "hako", "📦"];
+const utils = require("./resources/utils.js");
 
 //Slash Command Gather
 const globalCommands = [];
 client.commands = new Collection();
-  const commandsPath = path.join(__dirname, 'commands/global');
-  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+  const commandsPath = path.join(__dirname, "commands/global");
+  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
   for (const file of commandFiles) {
 	  const filePath = path.join(commandsPath, file);
 	  const command = require(filePath);
-	  if ('data' in command && 'execute' in command) {
+	  if ("data" in command && "execute" in command) {
       client.commands.set(command.data.name, command)
 	    globalCommands.push(command.data.toJSON())}
-    else {console.log('Error en ' + filePath + '...')}
+    else {console.log("Error en " + filePath + "...")}
   }
 
 //Slash Command Loader
 (async () => {
   try {
-    console.log('Cargando ' + globalCommands.length + ' Comandos...')
+    console.log("Cargando " + globalCommands.length + " Comandos...")
     await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands})
-    console.log('Comandos Cargados con Exito!')} 
+    console.log("Comandos Cargados con Exito!")} 
   catch (error) {
     console.error(error)}
 })();
 
 //Ready
 client.once(Events.ClientReady, () => {
-  client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: 'online'})
-  console.log('🐙')
+  client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: "online"})
+  console.log("🐙")
 });
 
 //Flexible Response
@@ -69,7 +69,7 @@ isInvalid = async function(cmd, roles, command) {
 
   //Check if User is Allowed to Use this Command
   if (command.adminCommand && cmd.member.id !== SLAB.rID) {
-    return 'You are not Allowed to do That!';}
+    return "You are not Allowed to do That!";}
 
   //Check if There is Enough User Input
   if (!cmd.options && !cmd.args) {
@@ -78,28 +78,28 @@ isInvalid = async function(cmd, roles, command) {
     if (command.correctMessageCommand) {
       return command.correctMessageCommand;}
 
-    else {cmd.args = 'No Args';}}
+    else {cmd.args = "No Args";}}
 
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.get(cmd.guildConfig.roleID);
   if (command.checkPaletteRole && !cmd.paletteRole) {
-    return 'Your Server is not Set-Up! (/setup)';}
+    return "Your Server is not Set-Up! (/setup)";}
 
   //Check if A Color Role is Needed for this Command
   if (!roles.color) {
 
     if (command.colorRoleRequired) {
-      return 'You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/help)';}
+      return "You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/help)";}
 
   } else {
     
     //Check if Role Editing is Needed for this Command
     if (command.checkColorEditable && !roles.color.editable) {
-      return 'Not Enough Permissions to Update your Color Role...';}
+      return "Not Enough Permissions to Update your Color Role...";}
 
     //Check if Role Protection Should Stop this Command
     if (command.protectColorRole && cmd.me.roles.cache.get(roles.color.id)) {
-      return 'I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)';}
+      return "I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)";}
 
     //Warn Users if this Command Will Affect Multiple Users 
     if (command.warnMultipleEffect && roles.color.members.size > 1) {
@@ -112,24 +112,24 @@ isInvalid = async function(cmd, roles, command) {
 
         //Filtered Collector
         const collector = cmd.channel.createMessageComponentCollector({time: 600000});
-        collector.on('collect', async userReply => {
+        collector.on("collect", async userReply => {
           if (userReply.message.id !== botReply.filterMessage) {return;}
           await userReply.deferUpdate()
           if (userReply.user.id !== cmd.member.id) {return;}
           collector.stop()
 
-          if (userReply.customId === 'y') {
+          if (userReply.customId === "Yes") {
             botReply.edit({content: "Proceeding...", embeds: [], components: []})
             try {await command.execute(cmd, roles)}
 
             catch (error) {
               console.error(error)
-              SLAB.smartReply(cmd, {content: 'Error...', ephemeral: true})}}
+              SLAB.smartReply(cmd, {content: "Error...", ephemeral: true})}}
             
-          else {botReply.edit({content: 'Cancelled!', embeds: [], components: []})}
+          else {botReply.edit({content: "Cancelled!", embeds: [], components: []})}
         })
       })
-      return 'Executing Remotely...';
+      return "Executing Remotely...";
     }
   }
 }
@@ -144,7 +144,7 @@ handleCommand = async function(cmd, command) {
   if (errorResponse) {
 
     //Invalid Command Response
-    if (errorResponse !== 'Executing Remotely...') {
+    if (errorResponse !== "Executing Remotely...") {
       return SLAB.smartReply(cmd, errorResponse);}
 
   } else {
@@ -154,7 +154,7 @@ handleCommand = async function(cmd, command) {
 
     catch (error) {
       console.error(error);
-      SLAB.smartReply(cmd, {content: 'Error...', ephemeral: true})
+      SLAB.smartReply(cmd, {content: "Error...", ephemeral: true})
     }
   }
 }
@@ -171,11 +171,11 @@ client.on(Events.InteractionCreate, async iCom => {
 });
 
 //Auto-Palette
-client.on('userUpdate', async (oldUser, newUser) => {
+client.on("userUpdate", async (oldUser, newUser) => {
   if (newUser.bot || newUser.system) {return;}
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
-  const autoPalette = client.commands.get('palette');
-  newUser.args = 'No Args';
+  const autoPalette = client.commands.get("palette");
+  newUser.args = "No Args";
   
   autoPalette.execute(newUser, null)
 });
@@ -188,29 +188,29 @@ client.on(Events.MessageCreate, async mCom => {
   var msgCon = mCom.content.toLowerCase();
 
   //Message Reactions
-  if (mCom.guildConfig.funAllowed === 'Y') {
+  if (mCom.guildConfig.funAllowed === "Enabled") {
     if (wBox.some(word => msgCon.includes(word))) {
-      mCom.react('📦')
-      mCom.channel.send('Boxie!')
+      mCom.react("📦")
+      mCom.channel.send("Boxie!")
 
     } else if (wBritt.some(word => msgCon.includes(word))) {
-      mCom.channel.send('Me!')}}
+      mCom.channel.send("Me!")}}
 
   //Non-Prefix
   if (!msgCon.startsWith(SLAB.prefix)) {return;}
-  var args = mCom.content.split(' ');
-  var argresult = args.slice(1).join(' ');
+  var args = mCom.content.split(" ");
+  var argresult = args.slice(1).join(" ");
   if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
 
   //Say
-  if (msgCon.startsWith(SLAB.prefix + 'say') && (argresult || msgAtt)) {
+  if (msgCon.startsWith(SLAB.prefix + "say") && (argresult || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
-      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt})
-      mCom.reply('Done!')
+      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(" ")), files: msgAtt})
+      mCom.reply("Done!")
 
     } else if (client.users.cache.get(args[1])) {
-      client.users.cache.get(args[1]).send({content: (args.slice(2).join(' ')), files: msgAtt})
-      mCom.reply('Done!')
+      client.users.cache.get(args[1]).send({content: (args.slice(2).join(" ")), files: msgAtt})
+      mCom.reply("Done!")
 
     } else {
       mCom.channel.send({content: argresult, files: msgAtt})

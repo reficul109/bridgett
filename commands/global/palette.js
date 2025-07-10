@@ -2,9 +2,9 @@ const {
   ActionRowBuilder: ROWS, 
   EmbedBuilder: EMBD, 
   SlashCommandBuilder: SLAB
-} = require('discord.js');
+} = require("discord.js");
 
-const getColors = require('get-image-colors');
+const getColors = require("get-image-colors");
 
 module.exports = {
 
@@ -13,17 +13,17 @@ module.exports = {
   checkColorEditable: true,
   protectColorRole: true,
   warnMultipleEffect: true,
-  //correctMessageCommand: '<usage>',
+  //correctMessageCommand: "<usage>",
   //adminCommand: true,
 
   data: new SLAB()
-	.setName('palette')
+	.setName("palette")
   .setDMPermission(false)
-	.setDescription('Match your Color and Profile Picture!')
-  .addStringOption(option => option.setName('scope')
-  .setDescription('Amount of Server Roles to Update').addChoices(
-    {name: 'For all Servers', value: 'All'}, 
-    {name: 'For this Server', value: 'One'})),
+	.setDescription("Match your Color and Profile Picture!")
+  .addStringOption(option => option.setName("scope")
+  .setDescription("Amount of Server Roles to Update").addChoices(
+    {name: "For all Servers", value: "All"}, 
+    {name: "For this Server", value: "One"})),
 
   async execute(cmd, roles) {
     //Align Behavior for Automatic Executions
@@ -31,15 +31,15 @@ module.exports = {
     else {var user = cmd, channel = await user.createDM();}
 
     //Area of Effect
-    var scope = (cmd.args ?? cmd.options.getString('scope') ?? 'All').toLowerCase();
+    var scope = (cmd.args ?? cmd.options.getString("scope") ?? "All").toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
-    if (scope.includes('one')) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
+    if (scope.includes("one")) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
     else {paletteGuilds = paletteGuilds.filter(guild => SLAB.findPalette(cmd, guild, user));}
     
     if (!paletteGuilds.size) {return;}
 
     var page = 0;
-    await getColors(user.displayAvatarURL({extension: 'png', forceStatic: true}), {count: 30}).then(async colors => {
+    await getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 30}).then(async colors => {
     try {await SLAB.smartReply(cmd, {content: "<@" + user.id + ">, Pick a New Color!",     
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.paletteUI}).then(function (botReply) {
@@ -50,26 +50,26 @@ module.exports = {
 
       //Filtered Collector
       const collector = channel.createMessageComponentCollector({time: 1800000});
-      collector.on('collect', async userReply => {
+      collector.on("collect", async userReply => {
         if (userReply.message.id !== botReply.filterMessage) {return;}
         await userReply.deferUpdate()
         if (userReply.user.id !== user.id) {return;}
 
         var btn = (parseInt(userReply.customId) || userReply.customId);
         switch (btn) {
-          case '+':
+          case "+":
             if (page < 4) {
               page++;
               botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
           break;
 
-          case '-':
+          case "-":
             if (page > 0) {
               page--;
               botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
           break;
 
-          case 'x':
+          case "x":
             collector.stop()
             botReply.edit({content: "Cancelled!", embeds: [], components: []})
           break;

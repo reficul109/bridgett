@@ -1,4 +1,4 @@
-const {SlashCommandBuilder: SLAB} = require('discord.js');
+const {SlashCommandBuilder: SLAB} = require("discord.js");
 
 module.exports = {
 
@@ -7,20 +7,20 @@ module.exports = {
   checkColorEditable: true,
   protectColorRole: true,
   warnMultipleEffect: true,
-  //correctMessageCommand: '<usage>',
+  //correctMessageCommand: "<usage>",
   //adminCommand: true, 
 
   data: new SLAB()
-	.setName('autopalette')
+	.setName("autopalette")
   .setDMPermission(false)
-	.setDescription('Enable Automatic Color Recomendations!'),
+	.setDescription("Enable Automatic Color Recomendations!"),
 
   async execute(cmd, roles) {
     if (!roles.cache.get(cmd.paletteRole.id)) {
       roles.add(cmd.paletteRole)
-      SLAB.smartReply(cmd, 'Role Set!')
+      SLAB.smartReply(cmd, "Role Set!")
 
     } else {
       roles.remove(cmd.paletteRole)
-      SLAB.smartReply(cmd, 'Role Removed!')}     
+      SLAB.smartReply(cmd, "Role Removed!")}     
 }}

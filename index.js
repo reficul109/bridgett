@@ -65,44 +65,42 @@ SLAB.smartReply = function(cmd, ...args) {
 Returns an Error Message String if the Command Cannot Continue
 Returns Nothing if the Command Can Continue
 */
-isInvalid = async function(cmd, roles, command) {
+isInvalid = async function(cmd, roles, instructs) {
 
   //Check if User is Allowed to Use this Command
-  if (command.adminCommand && cmd.member.id !== SLAB.rID) {
+  if (instructs.adminCommand && cmd.member.id !== SLAB.rID) {
     return "You are not Allowed to do That!";}
 
   //Check if There is Enough User Input
   if (!cmd.options && !cmd.args) {
     
     //No User Input Error (Message Commands)
-    if (command.correctMessageCommand) {
-      return command.correctMessageCommand;}
-
+    if (instructs.correctMessageCommand) {return instructs.correctMessageCommand;}
     else {cmd.args = "No Args";}}
 
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.get(cmd.guildConfig.roleID);
-  if (command.checkPaletteRole && !cmd.paletteRole) {
+  if (instructs.checkPaletteRole && !cmd.paletteRole) {
     return "Your Server is not Set-Up! (/setup)";}
 
   //Check if A Color Role is Needed for this Command
   if (!roles.color) {
 
-    if (command.colorRoleRequired) {
+    if (instructs.colorRoleRequired) {
       return "You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/help)";}
 
   } else {
     
     //Check if Role Editing is Needed for this Command
-    if (command.checkColorEditable && !roles.color.editable) {
+    if (instructs.checkColorEditable && !roles.color.editable) {
       return "Not Enough Permissions to Update your Color Role...";}
 
     //Check if Role Protection Should Stop this Command
-    if (command.protectColorRole && cmd.me.roles.cache.get(roles.color.id)) {
+    if (instructs.protectColorRole && cmd.me.roles.cache.get(roles.color.id)) {
       return "I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)";}
 
     //Warn Users if this Command Will Affect Multiple Users 
-    if (command.warnMultipleEffect && roles.color.members.size > 1) {
+    if (instructs.warnMultipleEffect && roles.color.members.size > 1) {
       await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), 
       components: ROWS.proceedUi}).then(function (botReply) {
 
@@ -120,7 +118,7 @@ isInvalid = async function(cmd, roles, command) {
 
           if (userReply.customId === "Yes") {
             botReply.edit({content: "Proceeding...", embeds: [], components: []})
-            try {await command.execute(cmd, roles)}
+            try {await instructs.execute(cmd, roles)}
 
             catch (error) {
               console.error(error)
@@ -135,12 +133,12 @@ isInvalid = async function(cmd, roles, command) {
 }
 
 //Command Handler
-handleCommand = async function(cmd, command) {
+handleCommand = async function(cmd, instructs) {
   var roles = cmd.member.roles;
   cmd.me = cmd.guild.members.me;
 
   //Perform with Caution
-  var errorResponse = await isInvalid(cmd, roles, command);
+  var errorResponse = await isInvalid(cmd, roles, instructs);
   if (errorResponse) {
 
     //Invalid Command Response
@@ -150,7 +148,7 @@ handleCommand = async function(cmd, command) {
   } else {
 
     //Perform Valid Commands
-    try {await command.execute(cmd, roles);}
+    try {await instructs.execute(cmd, roles);}
 
     catch (error) {
       console.error(error);
@@ -162,12 +160,12 @@ handleCommand = async function(cmd, command) {
 //Slash Command Answer
 client.on(Events.InteractionCreate, async iCom => {
   if (!iCom.isChatInputCommand()) {return;}
-  const command = client.commands.get(iCom.commandName);
-  if (!command) {return;}
+  const instructs = client.commands.get(iCom.commandName);
+  if (!instructs) {return;}
 
   iCom.guildConfig = await SLAB.findGuild(iCom);
 
-  handleCommand(iCom, command)
+  handleCommand(iCom, instructs)
 });
 
 //Auto-Palette
@@ -217,11 +215,11 @@ client.on(Events.MessageCreate, async mCom => {
       mCom.delete()}}
 
   //Text Command Answer
-  const command = client.commands.get(args[0].substring(SLAB.prefix.length));
-  if (!command) {return;}
+  const instructs = client.commands.get(args[0].substring(SLAB.prefix.length));
+  if (!instructs) {return;}
   mCom.args = argresult;
 
-  handleCommand(mCom, command)
+  handleCommand(mCom, instructs)
 });
 
 //Token

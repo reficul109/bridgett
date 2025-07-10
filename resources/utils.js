@@ -16,7 +16,7 @@ const db = require("better-sqlite3")("./resources/BrittData.db");
 const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
 
-//Database Check
+//Guild Check
 SLAB.findGuild = function(cmd) {
   if (!guildConfigs.get(cmd.guild.id)) {
     newRow.run(cmd.guild.id, "None", "Enabled", "Enabled")}
@@ -28,7 +28,7 @@ SLAB.findPalette = function(cmd, guild, user) {
   if (member) {
     var holdingCheck = member.roles.cache.get(guildConfigs.get(guild.id).roleID)
     if (!holdingCheck && guild === cmd.guild) {return cmd.paletteRole;}
-    else {return holdingCheck;}}}
+    else {return (holdingCheck && member.roles.color.editable);}}}
 
 //
 // --- Color Stuff ---
@@ -40,7 +40,7 @@ nearestColor.find = nearestColor.from(colorObjects);
 
 //Color Chips
 EMBD.colorChip = function(color, emoji) {
-  var match = nearestColor.find(color)
+  var match = nearestColor.find(color);
   const colorEmbed = new EMBD()
   .setTitle(emoji + "   " + color)
   .setColor(color)
@@ -91,9 +91,9 @@ EMBD.setupEmbed = function(settings, role) {
   const setupEmbed = new EMBD()
   .setColor("#f2003c")
   .addFields(
-    {name: "🎨 Your Palette Role is: " + (role ? "<@&" + role.id + ">" : "None Yet!"), value: "```Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands```"},
-    {name: "⏯️ Pause is: " + settings.pauseFunc + "!", value: "```Stop Users from Running Color Customization Commands```"},
-    {name: "📦 Reactions are: " + settings.funAllowed + "!", value: "```Stop Bridgett from Reacting to Certain Words```"})
+    {name: "🎨 Your Palette Role is: " + (role ? + role.name : "None Yet!"), value: "```Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands```"},
+    {name: "⏯️ Pause is " + settings.pauseFunc + "!", value: "```Stop Users from Running Color Customization Commands```"},
+    {name: "📦 Reactions are " + settings.funAllowed + "!", value: "```Stop Bridgett from Reacting to Certain Words```"})
 return [setupEmbed];}
 
 //Success Setup Embed 

@@ -91,7 +91,7 @@ EMBD.setupEmbed = function(settings, role) {
   const setupEmbed = new EMBD()
   .setColor("#f2003c")
   .addFields(
-    {name: "🎨 Your Palette Role is: " + (role ? + role.name : "None Yet!"), value: "```Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands```"},
+    {name: "🎨 Your Palette Role is: " + (role ? role.name : "None Yet!"), value: "```Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands```"},
     {name: "⏯️ Pause is " + settings.pauseFunc + "!", value: "```Stop Users from Running Color Customization Commands```"},
     {name: "📦 Reactions are " + settings.funAllowed + "!", value: "```Stop Bridgett from Reacting to Certain Words```"})
 return [setupEmbed];}

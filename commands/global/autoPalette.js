@@ -16,7 +16,7 @@ module.exports = {
 	.setDescription("Enable Automatic Color Recomendations!"),
 
   async execute(cmd) {
-    if (!cmd.memberroles.cache.get(cmd.paletteRole.id)) {
+    if (!cmd.member.roles.cache.get(cmd.paletteRole.id)) {
       cmd.member.roles.add(cmd.paletteRole)
       SLAB.smartReply(cmd, "Role Set!")
 

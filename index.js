@@ -151,7 +151,7 @@ handleCommand = async function(cmd, instructs) {
   } else {
 
     //Perform Valid Commands
-    try {await instructs.execute(cmd);}
+    try {await instructs.execute(cmd)}
 
     catch (error) {
       console.error(error);

@@ -29,8 +29,8 @@ module.exports = {
   .addStringOption(option => option.setName("color").setRequired(true)
   .setDescription("Color to Harmonize").setMinLength(6).setMaxLength(7)),
 
-  async execute(cmd, roles) {
-    var color = (cmd.args ?? cmd.options.getString("color"));
+  async execute(cmd) {
+    var color = (cmd.argRes ?? cmd.options.getString("color"));
     if (!color.startsWith("#")) {color = "#" + color;}
     var harmony = colorEdit(color).harmonies("complementary").map((c) => c.toHex());
 

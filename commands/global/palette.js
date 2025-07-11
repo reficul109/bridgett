@@ -25,13 +25,13 @@ module.exports = {
     {name: "For all Servers", value: "All"}, 
     {name: "For this Server", value: "One"})),
 
-  async execute(cmd, roles) {
+  async execute(cmd) {
     //Align Behavior for Automatic Executions
     if (cmd.guild) {var user = cmd.member.user, channel = cmd.channel;}
     else {var user = cmd, channel = await user.createDM();}
 
     //Area of Effect
-    var scope = (cmd.args ?? cmd.options.getString("scope") ?? "All").toLowerCase();
+    var scope = (cmd.argRes ?? cmd.options.getString("scope") ?? "All").toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
     if (scope.includes("one")) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
     else {paletteGuilds = paletteGuilds.filter(guild => SLAB.filterPalette(cmd, guild, user));}

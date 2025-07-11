@@ -17,21 +17,19 @@ module.exports = {
   .addStringOption(option => option.setName("name").setRequired(true)
   .setDescription("Name to Display in the Role").setMaxLength(88)),
 
-  async execute(cmd, roles) {
-    var name = (cmd.args ?? cmd.options.getString("name"));
+  async execute(cmd) {
+    var name = (cmd.argRes ?? cmd.options.getString("name"));
 
-    if (!roles.color || cmd.me.roles.cache.get(roles.color.id)) {
-      var color = "#ffffff";
-      var position = (cmd.paletteRole.position + 1);
-
+    if (!cmd.color || cmd.me.roles.cache.get(cmd.color.id)) {
+      var color = "#ffffff", position = (cmd.paletteRole.position + 1);
       var newRole = {name: name, color: color, position: position, permissions: []};
       await cmd.guild.roles.create(newRole)
 
-      roles.add(cmd.guild.roles.cache.find(role => role.position === position))
+      cmd.member.roles.add(cmd.guild.roles.cache.find(role => role.position === position))
       SLAB.smartReply(cmd, "Role Created!")
 
     } else {
-      roles.color.setName(name)
+      cmd.color.setName(name)
       SLAB.smartReply(cmd, "Role Updated!")
     }
 }}

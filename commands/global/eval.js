@@ -17,8 +17,8 @@ module.exports = {
   .addStringOption(option => option.setName("code").setRequired(true)
   .setDescription("Remeber to use cmd!")),
 
-  async execute(cmd, roles) {
-    var code = (cmd.args ?? cmd.options.getString("code"));
+  async execute(cmd) {
+    var code = (cmd.argRes ?? cmd.options.getString("code"));
     await eval(code)
     SLAB.smartReply(cmd, "Done!")
 }}

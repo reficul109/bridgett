@@ -15,12 +15,12 @@ module.exports = {
   .setDMPermission(false)
 	.setDescription("Enable Automatic Color Recomendations!"),
 
-  async execute(cmd, roles) {
-    if (!roles.cache.get(cmd.paletteRole.id)) {
-      roles.add(cmd.paletteRole)
+  async execute(cmd) {
+    if (!cmd.memberroles.cache.get(cmd.paletteRole.id)) {
+      cmd.member.roles.add(cmd.paletteRole)
       SLAB.smartReply(cmd, "Role Set!")
 
     } else {
-      roles.remove(cmd.paletteRole)
+      cmd.member.roles.remove(cmd.paletteRole)
       SLAB.smartReply(cmd, "Role Removed!")}     
 }}

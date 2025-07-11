@@ -24,8 +24,8 @@ module.exports = {
     {name: "Set-Up", value: "Setup"},
     {name: "Role Protection", value: "Protection"})),
 
-  async execute(cmd, roles) {
-    var section = (cmd.args ?? cmd.options.getString("section") ?? "Users").toLowerCase();
+  async execute(cmd) {
+    var section = (cmd.argRes ?? cmd.options.getString("section") ?? "Users").toLowerCase();
 
     const helpEmbed = new EMBD()
     .setColor("#f2003c")

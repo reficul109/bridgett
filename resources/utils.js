@@ -9,6 +9,11 @@ const {
 //Image (URLs)
 SLAB.imagePath = "https://raw.githubusercontent.com/reficul109/bridgett/refs/heads/main/images/"
 
+//Collector Filter (Assigns .filterMessage)
+SLAB.findCollectorFilter = function(cmd, botReply) {
+  if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
+  else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}}
+
 //
 // --- Database Stuff ---
 //
@@ -16,77 +21,17 @@ const db = require("better-sqlite3")("./resources/BrittData.db");
 const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
 const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
 
-//Guild Check
+//Guild Check (Assigns .guildConfig)
 SLAB.findGuildConfig = function(cmd) {
   if (!guildConfigs.get(cmd.guild.id)) {newRow.run(cmd.guild.id, "None", "Enabled", "Enabled")}
   cmd.guildConfig = guildConfigs.get(cmd.guild.id);}
-
-//Collector Filter
-SLAB.findCollectorFilter = function(cmd, botReply) {
-  if (cmd.id !== botReply.id) {botReply.filterMessage = botReply.id;}
-  else {cmd.fetchReply().then(reply => {botReply.filterMessage = reply.id;})}}
 
 //Palette Filter
 SLAB.filterPalette = function(cmd, guild, user) {
   var member = guild.members.cache.get(user.id), settings = guildConfigs.get(guild.id);
   if (member && settings && member.roles.color) {
-    var holdingCheck = member.roles.cache.get(settings.roleID)
-    if (holdingCheck) {return (settings.pauseFunc !== "Enabled" && member.roles.color.editable);}
-    else {return (guild === cmd.guild);}}}
-
-//
-// --- Color Stuff ---
-//
-const colorList = require("./colornames.json");
-const nearestColor = require("nearest-color");
-const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
-nearestColor.find = nearestColor.from(colorObjects);
-
-//Color Chips
-EMBD.colorChip = function(color, emoji) {
-  var match = nearestColor.find(color);
-  const colorEmbed = new EMBD()
-  .setTitle(emoji + "   " + color)
-  .setColor(color)
-  .setDescription("This Color looks like... [" + match.name + "](https://encycolorpedia.com/" + match.value.substring(1) + ")!")
-  .setURL("https://encycolorpedia.com/" + color.substring(1))
-return colorEmbed;}
-
-//Palette Embeds
-const emoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
-EMBD.paletteEmbeds = function(colors, page, groupSize) {
-  var paletteEmbeds = [];
-  for (var i = 0; i < groupSize; i++) {
-    var color = colors[i + (page * groupSize)].toString();
-    var embed = EMBD.colorChip(color, emoji[i]);
-    paletteEmbeds.push(embed)}
-return paletteEmbeds;}
-
-//Palette UI
-const more = new BTNS().setCustomId("+").setEmoji("➕").setStyle(BSTY.Success);
-const less = new BTNS().setCustomId("-").setEmoji("➖").setStyle(BSTY.Success);
-const none = new BTNS().setCustomId("x").setEmoji("✖️").setStyle(BSTY.Danger);
-const color1 = new BTNS().setCustomId("1").setEmoji("1️⃣").setStyle(BSTY.Primary);
-const color2 = new BTNS().setCustomId("2").setEmoji("2️⃣").setStyle(BSTY.Primary);
-const color3 = new BTNS().setCustomId("3").setEmoji("3️⃣").setStyle(BSTY.Primary);
-const color4 = new BTNS().setCustomId("4").setEmoji("4️⃣").setStyle(BSTY.Primary);
-const color5 = new BTNS().setCustomId("5").setEmoji("5️⃣").setStyle(BSTY.Primary);
-const colorsRow = new ROWS().addComponents(color1, color2, color3, color4, color5);
-const selectRow = new ROWS().addComponents(more, less, none);
-ROWS.paletteUI = [colorsRow, selectRow];
-
-//Harmony UI
-const triad = new BTNS().setCustomId("Triadic").setEmoji("📚").setStyle(BSTY.Primary);
-const squre = new BTNS().setCustomId("Tetradic").setEmoji("🧮").setStyle(BSTY.Primary);
-const anlog = new BTNS().setCustomId("Analogous").setEmoji("🚦").setStyle(BSTY.Primary);
-const recta = new BTNS().setCustomId("Rectangle").setEmoji("🧬").setStyle(BSTY.Primary);
-const cmplt = new BTNS().setCustomId("Complementary").setEmoji("📓").setStyle(BSTY.Primary);
-const sidec = new BTNS().setCustomId("Side-Complementary").setEmoji("💈").setStyle(BSTY.Primary);
-const split = new BTNS().setCustomId("Split-Complementary").setEmoji("🍡").setStyle(BSTY.Primary);
-const penta = new BTNS().setCustomId("Double-Split-Complementary").setEmoji("🌈").setStyle(BSTY.Primary);
-const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);
-const complxHarm = new ROWS().addComponents(squre, recta, split, penta);
-ROWS.harmonyUI = [simpleHarm, complxHarm];
+    if (!member.roles.cache.get(settings.roleID)) {return (guild === cmd.guild);}
+    else {return (settings.pauseFunc !== "Enabled" && member.roles.color.editable);}}}
 
 //
 // --- Setup Embed ---
@@ -118,10 +63,10 @@ ROWS.setupUI = [setupRow];
 //
 // --- Warning Embed ---
 //
-EMBD.warningEmbed = function(roles) {
+EMBD.warningEmbed = function(role) {
   const warningEmbed = new EMBD()
   .setColor("#f2003c")
-  .addFields({name: "Caution!", value: roles.color.members.size + " Users have the <@&" + roles.color.id + "> Role...\nYour Command could change the Display Color for All of Them, Proceed?"})
+  .addFields({name: "Caution!", value: role.members.size + " Users have the <@&" + role.id + "> Role...\nYour Command could change the Display Color for All of Them, Proceed?"})
 return [warningEmbed];}
 
 //Warning UI

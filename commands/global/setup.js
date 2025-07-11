@@ -23,7 +23,7 @@ module.exports = {
   .setDMPermission(false)
   .setDescription("Allow Bridgett to Start Working!"),
 
-  async execute(cmd, roles) {
+  async execute(cmd) {
     if (!cmd.member.permissions.has(PBIT.Flags.ManageRoles)) {return SLAB.smartReply(cmd, "**You** do not have Permission to Create New Roles...");}
 
     var settings = cmd.guildConfig;

@@ -22,7 +22,7 @@ SLAB.prefix = "br!";
 SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
 const games = ["with boxes!", "boxie!", "with more boxes!", "boxie?", "b word", "📦", "Sokoban", "with Lootboxes", "Balatro ajsajdjas", "zzz..."];
 const wBritt = ["britt", "bridgett", "530502122190405652"], wBox = ["box", "caja", "boite", "kahon", "kiste", "caixa", "scatola", "箱", "hako", "📦"];
-const utils = require("./resources/utils.js");
+const utils = require("./resources/utils.js"), colorUtils = require("./resources/colorUtils.js");
 
 //Slash Command Gather
 const globalCommands = [];
@@ -65,18 +65,18 @@ SLAB.smartReply = function(cmd, ...args) {
 Returns an Error Message String if the Command Cannot Continue
 Returns Nothing if the Command Can Continue
 */
-isInvalid = async function(cmd, roles, instructs) {
+isInvalid = async function(cmd, instructs) {
 
   //Check if User is Allowed to Use this Command
   if (instructs.adminCommand && cmd.member.id !== SLAB.rID) {
     return "You are not Allowed to do That!";}
 
   //Check if There is Enough User Input
-  if (!cmd.options && !cmd.args) {
+  if (!cmd.options && !cmd.argRes) {
     
     //No User Input Error (Message Commands)
     if (instructs.correctMessageCommand) {return instructs.correctMessageCommand;}
-    else {cmd.args = "No Args";}}
+    else {cmd.argRes = "No Args";}}
 
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.get(cmd.guildConfig.roleID);
@@ -88,7 +88,7 @@ isInvalid = async function(cmd, roles, instructs) {
     return "Your Server is Currently not Allowing this Command...";}
 
   //Check if A Color Role is Needed for this Command
-  if (!roles.color) {
+  if (!cmd.color) {
 
     if (instructs.colorRoleRequired) {
       return "You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/help)";}
@@ -96,16 +96,16 @@ isInvalid = async function(cmd, roles, instructs) {
   } else {
     
     //Check if Role Editing is Needed for this Command
-    if (instructs.checkColorEditable && !roles.color.editable) {
+    if (instructs.checkColorEditable && !cmd.color.editable) {
       return "Not Enough Permissions for Me to Update your Color Role...";}
 
     //Check if Role Protection Should Stop this Command
-    if (instructs.protectColorRole && cmd.me.roles.cache.get(roles.color.id)) {
+    if (instructs.protectColorRole && cmd.me.roles.cache.get(cmd.color.id)) {
       return "I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)";}
 
     //Warn Users if this Command Will Affect Multiple Users 
-    if (instructs.warnMultipleEffect && roles.color.members.size > 1) {
-      await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(roles), 
+    if (instructs.warnMultipleEffect && cmd.color.members.size > 1) {
+      await SLAB.smartReply(cmd, {embeds: EMBD.warningEmbed(cmd.color), 
       components: ROWS.proceedUi}).then(function (botReply) {
 
         //Filter Message
@@ -121,7 +121,7 @@ isInvalid = async function(cmd, roles, instructs) {
 
           if (userReply.customId === "Yes") {
             botReply.edit({content: "Proceeding...", embeds: [], components: []})
-            try {await instructs.execute(cmd, roles)}
+            try {await instructs.execute(cmd)}
 
             catch (error) {
               console.error(error)
@@ -137,11 +137,11 @@ isInvalid = async function(cmd, roles, instructs) {
 
 //Command Handler
 handleCommand = async function(cmd, instructs) {
-  var roles = cmd.member.roles;
+  cmd.color = cmd.member.roles.color
   cmd.me = cmd.guild.members.me;
 
   //Perform with Caution
-  var errorResponse = await isInvalid(cmd, roles, instructs);
+  var errorResponse = await isInvalid(cmd, instructs);
   if (errorResponse) {
 
     //Invalid Command Response
@@ -151,7 +151,7 @@ handleCommand = async function(cmd, instructs) {
   } else {
 
     //Perform Valid Commands
-    try {await instructs.execute(cmd, roles);}
+    try {await instructs.execute(cmd);}
 
     catch (error) {
       console.error(error);
@@ -176,9 +176,9 @@ client.on("userUpdate", async (oldUser, newUser) => {
   if (newUser.bot || newUser.system) {return;}
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
   const autoPalette = client.commands.get("palette");
-  newUser.args = "No Args";
+  newUser.argRes = "No Args";
   
-  autoPalette.execute(newUser, null)
+  autoPalette.execute(newUser)
 });
 
 //Britt Stuff
@@ -200,11 +200,11 @@ client.on(Events.MessageCreate, async mCom => {
   //Non-Prefix
   if (!msgCon.startsWith(SLAB.prefix)) {return;}
   var args = mCom.content.split(" ");
-  var argresult = args.slice(1).join(" ");
+  mCom.argRes = args.slice(1).join(" ");
   if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
 
   //Say
-  if (msgCon.startsWith(SLAB.prefix + "say") && (argresult || msgAtt)) {
+  if (msgCon.startsWith(SLAB.prefix + "say") && (mCom.argRes || msgAtt)) {
     if (client.channels.cache.get(args[1])) {
       client.channels.cache.get(args[1]).send({content: (args.slice(2).join(" ")), files: msgAtt})
       mCom.reply("Done!")
@@ -214,13 +214,12 @@ client.on(Events.MessageCreate, async mCom => {
       mCom.reply("Done!")
 
     } else {
-      mCom.channel.send({content: argresult, files: msgAtt})
+      mCom.channel.send({content: mCom.argRes, files: msgAtt})
       mCom.delete()}}
 
   //Text Command Answer
   const instructs = client.commands.get(args[0].substring(SLAB.prefix.length));
   if (!instructs) {return;}
-  mCom.args = argresult;
 
   handleCommand(mCom, instructs)
 });

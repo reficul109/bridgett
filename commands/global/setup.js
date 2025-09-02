@@ -25,8 +25,8 @@ module.exports = {
 
   async execute(cmd) {
     if (!cmd.member.permissions.has(PBIT.Flags.ManageRoles)) {return SLAB.smartReply(cmd, "**You** do not have Permission to Create New Roles...");}
-
     var settings = cmd.guildConfig;
+    
     await SLAB.smartReply(cmd, {content: "Editing your Server Settings...", 
     embeds: EMBD.setupEmbed(settings, cmd.paletteRole), 
     components: ROWS.setupUI}).then(function (botReply) {
@@ -42,7 +42,7 @@ module.exports = {
         if (userReply.user.id !== cmd.member.id) {return;}
         collector.stop()
 
-        if (userReply.customId === "Pause") {
+        if (userReply.customId === "Pause") {//optimize please jeez
           if (settings.pauseFunc === "Enabled") {settings.pauseFunc = "Disabled";}
           else {settings.pauseFunc = "Enabled";}
 

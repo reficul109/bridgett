@@ -33,7 +33,7 @@ module.exports = {
 
     if (section.includes("admin")) {
       helpEmbed.addFields(
-        {name: "/setup", value: "```Creates the 🎨 Auto-Palette 🎨 Role and Gives Users Access to the Other Commands```"},
+        {name: "/setup", value: "```Create the 🎨 Auto-Palette 🎨 Role and Gives Users Access to the Other Commands when Enabled```"},
         {name: "/color", value: "```Updates the Color of the User's Color Role\nIf said Role is Protected, a New Role will be Created Above the 🎨 Auto-Palette 🎨 Role```"},
         {name: "/name", value: "```Updates the Name of the User's Color Role\nIf said Role is Protected, a New Role will be Created Above the 🎨 Auto-Palette 🎨 Role```"},
         {name: "/palette", value: "```Updates the Color Role of the User, Unless said Role is Protected```"},
@@ -45,6 +45,7 @@ module.exports = {
         {name: "¿What is a Protected Role?", value: "```It Includes any Roles the Admins Decide i should not Edit.```"},
         {name: "¿What Commands does this Affect?", value: "```/autopalette and /palette will __not__ Work if your Color Role is Protected...```"},
         {name: "¿How to Protect / Unprotect a Role?", value: "```Every Role I am Given in a Server by an Admin is Protected!```"},
+        {name: "¿What Roles should I Protect?", value: "```Roles I did not Create, Specially Important and Colored Ones!```"},
         {name: "¿So I cannot use Commands?", value: "```You can Get a Custom Role with /color if the Server was Set-Up!```"})
       .setImage(SLAB.imagePath + "ProtectedRoleList.png")}
 

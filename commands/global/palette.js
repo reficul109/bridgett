@@ -31,8 +31,8 @@ module.exports = {
     else {var user = cmd, channel = await user.createDM();}
 
     //Area of Effect
-    var scope = (cmd.argRes ?? cmd.options.getString("scope") ?? "All").toLowerCase();
     var paletteGuilds = cmd.client.guilds.cache;
+    var scope = (cmd.argRes ?? cmd.options.getString("scope") ?? "All").toLowerCase();
     if (scope.includes("one")) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
     else {paletteGuilds = paletteGuilds.filter(guild => SLAB.filterPalette(cmd, guild, user));}
     

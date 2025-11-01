@@ -12,6 +12,8 @@ const colorList = require("./colornames.json");
 const nearestColor = require("nearest-color");
 const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
 nearestColor.find = nearestColor.from(colorObjects);
+console.log(typeof colorList)
+console.log(colorList)
 
 //Color Chips
 EMBD.colorChip = function(color, emoji) {

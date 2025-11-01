@@ -11,20 +11,20 @@ const {
   SlashCommandBuilder: SLAB
 } = require("discord.js");
 
-//Client Stuff
+//Client Setup Stuff
 const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ["users", "roles"]}});
 const {token} = require("./token.json");
 const rest = new REST().setToken(token);
 
-//Variables and Utils
+//Bot Variables and Utils
 SLAB.prefix = "br!";
 SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
 const games = ["with boxes!", "boxie!", "with more boxes!", "boxie?", "b word", "📦", "Sokoban", "with Lootboxes", "Balatro ajsajdjas", "zzz..."];
 const wBritt = ["britt", "bridgett", "530502122190405652"], wBox = ["box", "caja", "boite", "kahon", "kiste", "caixa", "scatola", "箱", "hako", "📦"];
 const utils = require("./resources/utils.js"), colorUtils = require("./resources/colorUtils.js");
 
-//Slash Command Gather
+//Slash Command Files Gather
 const globalCommands = [];
 client.commands = new Collection();
   const commandsPath = path.join(__dirname, "commands/global");
@@ -38,7 +38,7 @@ client.commands = new Collection();
     else {console.log("Error en " + filePath + "...")}
   }
 
-//Slash Command Loader
+//Slash Command Files Loader
 (async () => {
   try {
     console.log("Cargando " + globalCommands.length + " Comandos...")
@@ -119,6 +119,7 @@ isInvalid = async function(cmd, instructs) {
           if (userReply.user.id !== cmd.member.id) {return;}
           collector.stop()
 
+          ///Execute Command Under Caution 
           if (userReply.customId === "Yes") {
             botReply.edit({content: "Proceeding...", embeds: [], components: []})
             try {await instructs.execute(cmd)}
@@ -135,12 +136,12 @@ isInvalid = async function(cmd, instructs) {
   }
 }
 
-//Command Handler
+//Command Handler (Slash and Text)
 handleCommand = async function(cmd, instructs) {
   cmd.color = cmd.member.roles.color
   cmd.me = cmd.guild.members.me;
 
-  //Perform with Caution
+  //Run Global Failsafes + Executions Under Caution 
   var errorResponse = await isInvalid(cmd, instructs);
   if (errorResponse) {
 
@@ -181,7 +182,7 @@ client.on("userUpdate", async (oldUser, newUser) => {
   autoPalette.execute(newUser)
 });
 
-//Britt Stuff
+//Silly Britt Stuff + Text Command Answer
 client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
 

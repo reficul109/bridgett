@@ -42,16 +42,14 @@ module.exports = {
         if (userReply.user.id !== cmd.member.id) {return;}
         collector.stop()
 
-        if (userReply.customId === "Pause") {//optimize please jeez
-          if (settings.pauseFunc === "Enabled") {settings.pauseFunc = "Disabled";}
-          else {settings.pauseFunc = "Enabled";}
+        if (userReply.customId === "Pause") {
+          settings.pauseFunc = (settings.pauseFunc === "Enabled") ? "Disabled" : "Enabled";
 
           editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
           botReply.edit({content: "Pause Setting " + settings.pauseFunc + "!", embeds: [], components: []})}
 
         else if (userReply.customId === "Fun") {
-          if (settings.funAllowed === "Enabled") {settings.funAllowed = "Disabled";}
-          else {settings.funAllowed = "Enabled";}
+          settings.funAllowed = (settings.pauseFunc === "Enabled") ? "Disabled" : "Enabled";
 
           editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
           botReply.edit({content: "Reactions Setting " + settings.funAllowed + "!", embeds: [], components: []})}

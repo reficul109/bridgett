@@ -146,7 +146,7 @@ handleCommand = async function(cmd, instructs) {
 
     //Invalid Command Response
     if (errorResponse !== "Executing Remotely...") {
-      return SLAB.smartReply(cmd, errorResponse);}
+      SLAB.smartReply(cmd, errorResponse);}
 
   } else {
 

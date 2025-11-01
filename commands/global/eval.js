@@ -1,5 +1,5 @@
 const {SlashCommandBuilder: SLAB} = require("discord.js");
-const colorList = require("./resources/colornames.json");
+const colorList = require("resources/colornames.json");
 const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
 
 module.exports = {

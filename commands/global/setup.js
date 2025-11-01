@@ -49,7 +49,7 @@ module.exports = {
           botReply.edit({content: "Pause Setting " + settings.pauseFunc + "!", embeds: [], components: []})}
 
         else if (userReply.customId === "Fun") {
-          settings.funAllowed = (settings.pauseFunc === "Enabled") ? "Disabled" : "Enabled";
+          settings.funAllowed = (settings.funAllowed === "Enabled") ? "Disabled" : "Enabled";
 
           editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
           botReply.edit({content: "Reactions Setting " + settings.funAllowed + "!", embeds: [], components: []})}

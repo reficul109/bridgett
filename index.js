@@ -81,26 +81,36 @@ isInvalid = async function(cmd, instructs) {
   //Check if Server is Set-Up Correctly
   cmd.paletteRole = cmd.guild.roles.cache.get(cmd.guildConfig.roleID);
   if (instructs.checkPaletteRole && !cmd.paletteRole) {
+    if (instructs.skipChecks_disableUI) {cmd.isLimited = true;}
+
     return "Your Server is not Set-Up! (/setup)";}
 
   //Check if Role Editing is Needed and Paused
   if (instructs.checkColorEditable && cmd.guildConfig.pauseFunc === "Enabled")  {
-    return "Your Server is Currently not Allowing this Command...";}
+    if (instructs.skipChecks_disableUI) {cmd.isLimited = true;}
+    
+    return "Your Server is Currently not Allowing Editing Roles Right Now...";}
 
   //Check if A Color Role is Needed for this Command
   if (!cmd.color) {
 
     if (instructs.colorRoleRequired) {
-      return "You do not have ANY Color Role!?\nI cannot Work under these Conditions!\n(/help)";}
+      if (instructs.skipChecks_disableUI) {cmd.isLimited = true;}
+
+      return "You do not have ANY Color Role!?\nGet a Role so I can Edit It!\n(/help)";}
 
   } else {
     
     //Check if Role Editing is Needed for this Command
     if (instructs.checkColorEditable && !cmd.color.editable) {
+      if (instructs.skipChecks_disableUI) {cmd.isLimited = true;}
+
       return "Not Enough Permissions for Me to Update your Color Role...";}
 
     //Check if Role Protection Should Stop this Command
     if (instructs.protectColorRole && cmd.me.roles.cache.get(cmd.color.id)) {
+      if (instructs.skipChecks_disableUI) {cmd.isLimited = true;}
+
       return "I have Instructions to not Edit your Color Role...\nObtain a Custom Role First!\n(/help)";}
 
     //Warn Users if this Command Will Affect Multiple Users 
@@ -144,15 +154,16 @@ handleCommand = async function(cmd, instructs) {
 
   //Run Global Failsafes + Executions Under Caution 
   var errorResponse = await isInvalid(cmd, instructs);
-  if (errorResponse) {
+  if (errorResponse && !cmd.isLimited) {
 
     //Invalid Command Response
     if (errorResponse !== "Executing Remotely...") {
-      SLAB.smartReply(cmd, errorResponse);}
+      SLAB.smartReply(cmd, errorResponse)}
 
   } else {
 
-    //Perform Valid Commands
+    //Perform Valid Commands + Limited Commands
+    cmd.isLimited = (errorResponse ? ("(Color Selection Disabled due to Error: " + errorResponse + ")\n") : "");
     try {await instructs.execute(cmd)}
 
     catch (error) {

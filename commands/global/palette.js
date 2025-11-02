@@ -10,11 +10,15 @@ module.exports = {
 
   //adminCommand: true,
   //correctMessageCommand: "<usage>",
-  checkPaletteRole: true,
-  colorRoleRequired: true,
-  checkColorEditable: true,
-  protectColorRole: true,
+  checkPaletteRole: true, //skipable
+  colorRoleRequired: true, //skipable
+  checkColorEditable: true, //skipable
+  protectColorRole: true, //skipable
   warnMultipleEffect: true,
+  
+  //
+  skipChecks_disableUI: true,
+  //
 
   data: new SLAB()
 	.setName("palette")
@@ -33,9 +37,9 @@ module.exports = {
 
     //Interactive Message
     await getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 30}).then(async colors => {
-    try {await SLAB.smartReply(cmd, {content: "<@" + user.id + ">, Pick a New Color!",     
+    try {await SLAB.smartReply(cmd, {content: cmd.isLimited + "<@" + user.id + ">, Pick a New Color!",     
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
-    components: ROWS.paletteUI}).then(function (botReply) {
+    components: (cmd.isLimited ? ROWS.paletteUI : ROWS.searchUI)}).then(function (botReply) {
 
       //Filter Message
       SLAB.findCollectorFilter(cmd, botReply)

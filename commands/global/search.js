@@ -23,7 +23,7 @@ module.exports = {
 
   async execute(cmd) {
     var color = (cmd.argRes ?? cmd.options.getString("color"));    
-    var colors = SLAB.colorObjects.filter(named => named.includes(color)).map(named => named.hex);
+    var colors = SLAB.colorObjects.filter(o => o.name.includes(color)).map(o => o.hex);
 
     if (!colors.length) {return SLAB.smartReply(cmd, "No matches found...");}
     var page = 0, pageLimit = Math.ceil(colors.length / 5);

@@ -40,7 +40,7 @@ module.exports = {
     //Interactive Message
     await SLAB.smartReply(cmd, {content: cmd.isLimited + "Found " + colors.length + " matches!", 
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
-    components: (cmd.isLimited ? ROWS.paletteUI : ROWS.searchUI)}).then(function (botReply) {
+    components: (cmd.isLimited ? ROWS.searchUI : ROWS.paletteUI)}).then(function (botReply) {
   
       //Filter Message
       SLAB.findCollectorFilter(cmd, botReply)

@@ -39,7 +39,7 @@ module.exports = {
     await getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 30}).then(async colors => {
     try {await SLAB.smartReply(cmd, {content: cmd.isLimited + "<@" + user.id + ">, Pick a New Color!",     
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
-    components: (cmd.isLimited ? ROWS.paletteUI : ROWS.searchUI)}).then(function (botReply) {
+    components: (cmd.isLimited ? ROWS.searchUI : ROWS.paletteUI)}).then(function (botReply) {
 
       //Filter Message
       SLAB.findCollectorFilter(cmd, botReply)

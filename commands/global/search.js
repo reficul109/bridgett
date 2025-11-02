@@ -43,12 +43,18 @@ module.exports = {
         if (userReply.user.id !== cmd.member.id) {return;}
         
         if (userReply.customId === "+") {
-          if (page < pageLimit) {page++;}}
+          if (page < pageLimit) {
+            page++;
+            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}}
 
-        if (userReply.customId === "-") {
-          if (page > 0) {page--;}}
-
-        botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})
+        else if (userReply.customId === "-") {
+          if (page > 0) {
+            page--;
+            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}}
+        
+        else {
+            collector.stop()
+            botReply.edit({content: "Stopped!", embeds: [], components: []})}
       })
     })
 }}

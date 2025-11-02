@@ -51,6 +51,7 @@ module.exports = {
         if (userReply.customId === "Side-Complementary") {
           harmony = colorEdit(color).harmonies("rectangle").map((c) => c.toHex());
           harmony.splice(1, 2)
+          
         } else {
           harmony = colorEdit(color).harmonies(userReply.customId.toLowerCase()).map((c) => c.toHex());}
 

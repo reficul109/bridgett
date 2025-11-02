@@ -9,10 +9,10 @@ const {
 //
 // --- Color Stuff ---
 //
-const colorList = require("./colornames.json");
+SLAB.colorList = require("./colornames.json");
 const nearestColor = require("nearest-color");
-SLAB.colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
-nearestColor.find = nearestColor.from(SLAB.colorObjects);
+const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
+nearestColor.find = nearestColor.from(colorObjects);
 
 //Color Chips
 EMBD.colorChip = function(color, emoji) {
@@ -47,6 +47,7 @@ const color5 = new BTNS().setCustomId("5").setEmoji("5️⃣").setStyle(BSTY.Pri
 const colorsRow = new ROWS().addComponents(color1, color2, color3, color4, color5);
 const selectRow = new ROWS().addComponents(more, less, none);
 ROWS.paletteUI = [colorsRow, selectRow];
+ROWS.searchUI = [selectRow];
 
 //Harmony UI
 const triad = new BTNS().setCustomId("Triadic").setEmoji("📚").setStyle(BSTY.Primary);

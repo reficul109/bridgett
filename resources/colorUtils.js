@@ -29,10 +29,10 @@ const emoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
 EMBD.paletteEmbeds = function(colors, page, groupSize) {
   var paletteEmbeds = [];
   for (var i = 0; i < groupSize; i++) {
-    if (i + (page * groupSize) >= colors.length) {return;}
-    var color = colors[i + (page * groupSize)].toString();
-    var embed = EMBD.colorChip(color, emoji[i]);
-    paletteEmbeds.push(embed)}
+    if (i + (page * groupSize) <= colors.length) {
+      var color = colors[i + (page * groupSize)].toString();
+      var embed = EMBD.colorChip(color, emoji[i]);
+      paletteEmbeds.push(embed)}}
 return paletteEmbeds;}
 
 //Palette UI

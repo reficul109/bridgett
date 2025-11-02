@@ -26,7 +26,7 @@ module.exports = {
     var colors = SLAB.colorList.filter(o => o.name.toLowerCase().includes(color)).map(o => o.hex);
 
     if (!colors.length) {return SLAB.smartReply(cmd, "No matches found...");}
-    var page = 0, pageLimit = Math.ceil(colors.length / 5);
+    var page = 0, pageLimit = Math.ceil(colors.length / 5) - 1;
 
     await SLAB.smartReply(cmd, {content: "Found " + colors.length + " matches!", 
     embeds: EMBD.paletteEmbeds(colors, page, 5), 

@@ -2,7 +2,8 @@ const {
   ActionRowBuilder: ROWS, 
   ButtonBuilder: BTNS, 
   ButtonStyle: BSTY, 
-  EmbedBuilder: EMBD, 
+  EmbedBuilder: EMBD,
+  SlashCommandBuilder: SLAB
 } = require("discord.js");
 
 //
@@ -10,10 +11,8 @@ const {
 //
 const colorList = require("./colornames.json");
 const nearestColor = require("nearest-color");
-const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
-nearestColor.find = nearestColor.from(colorObjects);
-console.log(typeof colorList)
-console.log(colorList)
+SLAB.colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
+nearestColor.find = nearestColor.from(SLAB.colorObjects);
 
 //Color Chips
 EMBD.colorChip = function(color, emoji) {
@@ -30,6 +29,7 @@ const emoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
 EMBD.paletteEmbeds = function(colors, page, groupSize) {
   var paletteEmbeds = [];
   for (var i = 0; i < groupSize; i++) {
+    if (i + (page * groupSize) > colors.length) {return;}
     var color = colors[i + (page * groupSize)].toString();
     var embed = EMBD.colorChip(color, emoji[i]);
     paletteEmbeds.push(embed)}

@@ -127,7 +127,8 @@ isInvalid = async function(cmd, instructs) {
             catch (error) {
               console.error(error)
               SLAB.smartReply(cmd, {content: "Error...", ephemeral: true})}}
-            
+          
+          //Abort Execution
           else {botReply.edit({content: "Cancelled!", embeds: [], components: []})}
         })
       })
@@ -177,7 +178,6 @@ client.on("userUpdate", async (oldUser, newUser) => {
   if (newUser.bot || newUser.system) {return;}
   if (oldUser.avatarURL() === newUser.avatarURL()) {return;}
   const autoPalette = client.commands.get("palette");
-  newUser.argRes = "No Args";
   
   autoPalette.execute(newUser)
 });

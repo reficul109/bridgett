@@ -20,14 +20,17 @@ module.exports = {
   async execute(cmd) {
     var name = (cmd.argRes ?? cmd.options.getString("name"));
 
+    //New Role Properties
     if (!cmd.color || cmd.me.roles.cache.get(cmd.color.id)) {
       var color = "#ffffff", position = (cmd.paletteRole.position + 1);
       var newRole = {name: name, color: color, position: position, permissions: []};
       await cmd.guild.roles.create(newRole)
 
+      //Protect New Role
       cmd.member.roles.add(cmd.guild.roles.cache.find(role => role.position === position))
       SLAB.smartReply(cmd, "Role Created!")
 
+    //Role Updates
     } else {
       cmd.color.setName(name)
       SLAB.smartReply(cmd, "Role Updated!")

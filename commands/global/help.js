@@ -61,7 +61,7 @@ module.exports = {
         {name: "/setup", value: "```Allow Everyone to Create and Customize their Own Color Role!```"},
         {name: "/color", value: "```Update your Color Role!\nInput a Hexadecimal Color!```"},
         {name: "/name", value: "```Update your Color Role!\nInput the Name you Want!```"},
-        {name: "/palette", value: "```Find Pretty Colors for your Color Role\nOptions:\n- Scope (In Case of Sharing Multiple Servers)```"},
+        {name: "/palette", value: "```Find Pretty Colors for your Color Role!```"},
         {name: "/autopalette", value: "```Get Color Recomendations the Moment you Change Profile Picture!```"})
       .setImage(SLAB.imagePath + "MatchYourColors.png")}
 

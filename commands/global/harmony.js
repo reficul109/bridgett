@@ -30,10 +30,12 @@ module.exports = {
   .setDescription("Color to Harmonize").setMinLength(6).setMaxLength(7)),
 
   async execute(cmd) {
+    //Align Syntax
     var color = (cmd.argRes ?? cmd.options.getString("color"));
     if (!color.startsWith("#")) {color = "#" + color;}
     var harmony = colorEdit(color).harmonies("complementary").map((c) => c.toHex());
 
+    //Interactive Message
     await SLAB.smartReply(cmd, {content: "Displaying Complementary Colors!", 
     embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length), 
     components: ROWS.harmonyUI}).then(function (botReply) {
@@ -48,12 +50,12 @@ module.exports = {
         await userReply.deferUpdate()
         if (userReply.user.id !== cmd.member.id) {return;}
         
+        //Actions
         if (userReply.customId === "Side-Complementary") {
           harmony = colorEdit(color).harmonies("rectangle").map((c) => c.toHex());
-          harmony.splice(1, 2)
-          
-        } else {
-          harmony = colorEdit(color).harmonies(userReply.customId.toLowerCase()).map((c) => c.toHex());}
+          harmony.splice(1, 2)} 
+        
+        else {harmony = colorEdit(color).harmonies(userReply.customId.toLowerCase()).map((c) => c.toHex());}
 
         botReply.edit({content: "Displaying " + userReply.customId + " Colors!",
         embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})

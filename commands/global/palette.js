@@ -19,26 +19,19 @@ module.exports = {
   data: new SLAB()
 	.setName("palette")
   .setDMPermission(false)
-	.setDescription("Match your Color and Profile Picture!")
-  .addStringOption(option => option.setName("scope")
-  .setDescription("Amount of Server Roles to Update").addChoices(
-    {name: "For all Servers", value: "All"}, 
-    {name: "For this Server", value: "One"})),
+	.setDescription("Match your Color and Profile Picture!"),
 
   async execute(cmd) {
     //Align Behavior for Automatic Executions
     if (cmd.guild) {var user = cmd.member.user, channel = cmd.channel;}
     else {var user = cmd, channel = await user.createDM();}
 
-    //Area of Effect
-    var paletteGuilds = cmd.client.guilds.cache;
-    var scope = (cmd.argRes ?? cmd.options.getString("scope") ?? "All").toLowerCase();
-    if (scope.includes("one")) {paletteGuilds = paletteGuilds.filter(guild => guild === cmd.guild);}
-    else {paletteGuilds = paletteGuilds.filter(guild => SLAB.filterPalette(cmd, guild, user));}
-    
+    //Find Palette Servers
+    var paletteGuilds = cmd.client.guilds.cache.filter(guild => SLAB.filterPalette(cmd, guild, user));
     if (!paletteGuilds.size) {return;}
-
     var page = 0;
+
+    //Interactive Message
     await getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 30}).then(async colors => {
     try {await SLAB.smartReply(cmd, {content: "<@" + user.id + ">, Pick a New Color!",     
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
@@ -54,6 +47,7 @@ module.exports = {
         await userReply.deferUpdate()
         if (userReply.user.id !== user.id) {return;}
 
+        //Actions
         var btn = (parseInt(userReply.customId) || userReply.customId);
         switch (btn) {
           case "+":

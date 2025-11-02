@@ -22,12 +22,15 @@ module.exports = {
   .setDescription("Color to Search").setMaxLength(88)),
 
   async execute(cmd) {
+    //Find Matches
     var color = (cmd.argRes ?? cmd.options.getString("color")).toLowerCase();    
     var colors = SLAB.colorList.filter(o => o.name.toLowerCase().includes(color)).map(o => o.hex);
+    if (!colors.length) {return SLAB.smartReply(cmd, "No matches found...");} 
 
-    if (!colors.length) {return SLAB.smartReply(cmd, "No matches found...");}
-    var page = 0, pageLimit = Math.ceil(colors.length / 5) - 1;
+    var pageLimit = Math.ceil(colors.length / 5) - 1;
+    var page = 0;
 
+    //Interactive Message
     await SLAB.smartReply(cmd, {content: "Found " + colors.length + " matches!", 
     embeds: EMBD.paletteEmbeds(colors, page, 5), 
     components: ROWS.searchUI}).then(function (botReply) {
@@ -42,19 +45,26 @@ module.exports = {
         await userReply.deferUpdate()
         if (userReply.user.id !== cmd.member.id) {return;}
         
-        if (userReply.customId === "+") {
-          if (page < pageLimit) {
-            page++;
-            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}}
+        //Actions
+        var btn = (parseInt(userReply.customId) || userReply.customId);
+        switch (btn) {
+          case "+":
+            if (page < pageLimit) {
+              page++;
+              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
+          break;
 
-        else if (userReply.customId === "-") {
-          if (page > 0) {
-            page--;
-            botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}}
+          case "-":
+            if (page > 0) {
+              page--;
+              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
+          break;
         
-        else {
+          case "x":
             collector.stop()
-            botReply.edit({content: "Stopped!", embeds: [], components: []})}
+            botReply.edit({content: "Stopped!", embeds: [], components: []})
+          break;
+        }
       })
     })
 }}

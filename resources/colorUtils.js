@@ -11,7 +11,7 @@ const {
 //
 SLAB.colorList = require("./colornames.json");
 const nearestColor = require("nearest-color");
-const colorObjects = colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
+const colorObjects = SLAB.colorList.reduce((o, {name, hex}) => Object.assign(o, {[name]: hex}), {});
 nearestColor.find = nearestColor.from(colorObjects);
 
 //Color Chips

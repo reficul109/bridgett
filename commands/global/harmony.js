@@ -61,4 +61,5 @@ module.exports = {
         embeds: EMBD.paletteEmbeds(harmony, 0, harmony.length)})
       })
     })
-}}
+  }
+}

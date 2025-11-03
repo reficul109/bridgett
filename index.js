@@ -82,14 +82,14 @@ isInvalid = async function(cmd, instructs) {
   cmd.paletteRole = cmd.guild.roles.cache.get(cmd.guildConfig.roleID);
   if (instructs.checkPaletteRole && !cmd.paletteRole) {
     if (instructs.skipChecks_disableUI) {cmd.isLimited = true;}
-
+    
     return "Your Server is not Set-Up! (/setup)";}
 
   //Check if Role Editing is Needed and Paused
   if (instructs.checkColorEditable && cmd.guildConfig.pauseFunc === "Enabled")  {
     if (instructs.skipChecks_disableUI) {cmd.isLimited = true;}
-    
-    return "Your Server is Currently not Allowing Editing Roles Right Now...";}
+
+    return "Your Server is Currently not Allowing Role Color Editing...";}
 
   //Check if A Color Role is Needed for this Command
   if (!cmd.color) {

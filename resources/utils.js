@@ -28,7 +28,8 @@ SLAB.findGuildConfig = function(cmd) {
 
 //Palette Server Filter
 SLAB.filterPalette = function(cmd, guild, user) {
-  var member = guild.members.cache.get(user.id), settings = guildConfigs.get(guild.id);
+  var member = guild.members.cache.get(user.id)
+  var settings = guildConfigs.get(guild.id);
   if (member && settings && member.roles.color) {
     if (!member.roles.cache.get(settings.roleID)) {return (guild === cmd.guild);}
     else {return (settings.pauseFunc !== "Enabled" && member.roles.color.editable);}}}
@@ -37,7 +38,7 @@ SLAB.filterPalette = function(cmd, guild, user) {
 // --- Setup Embed ---
 //
 EMBD.setupEmbed = function(settings, role) {
-  const setupEmbed = new EMBD()
+  var setupEmbed = new EMBD()
   .setColor("#f2003c")
   .addFields(
     {name: "🎨 Your Palette Role is: " + (role ? role.name : "None Yet!"), value: "```Create the 🎨 Auto-Palette 🎨 Role\nGive Users Access to the Other Commands```"},
@@ -47,7 +48,7 @@ return [setupEmbed];}
 
 //Setup Success Embed 
 EMBD.setupSuccess = function(roleID) {
-  const setupSuccess = new EMBD()
+  var setupSuccess = new EMBD()
   .setColor("#f2003c")
   .setImage(SLAB.imagePath + "ScreenNewRoles.png")
   .addFields({name: "Your Server is Set-Up!", value: "I Created a New Role: <@&" + roleID + ">\nPosition it Wisely! From Now, Any Color Role I Create Will be Placed Above This One!"})
@@ -64,7 +65,7 @@ ROWS.setupUI = [setupRow];
 // --- Warning Embed ---
 //
 EMBD.warningEmbed = function(role) {
-  const warningEmbed = new EMBD()
+  var warningEmbed = new EMBD()
   .setColor("#f2003c")
   .addFields({name: "**Caution!**", value: role.members.size + " Users have the <@&" + role.id + "> Role...\nYour Command could change the Display Color for All of Them, Proceed?"})
 return [warningEmbed];}

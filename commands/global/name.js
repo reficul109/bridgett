@@ -35,4 +35,5 @@ module.exports = {
       cmd.color.setName(name)
       SLAB.smartReply(cmd, "Role Updated!")
     }
-}}
+  }
+}

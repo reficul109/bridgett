@@ -39,4 +39,5 @@ module.exports = {
       try {await cmd.color.setColor(color)} catch {return SLAB.smartReply(cmd, "Invalid Color (Must be Hexadecimal...)");}
       SLAB.smartReply(cmd, {content: "Role Updated!", embeds: [EMBD.colorChip(color, "🎨")]})
     }
-}}
+  }
+}

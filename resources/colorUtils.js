@@ -17,7 +17,7 @@ nearestColor.find = nearestColor.from(colorObjects);
 //Color Chips
 EMBD.colorChip = function(color, emoji) {
   var match = nearestColor.find(color);
-  const colorEmbed = new EMBD()
+  var colorEmbed = new EMBD()
   .setTitle(emoji + "   " + color)
   .setColor(color)
   .setDescription("This Color looks like... [" + match.name + "](https://encycolorpedia.com/" + match.value.substring(1) + ")!")
@@ -35,6 +35,13 @@ EMBD.paletteEmbeds = function(colors, page, groupSize, error) {
       var embed = EMBD.colorChip(color, emoji[i]);
       paletteEmbeds.push(embed)}}
 return paletteEmbeds;}
+
+// Color Selection Disabled Embed
+EMBD.limitedEmbed = function(error) {
+  var limitedEmbed = new EMBD()
+  .setColor("#f2003c")
+  .addFields({name: "**Color Selection Disabled due to Error:**", value: error})
+return limitedEmbed;}
 
 //Palette UI
 const more = new BTNS().setCustomId("+").setEmoji("âž•").setStyle(BSTY.Success);
@@ -62,10 +69,3 @@ const penta = new BTNS().setCustomId("Double-Split-Complementary").setEmoji("ðŸŒ
 const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);
 const complxHarm = new ROWS().addComponents(squre, recta, split, penta);
 ROWS.harmonyUI = [simpleHarm, complxHarm];
-
-// Color Selection Disabled Embed
-EMBD.limitedEmbed = function(error) {
-  const limitedEmbed = new EMBD()
-  .setColor("#f2003c")
-  .addFields({name: "**Color Selection Disabled due to Error:**", value: error})
-return limitedEmbed;}

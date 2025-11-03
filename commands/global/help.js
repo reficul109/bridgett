@@ -27,7 +27,7 @@ module.exports = {
   async execute(cmd) {
     var section = (cmd.argRes ?? cmd.options.getString("section") ?? "Users").toLowerCase();
 
-    const helpEmbed = new EMBD()
+    var helpEmbed = new EMBD()
     .setColor("#f2003c")
     .setAuthor({name: "How to Start", iconURL: SLAB.imagePath + "Palette.png"})
 

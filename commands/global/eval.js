@@ -21,4 +21,5 @@ module.exports = {
     var code = (cmd.argRes ?? cmd.options.getString("code"));
     await eval(code)
     SLAB.smartReply(cmd, "Done!")
-}}
+  }
+}

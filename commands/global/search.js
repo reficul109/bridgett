@@ -32,7 +32,7 @@ module.exports = {
     if (!colors.length) {return SLAB.smartReply(cmd, "No matches found...");} 
 
     //Find Palette Servers
-    var paletteGuilds = cmd.client.guilds.cache.filter(guild => SLAB.filterPalette(cmd, guild, user));
+    var paletteGuilds = cmd.client.guilds.cache.filter(guild => SLAB.filterPalette(cmd, guild, cmd.member.user));
     if (!paletteGuilds.size) {return;}
     var pageLimit = Math.ceil(colors.length / 5) - 1;
     var page = 0;

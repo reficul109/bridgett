@@ -26,8 +26,9 @@ return colorEmbed;}
 
 //Palette Embeds
 const emoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
-EMBD.paletteEmbeds = function(colors, page, groupSize) {
+EMBD.paletteEmbeds = function(colors, page, groupSize, error) {
   var paletteEmbeds = [];
+  if (error) {paletteEmbeds.push(EMBD.limitedEmbed(error))}
   for (var i = 0; i < groupSize; i++) {
     if (i + (page * groupSize) < colors.length) {
       var color = colors[i + (page * groupSize)].toString();
@@ -61,3 +62,10 @@ const penta = new BTNS().setCustomId("Double-Split-Complementary").setEmoji("�
 const simpleHarm = new ROWS().addComponents(cmplt, sidec, triad, anlog);
 const complxHarm = new ROWS().addComponents(squre, recta, split, penta);
 ROWS.harmonyUI = [simpleHarm, complxHarm];
+
+// Color Selection Disabled Embed
+EMBD.limitedEmbed = function(error) {
+  const limitedEmbed = new EMBD()
+  .setColor("#f2003c")
+  .addFields({name: "Color Selection Disabled due to Error:", value: error})
+return limitedEmbed;}

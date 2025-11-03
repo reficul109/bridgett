@@ -38,8 +38,8 @@ module.exports = {
     var page = 0;
 
     //Interactive Message
-    await SLAB.smartReply(cmd, {content: cmd.isLimited + "Found " + colors.length + " matches!", 
-    embeds: EMBD.paletteEmbeds(colors, page, 5), 
+    await SLAB.smartReply(cmd, {content: "Found " + colors.length + " matches!", 
+    embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited), 
     components: (cmd.isLimited ? ROWS.searchUI : ROWS.paletteUI)}).then(function (botReply) {
   
       //Filter Message
@@ -58,13 +58,13 @@ module.exports = {
           case "+":
             if (page < pageLimit) {
               page++;
-              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
+              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited)})}
           break;
 
           case "-":
             if (page > 0) {
               page--;
-              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
+              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited)})}
           break;
         
           case "x":

@@ -163,7 +163,7 @@ handleCommand = async function(cmd, instructs) {
   } else {
 
     //Perform Valid Commands + Limited Commands
-    cmd.isLimited = (errorResponse ? ("(Color Selection Disabled due to Error: " + errorResponse + ")\n") : "");
+    cmd.isLimited = errorResponse;
     try {await instructs.execute(cmd)}
 
     catch (error) {

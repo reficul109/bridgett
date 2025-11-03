@@ -45,7 +45,7 @@ EMBD.setupEmbed = function(settings, role) {
     {name: "📦 Reactions are " + settings.funAllowed + "!", value: "```Stop Bridgett from Reacting to Certain Words```"})
 return [setupEmbed];}
 
-//Success Setup Embed 
+//Setup Success Embed 
 EMBD.setupSuccess = function(roleID) {
   const setupSuccess = new EMBD()
   .setColor("#f2003c")

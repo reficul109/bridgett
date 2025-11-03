@@ -37,8 +37,8 @@ module.exports = {
 
     //Interactive Message
     await getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 30}).then(async colors => {
-    try {await SLAB.smartReply(cmd, {content: cmd.isLimited + "<@" + user.id + ">, Pick a New Color!",     
-    embeds: EMBD.paletteEmbeds(colors, page, 5), 
+    try {await SLAB.smartReply(cmd, {content: "<@" + user.id + ">, Pick a New Color!",     
+    embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited), 
     components: (cmd.isLimited ? ROWS.searchUI : ROWS.paletteUI)}).then(function (botReply) {
 
       //Filter Message
@@ -57,13 +57,13 @@ module.exports = {
           case "+":
             if (page < 4) {
               page++;
-              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
+              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited)})}
           break;
 
           case "-":
             if (page > 0) {
               page--;
-              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5)})}
+              botReply.edit({embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited)})}
           break;
 
           case "x":

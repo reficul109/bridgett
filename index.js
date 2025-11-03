@@ -17,12 +17,17 @@ const client = new Client({intents: intents, allowedMentions: {parse: ["users", 
 const {token} = require("./token.json");
 const rest = new REST().setToken(token);
 
-//Bot Variables and Utils
+//Bot Variables
 SLAB.prefix = "br!";
-SLAB.bID = "530502122190405652", SLAB.rID = "320398018060746752";
+SLAB.bID = "530502122190405652";
+SLAB.rID = "320398018060746752";
 const games = ["with boxes!", "boxie!", "with more boxes!", "boxie?", "b word", "📦", "Sokoban", "with Lootboxes", "Balatro ajsajdjas", "zzz..."];
 const wBritt = ["britt", "bridgett", "530502122190405652"], wBox = ["box", "caja", "boite", "kahon", "kiste", "caixa", "scatola", "箱", "hako", "📦"];
-const utils = require("./resources/utils.js"), colorUtils = require("./resources/colorUtils.js");
+
+//Functions and Utils
+const utils = require("./resources/utils.js")
+const colorUtils = require("./resources/colorUtils.js");
+const colorBrowse = require("./sharedLogic/colorBrowse.js")
 
 //Slash Command Files Gather
 const globalCommands = [];

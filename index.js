@@ -11,6 +11,8 @@ const {
   SlashCommandBuilder: SLAB
 } = require("discord.js");
 
+const db = require("better-sqlite3")("./resources/BrittData.db");
+
 //Client Setup Stuff
 const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ["users", "roles"]}});
@@ -19,15 +21,14 @@ const rest = new REST().setToken(token);
 
 //Bot Variables
 SLAB.prefix = "br!";
-SLAB.bID = "530502122190405652";
-SLAB.rID = "320398018060746752";
+const bID = "530502122190405652", rID = "320398018060746752";
 const games = ["with boxes!", "boxie!", "with more boxes!", "boxie?", "b word", "📦", "Sokoban", "with Lootboxes", "Balatro ajsajdjas", "zzz..."];
 const wBritt = ["britt", "bridgett", "530502122190405652"], wBox = ["box", "caja", "boite", "kahon", "kiste", "caixa", "scatola", "箱", "hako", "📦"];
 
 //Functions and Utils
 const utils = require("./resources/utils.js")
 const colorUtils = require("./resources/colorUtils.js");
-const colorBrowse = require("./sharedLogic/colorBrowse.js")
+const colorBrowse = require("./resources/colorBrowse.js")
 
 //Slash Command Files Gather
 const globalCommands = [];
@@ -47,7 +48,7 @@ client.commands = new Collection();
 (async () => {
   try {
     console.log("Cargando " + globalCommands.length + " Comandos...")
-    await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands})
+    await rest.put(Routes.applicationCommands(bID), {body: globalCommands})
     console.log("Comandos Cargados con Exito!")} 
   catch (error) {
     console.error(error)}
@@ -58,6 +59,12 @@ client.once(Events.ClientReady, () => {
   client.user.setPresence({activities: [{name: games[Math.floor(Math.random() * games.length)]}], status: "online"})
   console.log("🐙")
 });
+
+//Server Check (Assigns .guildConfig)
+findGuildConfig = function(cmd) {
+  if (!db.guildConfigs.get(cmd.guild.id)) {db.newRow.run(cmd.guild.id, "None", "Enabled", "Enabled")}
+  cmd.guildConfig = db.guildConfigs.get(cmd.guild.id);
+}
 
 //Flexible Response
 SLAB.smartReply = function(cmd, ...args) {
@@ -73,7 +80,7 @@ Returns Nothing if the Command Can Continue
 isInvalid = async function(cmd, instructs) {
 
   //Check if User is Allowed to Use this Command
-  if (instructs.adminCommand && cmd.member.id !== SLAB.rID) {
+  if (instructs.adminCommand && cmd.member.id !== rID) {
     return "You are not Allowed to do That!";}
 
   //Check if There is Enough User Input
@@ -184,7 +191,7 @@ client.on(Events.InteractionCreate, async iCom => {
   const instructs = client.commands.get(iCom.commandName);
   if (!instructs) {return;}
 
-  await SLAB.findGuildConfig(iCom);
+  await findGuildConfig(iCom);
 
   handleCommand(iCom, instructs)
 });
@@ -202,7 +209,7 @@ client.on("userUpdate", async (oldUser, newUser) => {
 client.on(Events.MessageCreate, async mCom => {
   if (mCom.author.bot || mCom.system || !mCom.guild) {return;}
 
-  await SLAB.findGuildConfig(mCom);
+  await findGuildConfig(mCom);
   var msgCon = mCom.content.toLowerCase();
 
   //Message Reactions

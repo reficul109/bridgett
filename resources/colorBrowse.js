@@ -4,15 +4,27 @@ const {
   SlashCommandBuilder: SLAB
 } = require("discord.js");
 
+const db = require("better-sqlite3")("./resources/BrittData.db");
+
+//Palette Server Filter
+filterPalette = function(cmd, guild, user) {
+  var member = guild.members.cache.get(user.id)
+  var settings = db.guildConfigs.get(guild.id);
+  if (member && settings && member.roles.color) {
+    if (!member.roles.cache.get(settings.roleID)) {return (guild === cmd.guild);}
+    else {return (settings.pauseFunc !== "Enabled" && member.roles.color.editable);}}}
+
+
 SLAB.colorBrowse = async function(cmd, user, channel, colors) {
   //Find Palette Servers
-  var paletteGuilds = cmd.client.guilds.cache.filter(guild => SLAB.filterPalette(cmd, guild, user));
+  var paletteGuilds = cmd.client.guilds.cache.filter(guild => filterPalette(cmd, guild, user));
   if (!paletteGuilds.size) {return;}
   var pageLimit = Math.ceil(colors.length / 5) - 1;
   var page = 0;
     
   //Interactive Message
-  try {await SLAB.smartReply(cmd, {content: "<@" + user.id + ">, Pick a New Color!",     
+  try {await SLAB.smartReply(cmd, {
+  content: "<@" + user.id + ">, Pick a New Color!\nPage " + (page + 1) + " out of " + (pageLimit + 1),     
   embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited), 
   components: (cmd.isLimited ? ROWS.searchUI : ROWS.paletteUI)}).then(function (botReply) {
 

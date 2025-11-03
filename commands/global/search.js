@@ -75,7 +75,7 @@ module.exports = {
           default:
             collector.stop()
             var choice = colors[(btn + (page * 5) - 1)].toString();
-            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice))
+            paletteGuilds.forEach(guild => guild.members.cache.get(cmd.member.id).roles.color.setColor(choice))
             botReply.edit({content: "Done!", embeds: [EMBD.colorChip(choice, "🎨")], components: []})
           break;
         }

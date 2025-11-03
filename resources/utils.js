@@ -66,7 +66,7 @@ ROWS.setupUI = [setupRow];
 EMBD.warningEmbed = function(role) {
   const warningEmbed = new EMBD()
   .setColor("#f2003c")
-  .addFields({name: "Caution!", value: role.members.size + " Users have the <@&" + role.id + "> Role...\nYour Command could change the Display Color for All of Them, Proceed?"})
+  .addFields({name: "**Caution!**", value: role.members.size + " Users have the <@&" + role.id + "> Role...\nYour Command could change the Display Color for All of Them, Proceed?"})
 return [warningEmbed];}
 
 //Warning UI

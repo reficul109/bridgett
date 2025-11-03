@@ -67,5 +67,5 @@ ROWS.harmonyUI = [simpleHarm, complxHarm];
 EMBD.limitedEmbed = function(error) {
   const limitedEmbed = new EMBD()
   .setColor("#f2003c")
-  .addFields({name: "Color Selection Disabled due to Error:", value: error})
+  .addFields({name: "**Color Selection Disabled due to Error:**", value: error})
 return limitedEmbed;}

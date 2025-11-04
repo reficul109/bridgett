@@ -13,7 +13,7 @@ SLAB.colorBrowse = async function(cmd, user, channel, colors) {
     
   //Interactive Message
   try {await SLAB.smartReply(cmd, {
-  content: "<@" + user.id + ">, Pick a New Color!\nShowing " + colors.length + "colors!",  
+  content: "<@" + user.id + ">, Showing " + colors.length + " colors!",  
   embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited), 
   components: (cmd.isLimited ? ROWS.searchUI : ROWS.paletteUI)}).then(function (botReply) {
 

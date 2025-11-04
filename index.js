@@ -19,15 +19,14 @@ const rest = new REST().setToken(token);
 
 //Bot Variables
 SLAB.prefix = "br!";
-SLAB.bID = "530502122190405652";
-SLAB.rID = "320398018060746752";
+const bID = "530502122190405652", rID = "320398018060746752";
 const games = ["with boxes!", "boxie!", "with more boxes!", "boxie?", "b word", "📦", "Sokoban", "with Lootboxes", "Balatro ajsajdjas", "zzz..."];
 const wBritt = ["britt", "bridgett", "530502122190405652"], wBox = ["box", "caja", "boite", "kahon", "kiste", "caixa", "scatola", "箱", "hako", "📦"];
 
 //Functions and Utils
 const utils = require("./resources/utils.js")
 const colorUtils = require("./resources/colorUtils.js");
-const colorBrowse = require("./sharedLogic/colorBrowse.js")
+const colorBrowse = require("./resources/colorBrowse.js")
 
 //Slash Command Files Gather
 const globalCommands = [];
@@ -47,7 +46,7 @@ client.commands = new Collection();
 (async () => {
   try {
     console.log("Cargando " + globalCommands.length + " Comandos...")
-    await rest.put(Routes.applicationCommands(SLAB.bID), {body: globalCommands})
+    await rest.put(Routes.applicationCommands(bID), {body: globalCommands})
     console.log("Comandos Cargados con Exito!")} 
   catch (error) {
     console.error(error)}
@@ -73,7 +72,7 @@ Returns Nothing if the Command Can Continue
 isInvalid = async function(cmd, instructs) {
 
   //Check if User is Allowed to Use this Command
-  if (instructs.adminCommand && cmd.member.id !== SLAB.rID) {
+  if (instructs.adminCommand && cmd.member.id !== rID) {
     return "You are not Allowed to do That!";}
 
   //Check if There is Enough User Input

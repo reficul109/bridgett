@@ -12,7 +12,8 @@ SLAB.colorBrowse = async function(cmd, user, channel, colors) {
   var page = 0;
     
   //Interactive Message
-  try {await SLAB.smartReply(cmd, {content: "<@" + user.id + ">, Pick a New Color!",     
+  try {await SLAB.smartReply(cmd, {
+    content: "<@" + user.id + ">, Pick a New Color!\nPage " + (page + 1) + " out of " + (pageLimit + 1),  
   embeds: EMBD.paletteEmbeds(colors, page, 5, cmd.isLimited), 
   components: (cmd.isLimited ? ROWS.searchUI : ROWS.paletteUI)}).then(function (botReply) {
 

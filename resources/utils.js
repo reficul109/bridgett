@@ -18,9 +18,21 @@ SLAB.findCollectorFilter = function(cmd, botReply) {
 // --- Database Stuff ---
 //
 const db = require("better-sqlite3")("./resources/BrittData.db");
-db.guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
-db.newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
-db.editRow = db.prepare("UPDATE paletteRoles SET roleID = ?, pauseFunc = ?, funAllowed = ? WHERE guildID = ?")
+const guildConfigs = db.prepare("SELECT * FROM paletteRoles WHERE guildID = ?")
+const newRow = db.prepare("INSERT INTO paletteRoles (guildID, roleID, pauseFunc, funAllowed) VALUES (?, ?, ?, ?)")
+
+//Server Check (Assigns .guildConfig)
+SLAB.findGuildConfig = function(cmd) {
+  if (!guildConfigs.get(cmd.guild.id)) {newRow.run(cmd.guild.id, "None", "Enabled", "Enabled")}
+  cmd.guildConfig = guildConfigs.get(cmd.guild.id);}
+
+//Palette Server Filter
+SLAB.filterPalette = function(cmd, guild, user) {
+  var member = guild.members.cache.get(user.id)
+  var settings = guildConfigs.get(guild.id);
+  if (member && settings && member.roles.color) {
+    if (!member.roles.cache.get(settings.roleID)) {return (guild === cmd.guild);}
+    else {return (settings.pauseFunc !== "Enabled" && member.roles.color.editable);}}}
 
 //
 // --- Setup Embed ---

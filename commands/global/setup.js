@@ -6,6 +6,7 @@ const {
 } = require("discord.js");
 
 const db = require("better-sqlite3")("./resources/BrittData.db");
+const editRow = db.prepare("UPDATE paletteRoles SET roleID = ?, pauseFunc = ?, funAllowed = ? WHERE guildID = ?")
 
 module.exports = {
 
@@ -48,14 +49,14 @@ module.exports = {
           case "Pause":
             settings.pauseFunc = (settings.pauseFunc === "Enabled") ? "Disabled" : "Enabled";
 
-            db.editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
+            editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
             botReply.edit({content: "Pause Setting " + settings.pauseFunc + "!", embeds: [], components: []})
           break;
 
           case "Fun":
             settings.funAllowed = (settings.funAllowed === "Enabled") ? "Disabled" : "Enabled";
 
-            db.editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
+            editRow.run(settings.roleID, settings.pauseFunc, settings.funAllowed, cmd.guild.id)
             botReply.edit({content: "Reactions Setting " + settings.funAllowed + "!", embeds: [], components: []})
           break;
 
@@ -68,7 +69,7 @@ module.exports = {
               try {await cmd.guild.roles.create(newRole)} catch {return SLAB.smartReply(cmd, "I Need Permission to Create New Roles...");}
               var paletteRole = cmd.guild.roles.cache.find(role => role.name === "🎨 Auto-Palette 🎨");
       
-              db.editRow.run(paletteRole.id, "Disabled", settings.funAllowed, cmd.guild.id)
+              editRow.run(paletteRole.id, "Disabled", settings.funAllowed, cmd.guild.id)
 
               cmd.me.roles.add(paletteRole)
               botReply.edit({content: "Done!", embeds: EMBD.setupSuccess(paletteRole.id), components: []})

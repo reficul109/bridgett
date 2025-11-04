@@ -24,11 +24,11 @@ EMBD.colorChip = function(color, emoji) {
   .setURL("https://encycolorpedia.com/" + color.substring(1))
 return colorEmbed;}
 
-//Color Browse / Harmony Embeds
+//Palette Embeds
 const emoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
 EMBD.paletteEmbeds = function(colors, page, groupSize, error) {
   var paletteEmbeds = [];
-  if (error) {paletteEmbeds.push(limitedEmbed(error))}
+  if (error) {paletteEmbeds.push(EMBD.limitedEmbed(error))}
   for (var i = 0; i < groupSize; i++) {
     if (i + (page * groupSize) < colors.length) {
       var color = colors[i + (page * groupSize)].toString();
@@ -37,7 +37,7 @@ EMBD.paletteEmbeds = function(colors, page, groupSize, error) {
 return paletteEmbeds;}
 
 // Color Selection Disabled Embed
-limitedEmbed = function(error) {
+EMBD.limitedEmbed = function(error) {
   var limitedEmbed = new EMBD()
   .setColor("#f2003c")
   .addFields({name: "**Color Selection Disabled due to Error:**", value: error})

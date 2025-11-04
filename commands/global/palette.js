@@ -23,7 +23,7 @@ module.exports = {
     if (cmd.guild) {var user = cmd.member.user, channel = cmd.channel;}
     else {var user = cmd, channel = await user.createDM();}
 
-    getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 30}).then(colors => {
+    getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 31}).then(colors => {
       SLAB.colorBrowse(cmd, user, channel, colors)
     })
   }

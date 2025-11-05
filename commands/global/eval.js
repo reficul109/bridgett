@@ -16,10 +16,8 @@ module.exports = {
   .setDescription("Pain.")
   .addStringOption(option => option.setName("code").setRequired(true)
   .setDescription("Remeber to use cmd!"))
-  .addSubcommand(subcommand => {
-    subcommand.setName('user').addUserOption(option => option.setName('user').setRequired(true))})
-  .addSubcommand(subcommand => {
-    subcommand.setName('image').addAttachmentOption(option => option.setName('image').setRequired(true))}),
+  .addSubcommand(sub => sub.setName('user').addUserOption(option => option.setName('user').setRequired(true)))
+  .addSubcommand(sub => sub.setName('image').addAttachmentOption(option => option.setName('image').setRequired(true))),
 
   async execute(cmd) {
     var code = (cmd.argRes ?? cmd.options.getString("code"));

@@ -18,7 +18,7 @@ module.exports = {
 	.setName("color")
   .setDMPermission(false)
 	.setDescription("Color your Custom Role!")
-  .addStringOption(option => option.setName("hexColor").setRequired(true)
+  .addStringOption(option => option.setName("hexcolor").setRequired(true)
   .setDescription("Color to Assign to the Role").setMinLength(6).setMaxLength(7)),
 
   async execute(cmd) {

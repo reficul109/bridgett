@@ -27,7 +27,7 @@ module.exports = {
   .setName("harmony")
   .setDMPermission(false)
   .setDescription("Form your Palette!")
-  .addStringOption(option => option.setName("hexColor").setRequired(true)
+  .addStringOption(option => option.setName("hexcolor").setRequired(true)
   .setDescription("Color to Harmonize").setMinLength(6).setMaxLength(7)),
 
   async execute(cmd) {

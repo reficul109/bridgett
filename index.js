@@ -217,20 +217,20 @@ client.on(Events.MessageCreate, async mCom => {
   if (!msgCon.startsWith(SLAB.prefix)) {return;}
   var args = mCom.content.split(" ");
   mCom.argRes = args.slice(1).join(" ");
-  if (mCom.attachments.size) {var msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
+  if (mCom.attachments.size) {mCom.msgAtt = Array.from(mCom.attachments.values(), x => x.url)}
 
   //Say
-  if (msgCon.startsWith(SLAB.prefix + "say") && (mCom.argRes || msgAtt)) {
+  if (msgCon.startsWith(SLAB.prefix + "say") && (mCom.argRes || mCom.msgAtt)) {
     if (client.channels.cache.get(args[1])) {
-      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(" ")), files: msgAtt})
+      client.channels.cache.get(args[1]).send({content: (args.slice(2).join(" ")), files: mCom.msgAtt})
       mCom.reply("Done!")
 
     } else if (client.users.cache.get(args[1])) {
-      client.users.cache.get(args[1]).send({content: (args.slice(2).join(" ")), files: msgAtt})
+      client.users.cache.get(args[1]).send({content: (args.slice(2).join(" ")), files: mCom.msgAtt})
       mCom.reply("Done!")
 
     } else {
-      mCom.channel.send({content: mCom.argRes, files: msgAtt})
+      mCom.channel.send({content: mCom.argRes, files: mCom.msgAtt})
       mCom.delete()}}
 
   //Text Command Answer

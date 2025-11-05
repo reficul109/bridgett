@@ -17,6 +17,7 @@ module.exports = {
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
+  //skipChecks_disableUI: true,
   
   data: new SLAB()
   .setName("setup")

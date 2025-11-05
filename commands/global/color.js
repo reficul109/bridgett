@@ -12,12 +12,13 @@ module.exports = {
   checkColorEditable: true,
   //protectColorRole: true,
   warnMultipleEffect: true,
+  //skipChecks_disableUI: true,
 
   data: new SLAB()
 	.setName("color")
   .setDMPermission(false)
 	.setDescription("Color your Custom Role!")
-  .addStringOption(option => option.setName("color").setRequired(true)
+  .addStringOption(option => option.setName("hexColor").setRequired(true)
   .setDescription("Color to Assign to the Role").setMinLength(6).setMaxLength(7)),
 
   async execute(cmd) {

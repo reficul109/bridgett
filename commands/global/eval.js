@@ -9,6 +9,7 @@ module.exports = {
   //checkColorEditable: true,
   //protectColorRole: true,
   //warnMultipleEffect: true,
+  //skipChecks_disableUI: true,
   
   data: new SLAB()
   .setName("eval")
@@ -16,11 +17,7 @@ module.exports = {
   .setDescription("Pain.")
   .addStringOption(option => option.setName("code").setRequired(true)
   .setDescription("Remeber to use cmd!")),
-  //.addSubcommand(sub => 
-  //  sub.setName("user").setDescription("u").addUserOption(option => option.setName("user").setRequired(true)))
-  //.addSubcommand(sub => 
-  //  sub.setName("image").setDescription("i").addAttachmentOption(option => option.setName("image").setRequired(true)))
-
+  
   async execute(cmd) {
     var code = (cmd.argRes ?? cmd.options.getString("code"));
     await eval(code)

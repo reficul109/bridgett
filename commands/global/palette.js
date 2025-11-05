@@ -34,7 +34,7 @@ module.exports = {
     //Select Correct Image (Slash)
     else {
       var att = cmd.options.getAttachment("image"), mention = cmd.options.getUser("user");
-      if (att.height) {image = att.url;}
+      if (att && att.height) {image = att.url;}
       else if (mention) {image = mention.displayAvatarURL({extension: "png", forceStatic: true});}
       else {image = user.displayAvatarURL({extension: "png", forceStatic: true});}}
 

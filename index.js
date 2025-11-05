@@ -8,6 +8,7 @@ const {
   REST, Routes, 
   ActionRowBuilder: ROWS, 
   EmbedBuilder: EMBD,
+  MessageFlags: MFL,
   SlashCommandBuilder: SLAB
 } = require("discord.js");
 
@@ -140,7 +141,7 @@ isInvalid = async function(cmd, instructs) {
 
             catch (error) {
               console.error(error)
-              SLAB.smartReply(cmd, {content: "Error...", ephemeral: true})}}
+              SLAB.smartReply(cmd, {content: "Error...", flags: MFL.Ephemeral})}}
           
           //Abort Execution
           else {botReply.edit({content: "Cancelled!", embeds: [], components: []})}
@@ -172,7 +173,7 @@ handleCommand = async function(cmd, instructs) {
 
     catch (error) {
       console.error(error);
-      SLAB.smartReply(cmd, {content: "Error...", ephemeral: true})
+      SLAB.smartReply(cmd, {content: "Error...", flags: MFL.Ephemeral})
     }
   }
 }

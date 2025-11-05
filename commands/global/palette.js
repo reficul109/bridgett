@@ -38,8 +38,6 @@ module.exports = {
       else if (mention) {image = mention.displayAvatarURL({extension: "png", forceStatic: true});}
       else {image = user.displayAvatarURL({extension: "png", forceStatic: true});}}
 
-    getColors(user.displayAvatarURL({extension: "png", forceStatic: true}), {count: 31}).then(colors => {
-      SLAB.colorBrowse(cmd, user, channel, colors)
-    })
+    getColors(image, {count: 31}).then(colors => {SLAB.colorBrowse(cmd, user, channel, colors)})
   }
 }

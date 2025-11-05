@@ -28,7 +28,7 @@ module.exports = {
     //Select Correct Image (Text)
     if (cmd.content) {
       if (cmd.msgAtt && cmd.attachments.first().height) {image = cmd.msgAtt[0];} 
-      else if (cmd.mentions.users) {image = cmd.mentions.users.first().displayAvatarURL({extension: "png", forceStatic: true});}
+      else if (cmd.mentions.users.size) {image = cmd.mentions.users.first().displayAvatarURL({extension: "png", forceStatic: true});}
       else {image = user.displayAvatarURL({extension: "png", forceStatic: true});}}
 
     //Select Correct Image (Slash)

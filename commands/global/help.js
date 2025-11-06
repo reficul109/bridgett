@@ -28,6 +28,7 @@ module.exports = {
   async execute(cmd) {
     var section = (cmd.argRes ?? cmd.options.getString("section") ?? "Users").toLowerCase();
 
+    //Shared Config
     var helpEmbed = new EMBD()
     .setColor("#f2003c")
     .setAuthor({name: "How to Start", iconURL: SLAB.imagePath + "Palette.png"})
@@ -68,4 +69,5 @@ module.exports = {
       .setImage(SLAB.imagePath + "MatchYourColors.png")}
 
     SLAB.smartReply(cmd, {embeds: [helpEmbed]})
-}}
+  }
+}

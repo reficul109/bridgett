@@ -31,20 +31,17 @@ module.exports = {
       if (cmd.content) {
         if (cmd.msgAtt && cmd.attachments.first().height) {image = cmd.msgAtt[0];} 
         else if (cmd.mentions.users.size) {image = cmd.mentions.users.first().displayAvatarURL(config);}
-        else {image = user.displayAvatarURL(config);}
-      }
+        else {image = user.displayAvatarURL(config);}}
 
       //Select Correct Image (Slash)
       else {
         var att = cmd.options.getAttachment("image"), mention = cmd.options.getUser("user");
         if (att && att.height) {image = att.url;}
         else if (mention) {image = mention.displayAvatarURL(config);}
-        else {image = user.displayAvatarURL(config);}
-      }
-    }
+        else {image = user.displayAvatarURL(config);}}
     
     //Automatic Executions
-    else {var user = cmd, image = user.displayAvatarURL(config), channel = await user.createDM();}
+    } else {var user = cmd, image = user.displayAvatarURL(config), channel = await user.createDM();}
 
     getColors(image, {count: 31}).then(colors => {SLAB.colorBrowse(cmd, user, channel, colors)})
   }

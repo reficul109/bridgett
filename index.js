@@ -13,7 +13,7 @@ const {
 } = require("discord.js");
 
 //Client Setup Stuff
-const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMembers, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
+const intents = [GBIT.Guilds, GBIT.GuildMessages, GBIT.GuildMessages, GBIT.GuildMessageReactions, GBIT.GuildPresences, GBIT.MessageContent, GBIT.DirectMessages];
 const client = new Client({intents: intents, allowedMentions: {parse: ["users", "roles"]}});
 const {token} = require("./token.json");
 const rest = new REST().setToken(token);

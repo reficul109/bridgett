@@ -200,6 +200,7 @@ client.on("userUpdate", async (oldUser, newUser) => {
 
 //Bookmarks
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
+  console.log(reaction.emoji)
   if (reaction.emoji.toString() !== "🔖") {return;}
 	if (reaction.partial) {try {await reaction.fetch();} catch (error) {return;}}	
 

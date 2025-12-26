@@ -200,12 +200,12 @@ client.on("userUpdate", async (oldUser, newUser) => {
 
 //Bookmarks
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
-  console.log(reaction.emoji)
   if (reaction.emoji.toString() !== "🔖") {return;}
 	if (reaction.partial) {try {await reaction.fetch();} catch (error) {return;}}	
 
   var channel = await user.createDM();
   try {reaction.message.forward(channel)} catch (error) {return;};
+  reaction.remove();
 });
 
 //Silly Britt Stuff + Text Command Answer

@@ -32,7 +32,7 @@ module.exports = {
 
   async execute(cmd) {
     //Align Syntax
-    var color = (cmd.argRes ?? cmd.options.getString("color"));
+    var color = (cmd.argRes ?? cmd.options.getString("hexcolor"));
     if (!color.startsWith("#")) {color = "#" + color;}
     var harmony = colorEdit(color).harmonies("complementary").map((c) => c.toHex());
 

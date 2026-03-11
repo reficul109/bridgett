@@ -22,7 +22,7 @@ module.exports = {
   .setDescription("Color to Assign to the Role").setMinLength(6).setMaxLength(7)),
 
   async execute(cmd) {
-    var color = (cmd.argRes ?? cmd.options.getString("color"));
+    var color = (cmd.argRes ?? cmd.options.getString("hexcolor"));
     if (parseInt(color.toString()) === 0 || color === "#000000") {return SLAB.smartReply(cmd, "Discord does not like this Color...");}
 
     //New Role Properties

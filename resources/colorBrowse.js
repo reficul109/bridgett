@@ -48,10 +48,11 @@ SLAB.colorBrowse = async function(cmd, user, channel, colors) {
         break;
 
         default:
-          collector.stop()
-          var choice = colors[(page * 5 + btn - 1)].toString();
-          paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice))
-          botReply.edit({content: "Done!", embeds: [EMBD.colorChip(choice, "🎨")], components: []})
+          if (colors[(page * 5 + btn - 1)]) {
+            collector.stop()
+            var choice = colors[(page * 5 + btn - 1)].toString();
+            paletteGuilds.forEach(guild => guild.members.cache.get(user.id).roles.color.setColor(choice))
+            botReply.edit({content: "Done!", embeds: [EMBD.colorChip(choice, "🎨")], components: []})}
         break;
       }
     })
